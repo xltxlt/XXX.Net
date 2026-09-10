@@ -46,6 +46,7 @@ namespace XXX.Net.Plugins.WorkFlow.Notification
                 var message = new WorkflowMessage
                 {
                     Title = $"任务即将到期：{task.NodeName}",
+                    TenantId = task.TenantId,
                     Content = $"任务「{task.NodeName}」将于 {task.DueTime:yyyy-MM-dd HH:mm} 到期，请及时处理。",
                     InstanceId = task.InstanceId,
                     TaskId = task.Id,

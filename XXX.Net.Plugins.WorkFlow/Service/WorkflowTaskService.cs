@@ -78,6 +78,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 var message = new WorkflowMessage
                 {
                     Title = $"任务已{(dto.Action == "complete" ? "完成" : "跳过")}：{task.NodeName}",
+                    TenantId = task.TenantId,
                     Content = $"任务「{task.NodeName}」已由 {_currentUser.RealName}处理。",
                     InstanceId = task.InstanceId,
                     TaskId = task.Id,

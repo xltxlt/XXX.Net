@@ -21,6 +21,7 @@ public class DingTalkService : IDynamicApiController, IScoped
     private readonly DingTalkOptions _dingTalkOptions;
     private readonly IMSRepository _mSRepository;
     private readonly IEventBus _eventBus;
+    private readonly DingTalkTenantService _tenantService;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
     public DingTalkService(
@@ -28,7 +29,8 @@ public class DingTalkService : IDynamicApiController, IScoped
         IOptions<DingTalkOptions> dingTalkOptions,
         IMSRepository mSRepository,
         IHttpContextAccessor httpContextAccessor,
-        IEventBus eventBus
+        IEventBus eventBus,
+        DingTalkTenantService tenantService
     )
     {
         _dingTalkApi = dingTalkApi;
@@ -36,35 +38,33 @@ public class DingTalkService : IDynamicApiController, IScoped
         _mSRepository = mSRepository;
         _httpContextAccessor = httpContextAccessor;
         _eventBus = eventBus;
+        _tenantService = tenantService;
     }
     /// <summary>
     /// 获取企业内部应用的access_token TODO 返回不包一层
     /// </summary>
     /// <returns></returns>
     [DisplayName("获取企业内部应用的access_token")]
-    public async Task<DingTalkCallBackResultOutput> PostCallBack(string signature, string timestamp, string nonce)
+    public async Task<DingTalkCallBackResultOutput> PostCallBack(long tenantId, string signature, string timestamp, string nonce)
     {
         if (_httpContextAccessor.HttpContext == null) return new DingTalkCallBackResultOutput();
         string content = await _httpContextAccessor.HttpContext.Request.ReadBodyContentAsync();
 
         JToken json = JToken.Parse(content);
         string ever = json["encrypt"]?.ToString()??"";
+        var tenantApp = await _mSRepository.Master<DingTalkTenantApp>().AsQueryable()
+            .FirstOrDefaultAsync(x => x.TenantId == tenantId && x.Enabled && !x.Deleted)
+            ?? throw Oops.Oh("未配置当前租户的钉钉企业应用");
         DingTalkEncryptor dingTalkEncryptor = new DingTalkEncryptor(
-            _dingTalkOptions.CallBackToken,
-        _dingTalkOptions.CallBackEncodingAesKey
-        , _dingTalkOptions.ClientId);
+            tenantApp.CallbackToken, tenantApp.CallbackEncodingAesKey, tenantApp.CorpId);
 
         //定义字符串接收解密后的值
         string returnData = dingTalkEncryptor.getDecryptMsg(signature, timestamp, nonce, ever);
         JToken jToken = JToken.Parse(returnData);
         string EventType = jToken["EventType"]?.ToString()??"";
-        //这里解密以后取出的这个EventType这个参数对应的就是你所要匹配的事件了具体的事件参数类型可查看钉钉的接口文档
-        //https://open.dingtalk.com/document/org/event-list-1
-
-        await _eventBus.PublishAsync(EventType,new BaseEvent<object>() { 
-            EventName=EventType,
-            Data = returnData,
-        } );
+        // 仅审批实例/审批任务事件进入审批事件总线，避免组织变更等回调误触发流程处理。
+        if (EventType is "bpms_instance_change" or "bpms_task_change")
+            await _eventBus.PublishAsync(EventType, new BaseEvent<object> { EventName = EventType, Data = returnData });
         var msg = dingTalkEncryptor.getEncryptedMap("success");
         return new DingTalkCallBackResultOutput()
         {
@@ -74,6 +74,15 @@ public class DingTalkService : IDynamicApiController, IScoped
             nonce = msg["nonce"],
         };
     }
+
+    /// <summary>同步指定租户的钉钉人员、部门、角色和岗位信息。</summary>
+    [HttpPost]
+    public Task SyncOrganization(long tenantId) => _tenantService.SyncOrganization(tenantId);
+
+    /// <summary>发起指定租户的钉钉审批。</summary>
+    [HttpPost]
+    public Task<DingTalkWorkflowProcessInstancesOutput> StartApproval(long tenantId, DingTalkWorkflowProcessInstancesInput input)
+        => _tenantService.StartApproval(tenantId, input);
 
     /// <summary>
     /// 获取企业内部应用的access_token

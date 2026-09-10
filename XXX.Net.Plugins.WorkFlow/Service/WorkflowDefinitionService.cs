@@ -64,6 +64,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             var entity = new WorkflowDefinition
             {
                 PmFlowTempId = workflowDefinitionDto.PmFlowTempId,
+                TenantId = mPmFlowTemp.TenantId,
                 WorkflowId = dto.WorkflowId,
                 Name = dto.Name ?? mPmFlowTemp.Name,
                 Nodes = dto.Nodes ?? new List<VueFlowModel.VfWorkflowNode>(),

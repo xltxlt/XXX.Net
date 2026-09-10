@@ -107,6 +107,7 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             var task = new WorkflowTask
             {
                 InstanceId = instanceId,
+                TenantId = definition?.TenantId ?? 0,
                 WorkflowId = flowData.WorkflowId,
                 WorkflowDefinitionId = definition?.Id ?? string.Empty,
                 NodeId = nodeId,
@@ -125,6 +126,7 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             await SendMessageAsync(new WorkflowMessage
             {
                 Title = $"待办任务：{nodeName}",
+                TenantId = task.TenantId,
                 Content = $"您有一个待办任务「{nodeName}」，请在 {task.DueTime:yyyy-MM-dd HH:mm} 前处理。",
                 InstanceId = instanceId,
                 TaskId = task.Id,

@@ -18,6 +18,7 @@ namespace XXX.Net.Plugins.WorkFlow.Notification
     /// </summary>
     public sealed class WorkflowMessage
     {
+        public long TenantId { get; init; }
         public string Title { get; init; } = string.Empty;
         public string Content { get; init; } = string.Empty;
         public string InstanceId { get; init; } = string.Empty;

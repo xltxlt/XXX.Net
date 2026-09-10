@@ -6,14 +6,18 @@
 
 using XXX.Net.Core.BaseEntitys.Entity;
 using XXX.Net.Core.Entity.Sys;
+using Furion.DatabaseAccessor;
+using XXX.Net.Core.DbContextLocator;
 
 namespace XXX.NET.Plugin.DingTalk;
 
 /// <summary>
 /// 钉钉用户表
 /// </summary>
-public class DingTalkUser : BaseEntity
+public class DingTalkUser : BaseEntity, IEntity<MasterDbContextLocator, SlaveDbContextLocator>
 {
+    /// <summary>所属租户。钉钉 userId 仅在企业内唯一。</summary>
+    public long TenantId { get; set; }
     /// <summary>
     /// 系统用户Id
     /// </summary>
@@ -83,4 +87,7 @@ public class DingTalkUser : BaseEntity
     /// </summary>
     [MaxLength(16)]
     public string? Position { get; set; }
+
+    /// <summary>同步匹配到的系统岗位 Id。</summary>
+    public long? SysPositionId { get; set; }
 }

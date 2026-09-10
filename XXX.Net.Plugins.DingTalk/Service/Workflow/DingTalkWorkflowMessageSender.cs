@@ -5,15 +5,22 @@ namespace XXX.NET.Plugin.DingTalk.Service.Workflow;
 
 /// <summary>
 /// 工作流钉钉通知适配器。
-/// 当前保留发送入口，实际钉钉消息投递将在后续统一实现。
+/// 将工作流的渠道无关消息转换为钉钉企业工作通知。
 /// </summary>
 public class DingTalkWorkflowMessageSender : IWorkflowMessageSender, IScoped
 {
+    private readonly DingTalkTenantService _dingTalkTenantService;
+
+    public DingTalkWorkflowMessageSender(DingTalkTenantService dingTalkTenantService)
+    {
+        _dingTalkTenantService = dingTalkTenantService;
+    }
     public string Channel => "dingtalk";
 
     public Task SendAsync(WorkflowMessage message)
     {
-        // TODO: 接入钉钉工作通知/互动卡片；保留消息契约以支持其它通知渠道并行实现。
-        return Task.CompletedTask;
+        if (message.TenantId <= 0 || message.RecipientUserIds.Count == 0) return Task.CompletedTask;
+        return _dingTalkTenantService.SendTextMessage(message.TenantId, message.RecipientUserIds,
+            $"{message.Title}\n{message.Content}");
     }
 }

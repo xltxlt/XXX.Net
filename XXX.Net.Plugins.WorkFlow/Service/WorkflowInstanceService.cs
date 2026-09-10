@@ -62,6 +62,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
             await _instanceRepo.InsertAsync(new WorkflowInstance
             {
+                TenantId = def.TenantId,
                 InstanceId = instanceId,
                 WorkflowId = workflowId,
                 TaskName = taskName,

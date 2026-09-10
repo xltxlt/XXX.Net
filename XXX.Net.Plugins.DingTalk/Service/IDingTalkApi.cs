@@ -115,6 +115,12 @@ public interface IDingTalkApi : IHttpDeclarative
             DingTalkCreateAndDeliverInput input
     );
 
+    /// <summary>发送企业工作通知。</summary>
+    [Post("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2")]
+    Task<DingTalkWorkMessageOutput> SendWorkMessage(
+        [QueryParam] string access_token,
+        [Body(ContentType = "application/json", UseStringContent = true)] DingTalkWorkMessageInput input);
+
     /// <summary>
     /// 获取部门列表列表
     /// </summary>
