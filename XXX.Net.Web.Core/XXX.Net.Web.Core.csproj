@@ -19,6 +19,7 @@
 		<ProjectReference Include="..\XXX.Net.Application\XXX.Net.Application.csproj" />
 		<ProjectReference Include="..\XXX.Net.Database.Migrations\XXX.Net.Database.Migrations.csproj" />
 		<ProjectReference Include="..\XXX.Net.Plugins.Inventory\XXX.Net.Plugins.Inventory.csproj" />
+		<ProjectReference Include="..\XXX.Net.Plugins.DingTalk\XXX.Net.Plugins.DingTalk.csproj" />
 		<ProjectReference Include="..\XXX.Net.Plugins.WorkFlow\XXX.Net.Plugins.WorkFlow.csproj" />
 	</ItemGroup>
 

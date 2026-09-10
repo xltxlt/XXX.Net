@@ -10,6 +10,10 @@ using WorkflowCore.Models;
 using XXX.Net.Plugins.WorkFlow.Repository;
 using XXX.Net.Plugins.WorkFlow.Entity;
 using XXX.Net.Plugins.WorkFlow.Models;
+using XXX.Net.Plugins.WorkFlow.Notification;
+using XXX.Net.Core.Entity.Sys;
+using Furion.DatabaseAccessor;
+using Microsoft.EntityFrameworkCore;
 using WorkflowDefinitionEntity = XXX.Net.Plugins.WorkFlow.Entity.WorkflowDefinition;
 using WorkflowInstanceEntity = XXX.Net.Plugins.WorkFlow.Entity.WorkflowInstance;
 using WorkflowNodeModel = XXX.Net.Plugins.WorkFlow.VueFlowModel.VfWorkflowNode;
@@ -29,17 +33,23 @@ namespace XXX.Net.Plugins.WorkFlow.Step
         private readonly IWorkFlowRepository<WorkflowDefinitionEntity> _definitionRepo;
         private readonly IWorkFlowRepository<WorkflowInstanceEntity> _instanceRepo;
         private readonly IWorkFlowRepository<WorkflowHistory> _historyRepo;
+        private readonly IMSRepository _msRepository;
+        private readonly IEnumerable<IWorkflowMessageSender> _messageSenders;
 
         public TaskStep(
             IWorkFlowRepository<WorkflowTask> taskRepo,
             IWorkFlowRepository<WorkflowDefinitionEntity> definitionRepo,
             IWorkFlowRepository<WorkflowInstanceEntity> instanceRepo,
-            IWorkFlowRepository<WorkflowHistory> historyRepo)
+            IWorkFlowRepository<WorkflowHistory> historyRepo,
+            IMSRepository msRepository,
+            IEnumerable<IWorkflowMessageSender> messageSenders)
         {
             _taskRepo = taskRepo;
             _definitionRepo = definitionRepo;
             _instanceRepo = instanceRepo;
             _historyRepo = historyRepo;
+            _msRepository = msRepository;
+            _messageSenders = messageSenders;
         }
 
         public override ExecutionResult Run(IStepExecutionContext context)
@@ -77,7 +87,8 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             // 第一次执行：解析处理人并创建待办
             var definition = await FindDefinitionAsync(flowData.WorkflowId, context.Workflow.Version);
             var node = definition?.Nodes.FirstOrDefault(n => n.Id == nodeId);
-            var assigneeIds = ParseAssigneeIds(node);
+            var taskConfig = await ResolveTaskConfigAsync(node);
+            var assigneeIds = taskConfig.ResponsibleUserIds;
             var nodeName = node?.Name ?? nodeId;
 
             if (assigneeIds.Count == 0)
@@ -101,9 +112,24 @@ namespace XXX.Net.Plugins.WorkFlow.Step
                 NodeId = nodeId,
                 NodeName = nodeName,
                 AssigneeId = assigneeIds[0],
+                ResponsibleUserIds = taskConfig.ResponsibleUserIds,
+                ResponsibleDepartmentIds = taskConfig.ResponsibleDepartmentIds,
+                CcUserIds = taskConfig.CcUserIds,
+                EstimatedDurationDays = taskConfig.EstimatedDurationDays,
+                ReminderBeforeDays = taskConfig.ReminderBeforeDays,
+                DueTime = DateTime.Now.AddDays(taskConfig.EstimatedDurationDays),
+                ReminderTime = DateTime.Now.AddDays(taskConfig.EstimatedDurationDays - taskConfig.ReminderBeforeDays),
                 Status = "pending",
             };
             await _taskRepo.InsertAsync(task);
+            await SendMessageAsync(new WorkflowMessage
+            {
+                Title = $"待办任务：{nodeName}",
+                Content = $"您有一个待办任务「{nodeName}」，请在 {task.DueTime:yyyy-MM-dd HH:mm} 前处理。",
+                InstanceId = instanceId,
+                TaskId = task.Id,
+                RecipientUserIds = task.ResponsibleUserIds.Concat(task.CcUserIds).Distinct().ToList(),
+            });
 
             var taskId = task.Id;
             flowData.Variables["TaskId_" + nodeId] = taskId;
@@ -136,21 +162,73 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             await _instanceRepo.UpdateAsync(instance.Id, instance);
         }
 
-        private static List<long> ParseAssigneeIds(WorkflowNodeModel? node)
+        private async Task<TaskNodeConfig> ResolveTaskConfigAsync(WorkflowNodeModel? node)
         {
-            if (node == null || string.IsNullOrEmpty(node.Config)) return new List<long>();
+            var config = ParseTaskConfig(node);
+            if (config.ResponsibleDepartmentIds.Count > 0)
+            {
+                var departmentUserIds = await _msRepository.Master<SysUserDepRole>()
+                    .AsQueryable()
+                    .Where(x => config.ResponsibleDepartmentIds.Contains(x.DepartmentId) && !x.Deleted)
+                    .Select(x => x.UserId)
+                    .Distinct()
+                    .ToListAsync();
+                config.ResponsibleUserIds = config.ResponsibleUserIds.Concat(departmentUserIds).Distinct().ToList();
+            }
+            return config;
+        }
+
+        private static TaskNodeConfig ParseTaskConfig(WorkflowNodeModel? node)
+        {
+            var config = new TaskNodeConfig();
+            if (node == null || string.IsNullOrWhiteSpace(node.Config)) return config;
             try
             {
                 using var doc = JsonDocument.Parse(node.Config);
-                if (doc.RootElement.ValueKind != JsonValueKind.Object) return new List<long>();
-                if (!doc.RootElement.TryGetProperty("assigneeIds", out var val)
-                    || val.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined) return new List<long>();
-                return val.Deserialize<List<long>>() ?? new List<long>();
+                var root = doc.RootElement;
+                config.ResponsibleUserIds = ReadLongList(root, "responsibleUserIds", "assigneeIds");
+                config.ResponsibleDepartmentIds = ReadLongList(root, "responsibleDepartmentIds");
+                config.CcUserIds = ReadLongList(root, "ccUserIds");
+                config.EstimatedDurationDays = ReadInt(root, "estimatedDurationDays");
+                config.ReminderBeforeDays = ReadInt(root, "reminderBeforeDays");
             }
-            catch
-            {
-                return new List<long>();
-            }
+            catch (JsonException) { }
+            return config;
         }
+
+        private static List<long> ReadLongList(JsonElement root, params string[] names)
+        {
+            foreach (var name in names)
+            {
+                if (!root.TryGetProperty(name, out var value) || value.ValueKind != JsonValueKind.Array) continue;
+                return value.EnumerateArray()
+                    .Select(x => x.ValueKind == JsonValueKind.Number && x.TryGetInt64(out var id) ? id : long.TryParse(x.GetString(), out id) ? id : 0)
+                    .Where(id => id > 0)
+                    .Distinct()
+                    .ToList();
+            }
+            return new List<long>();
+        }
+
+        private static int ReadInt(JsonElement root, string name)
+        {
+            return root.TryGetProperty(name, out var value) && value.TryGetInt32(out var result) ? result : 0;
+        }
+
+        private async Task SendMessageAsync(WorkflowMessage message)
+        {
+            foreach (var sender in _messageSenders)
+                await sender.SendAsync(message);
+        }
+
+        private sealed class TaskNodeConfig
+        {
+            public List<long> ResponsibleUserIds { get; set; } = new List<long>();
+            public List<long> ResponsibleDepartmentIds { get; set; } = new List<long>();
+            public List<long> CcUserIds { get; set; } = new List<long>();
+            public int EstimatedDurationDays { get; set; }
+            public int ReminderBeforeDays { get; set; }
+        }
+
     }
 }
