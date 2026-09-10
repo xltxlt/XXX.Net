@@ -16,12 +16,12 @@
 import { onMounted, ref } from 'vue'
 import YzCustomForm from '@/components/common/YzCustomForm/index.vue'
 import type { ReleaseData, matterExpose } from '@/components/common/YzCustomForm/index'
-import { workflowTaskService, workflowFormService } from '@/api/workflow'
+import { workflowTaskService, workflowNodeFormService } from '@/api/workflow'
 import { ElMessage } from 'element-plus'
 
-const { taskId, workflowId, nodeId } = defineProps<{
+const { taskId, workflowDefinitionId, nodeId } = defineProps<{
   taskId: string
-  workflowId: string
+  workflowDefinitionId: string
   nodeId: string
 }>()
 
@@ -53,7 +53,7 @@ const submit = async (action: 'save' | 'complete' | 'skip') => {
 
 onMounted(async () => {
   try {
-    const res = await workflowFormService.apiWorkflowFormWorkflowidNodeidGet(workflowId, nodeId)
+    const res = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(workflowDefinitionId, nodeId)
     const data = res.data?.data
     if (data) {
       formData.value.form = data.formJson ? JSON.parse(data.formJson) : []

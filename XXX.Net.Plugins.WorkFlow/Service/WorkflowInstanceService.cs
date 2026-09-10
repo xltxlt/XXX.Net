@@ -41,7 +41,8 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpPost]
         public async Task<string> Start(string workflowId, Dictionary<string, object>? data)
         {
-            var def = (await _defRepo.GetListAsync(d => d.WorkflowId == workflowId)).FirstOrDefault()
+            var def = (await _defRepo.GetListAsync(d => d.WorkflowId == workflowId && d.Status == "published"))
+                .OrderByDescending(d => d.Version).FirstOrDefault()
                 ?? throw new InvalidOperationException("流程定义不存在");
 
             var wcDef = WorkflowDefinitionConverter.Convert(def);
@@ -68,7 +69,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpGet]
         public async Task<List<WorkflowInstance>> List()
         {
-            return await _instanceRepo.GetListAsync(_ => true);
+            return (await _instanceRepo.GetListAsync(_ => true)).OrderByDescending(x => x.CreatedTime).ToList();
         }
 
         [HttpGet]

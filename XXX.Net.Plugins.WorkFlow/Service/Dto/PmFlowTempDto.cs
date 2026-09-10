@@ -10,6 +10,8 @@ namespace XXX.Net.Plugins.WorkFlow.Service.Dto
 {
     public class PmFlowTempDto: BaseTenantUpdate
     {
+        /// <summary>流程模板名称。</summary>
+        public string Name { get; set; } = string.Empty;
         /// <summary>
         /// 编码
         /// </summary>

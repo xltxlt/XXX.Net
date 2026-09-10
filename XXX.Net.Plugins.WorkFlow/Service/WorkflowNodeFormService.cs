@@ -29,6 +29,8 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpPost]
         public async Task<WorkflowNodeForm> Save(WorkflowFormDto dto)
         {
+            if (string.IsNullOrWhiteSpace(dto.WorkflowId) || string.IsNullOrWhiteSpace(dto.NodeId))
+                throw new ArgumentException("流程和节点标识不能为空");
             var existing = await _repo.GetListAsync(f => f.WorkflowId == dto.WorkflowId && f.NodeId == dto.NodeId);
             var entity = existing.FirstOrDefault() ?? new WorkflowNodeForm();
 
@@ -46,7 +48,8 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpGet]
         public async Task<WorkflowNodeForm?> Get(string workflowDeginitionId, string nodeId)
         {
-            return (await _repo.GetListAsync(f => f.WorkflowDeginitionId == workflowDeginitionId && f.NodeId == nodeId)).LastOrDefault();
+            return (await _repo.GetListAsync(f => f.WorkflowDeginitionId == workflowDeginitionId && f.NodeId == nodeId))
+                .OrderByDescending(f => f.CreatedTime).FirstOrDefault();
         }
     }
 }

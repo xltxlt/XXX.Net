@@ -13,7 +13,7 @@
 
     <el-dialog v-model="formVisible" :title="`处理：${current?.nodeName ?? ''}`" width="80%" top="5vh"
       :close-on-click-modal="false">
-      <WorkflowTodoForm v-if="formVisible && current" :task-id="current.id" :workflow-id="current.workflowId"
+      <WorkflowTodoForm v-if="formVisible && current" :task-id="current.id" :workflow-definition-id="current.workflowDefinitionId"
         :node-id="current.nodeId" />
     </el-dialog>
   </div>

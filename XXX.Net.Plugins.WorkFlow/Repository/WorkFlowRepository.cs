@@ -12,6 +12,7 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
     public interface IWorkFlowRepository<T> where T : WorkFlowMongoEntity, new()
     {
         Task<List<T>> GetListAsync(Expression<Func<T, bool>> filter);
+        Task<T?> GetOneAsync(Expression<Func<T, bool>> filter);
         Task InsertAsync(T entity);
         Task InsertManyAsync(List<T> entitys);
         Task<bool> UpdateAsync(string id, T entity);
@@ -35,6 +36,11 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
             return await _collection.Find(filter).ToListAsync();
         }
 
+        public async Task<T?> GetOneAsync(Expression<Func<T, bool>> filter)
+        {
+            return await _collection.Find(filter).FirstOrDefaultAsync();
+        }
+
         public async Task InsertAsync(T entity)
         {
             await _collection.InsertOneAsync(entity);
@@ -48,7 +54,7 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
         public async Task<bool> UpdateAsync(string id, T entity)
         {
             var result = await _collection.ReplaceOneAsync(Builders<T>.Filter.Eq("_id", id), entity);
-            return result.ModifiedCount > 0;
+            return result.IsAcknowledged && result.MatchedCount > 0;
         }
 
         public async Task<bool> DeleteAsync(string id)

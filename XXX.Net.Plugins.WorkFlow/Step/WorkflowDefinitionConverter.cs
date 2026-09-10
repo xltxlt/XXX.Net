@@ -92,6 +92,10 @@ namespace XXX.Net.Plugins.WorkFlow.Step
                 "delay" => typeof(DelayStep),
                 "notification" => typeof(NotificationStep),
                 "service" => typeof(ServiceStep),
+                // These are canvas-only grouping/branching nodes.  Keeping them as
+                // no-op steps makes a definition produced by the designer runnable.
+                "parallel" => typeof(StartStep),
+                "parent" => typeof(StartStep),
                 "end" => typeof(StartStep),
                 _ => throw new InvalidOperationException($"不支持的节点类型：{type}"),
             };

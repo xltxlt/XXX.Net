@@ -1,9 +1,14 @@
 <template>
   <div class="flow-design-page">
-    <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm" />
+    <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm">
+      <template #toolbar-left>
+        <span class="flow-title">流程设计</span>
+        <el-button size="small" type="warning" :disabled="!workflowId" @click="publish">发布当前版本</el-button>
+      </template>
+    </FlowDesigner>
 
     <el-dialog v-model="formDesignVisible" title="设计表单" width="100%" draggable align-center style="height: 100%;top:0" :close-on-click-modal="false">
-      <PageFormDesigner @release="saveForm" v-if="formDesignVisible" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType"
+      <WorkflowFormDesign @release="saveForm" v-if="formDesignVisible" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType"
         :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
     </el-dialog>
   </div>
@@ -13,8 +18,7 @@
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import FlowDesigner from '@/components/FlowDesigner/index.vue'
-import WorkflowFormDesign, { type FormReleaseData } from '@/views/Workflow/WorkflowFormDesign.vue'
-import PageFormDesigner from '@/views/PageForm/PageFormDesigner.vue'
+import WorkflowFormDesign from '@/views/Workflow/WorkflowFormDesign.vue'
 import { workflowDefinitionService } from '@/api/workflow'
 import type { WorkflowNodeForm } from '@/api-services/generated'
 const emit = defineEmits([
@@ -44,10 +48,14 @@ onMounted(async () => {
     }
   }
 })
-const nodeForm = ref<Array<WorkflowNodeForm>>([])
-const saveForm = async (formData:WorkflowNodeForm,nodeId:string) => { 
-  formDesignVisible.value=false;
-  nodeForm.value.push(formData);
+const nodeForms = ref<Record<string, WorkflowNodeForm>>({})
+const saveForm = (formData: WorkflowNodeForm) => {
+  if (!designNodeId.value) return
+  nodeForms.value[designNodeId.value] = {
+    ...formData,
+    nodeId: designNodeId.value,
+  }
+  formDesignVisible.value = false
 }
 // 保存流程定义
 const onSave = async (def: any) => {
@@ -66,19 +74,34 @@ const onSave = async (def: any) => {
   //   target: e.Target ?? e.target,
   //   condition: e.Condition ?? e.condition ?? null,
   // }))
+  const nodes = (def.Nodes ?? def.nodes ?? []).map((node: any) => ({
+    id: node.Id ?? node.id,
+    type: node.Type ?? node.type,
+    name: node.Name ?? node.name,
+    config: typeof (node.Config ?? node.config) === 'string'
+      ? (node.Config ?? node.config)
+      : JSON.stringify(node.Config ?? node.config ?? {}),
+    nodeJson: node.NodeJson ?? node.nodeJson ?? '',
+  }))
+  const edges = (def.Edges ?? def.edges ?? []).map((edge: any) => ({
+    source: edge.Source ?? edge.source,
+    target: edge.Target ?? edge.target,
+    condition: edge.Condition ?? edge.condition ?? null,
+    edgeJson: edge.EdgeJson ?? edge.edgeJson ?? '',
+  }))
   const payload = {
-          pmFlowTempId:pars?.id??'',
+    pmFlowTempId: pars?.id ?? '',
     workflowId: workflowId.value,
     name: def.Name ?? def.name ?? '',
     version: def.Version ?? def.version ?? 1,
-    nodes: (def.Nodes ?? def.nodes ?? []),
-    edges: (def.Edges ?? def.edges ?? []),
+    nodes,
+    edges,
   }
   try {
     const res = await workflowDefinitionService.apiWorkflowDefinitionSavePost({
       pmFlowTempId:pars?.id??'',
       workflowDefinition: payload,
-      workflowNodeForm: nodeForm.value
+    workflowNodeForm: Object.values(nodeForms.value)
     })
     const data = res.data?.data
     // 后端生成的 workflowId 存回，后续复用
@@ -96,12 +119,18 @@ const onSave = async (def: any) => {
   }
 }
 
+const publish = async () => {
+  if (!workflowId.value) return
+  try {
+    await workflowDefinitionService.apiWorkflowDefinitionPublishWorkflowidPost(workflowId.value)
+    ElMessage.success('流程已发布，可用于发起实例')
+  } catch (e: any) {
+    ElMessage.error(e?.message ?? '流程发布失败')
+  }
+}
+
 // 打开表单设计器
 const onDesignForm = (node: any) => {
-  // if (!workflowId.value) {
-  //   ElMessage.warning('请先保存流程，再设计表单')
-  //   return
-  // }
   designNodeId.value = node.id ?? node.Id
   designNodeName.value = node.data?.label ?? node.name ?? node.Name ?? node.id
   designNodeType.value = node.type ?? node.Type

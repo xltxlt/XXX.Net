@@ -14,6 +14,9 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
 
         public string WorkflowId { get; set; } = string.Empty;
 
+        /// <summary>Definition snapshot used to load the exact version of the node form.</summary>
+        public string WorkflowDefinitionId { get; set; } = string.Empty;
+
         public string NodeId { get; set; } = string.Empty;
 
         public string NodeName { get; set; } = string.Empty;

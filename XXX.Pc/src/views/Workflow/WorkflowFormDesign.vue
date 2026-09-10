@@ -654,9 +654,9 @@ onMounted(async () => {
   const res = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(workflowDeginitionId ?? '', nodeId ?? '');
   if (res.data.statusCode==200) {
     var data=res.data.data||{};
-    buttonList.value =JSON.parse(data.buttonListJson??"") ?? [];
-    matterData.value.attrData = JSON.parse(data.attrDataJson??"") ?? {};
-    matterData.value.form = JSON.parse(data.formJson??"") ?? [];
+    buttonList.value = data.buttonListJson ? JSON.parse(data.buttonListJson) : [];
+    matterData.value.attrData = data.attrDataJson ? JSON.parse(data.attrDataJson) : {};
+    matterData.value.form = data.formJson ? JSON.parse(data.formJson) : [];
   }
 })
 </script>
