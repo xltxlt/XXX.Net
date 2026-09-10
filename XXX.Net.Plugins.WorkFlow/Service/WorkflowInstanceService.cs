@@ -48,10 +48,15 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             var wcDef = WorkflowDefinitionConverter.Convert(def);
             _host.Registry.RegisterWorkflow(wcDef);
 
+            var variables = data ?? new Dictionary<string, object>();
+            var taskName = variables.TryGetValue("taskName", out var value) ? value?.ToString() : null;
+            if (string.IsNullOrWhiteSpace(taskName))
+                throw new ArgumentException("任务名称不能为空");
+
             var flowData = new FlowData
             {
                 WorkflowId = workflowId,
-                Variables = data ?? new Dictionary<string, object>(),
+                Variables = variables,
             };
             var instanceId = await _host.StartWorkflow(workflowId, def.Version, flowData);
 
@@ -59,6 +64,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             {
                 InstanceId = instanceId,
                 WorkflowId = workflowId,
+                TaskName = taskName,
                 Version = def.Version,
                 Status = "running",
                 DataJson = JsonSerializer.Serialize(data ?? new Dictionary<string, object>()),

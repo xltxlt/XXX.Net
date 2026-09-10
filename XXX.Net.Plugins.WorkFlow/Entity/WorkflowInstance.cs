@@ -17,6 +17,11 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
 
         public string WorkflowId { get; set; } = string.Empty;
 
+        /// <summary>
+        /// 发起人填写的任务名称。
+        /// </summary>
+        public string TaskName { get; set; } = string.Empty;
+
         public int Version { get; set; } = 1;
 
         /// <summary>
