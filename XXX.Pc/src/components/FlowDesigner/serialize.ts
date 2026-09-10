@@ -119,6 +119,19 @@ export function validate(nodes: Node[], edges: Edge[]): { valid: boolean; errors
   const endNodes = nodes.filter((n) => n.type === 'end')
   if (endNodes.length === 0) errors.push('流程必须包含至少一个结束节点')
 
+  for (const node of nodes) {
+    if (node.type !== 'task') continue
+    const data = node.data as any
+    const hasResponsibleUser = Array.isArray(data?.responsibleUserIds) && data.responsibleUserIds.length > 0
+    const hasResponsibleDepartment = Array.isArray(data?.responsibleDepartmentIds) && data.responsibleDepartmentIds.length > 0
+    if (!hasResponsibleUser && !hasResponsibleDepartment)
+      errors.push(`任务节点「${data?.label || node.id}」必须指定负责人或负责部门`)
+    if (!Number.isInteger(data?.estimatedDurationDays) || data.estimatedDurationDays < 1)
+      errors.push(`任务节点「${data?.label || node.id}」必须设置预计工期`)
+    if (!Number.isInteger(data?.reminderBeforeDays) || data.reminderBeforeDays < 0 || data.reminderBeforeDays > data.estimatedDurationDays)
+      errors.push(`任务节点「${data?.label || node.id}」的提醒天数必须在工期范围内`)
+  }
+
   // 条件节点需要有出边且出边设置条件表达式
   for (const node of nodes) {
     if (node.type !== 'condition') continue

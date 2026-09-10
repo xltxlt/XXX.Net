@@ -26,6 +26,28 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         /// </summary>
         public long AssigneeId { get; set; }
 
+        /// <summary>节点指定的负责人。</summary>
+        public List<long> ResponsibleUserIds { get; set; } = new List<long>();
+
+        /// <summary>节点指定的负责部门。</summary>
+        public List<long> ResponsibleDepartmentIds { get; set; } = new List<long>();
+
+        /// <summary>节点抄送人。</summary>
+        public List<long> CcUserIds { get; set; } = new List<long>();
+
+        /// <summary>预计工期（天）。</summary>
+        public int EstimatedDurationDays { get; set; }
+
+        /// <summary>到期前提醒天数。</summary>
+        public int ReminderBeforeDays { get; set; }
+
+        public DateTime? DueTime { get; set; }
+
+        public DateTime? ReminderTime { get; set; }
+
+        /// <summary>是否已发送到期提醒。</summary>
+        public bool ReminderSent { get; set; }
+
         /// <summary>
         /// 状态：pending / completed / skipped
         /// </summary>

@@ -6,6 +6,7 @@ using WorkflowCore.Interface;
 using XXX.Net.Core.MongoDb;
 using XXX.Net.Plugins.WorkFlow.Repository;
 using XXX.Net.Plugins.WorkFlow.Step;
+using XXX.Net.Plugins.WorkFlow.Notification;
 
 namespace XXX.Net.Plugins.WorkFlow
 {
@@ -39,6 +40,7 @@ namespace XXX.Net.Plugins.WorkFlow
 
             // 启动 WorkflowHost（后台运行流程）
             services.AddHostedService(sp => sp.GetRequiredService<IWorkflowHost>());
+            services.AddHostedService<WorkflowTaskReminderService>();
         }
     }
 }

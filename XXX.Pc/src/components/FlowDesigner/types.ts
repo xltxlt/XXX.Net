@@ -76,6 +76,11 @@ export interface StartNodeData extends BaseNodeData {
 export interface TaskNodeData extends BaseNodeData {
   type: 'task'
   assignee?: string
+  responsibleUserIds?: Array<number | string>
+  responsibleDepartmentIds?: Array<number | string>
+  ccUserIds?: Array<number | string>
+  estimatedDurationDays?: number
+  reminderBeforeDays?: number
   description?: string
 }
 

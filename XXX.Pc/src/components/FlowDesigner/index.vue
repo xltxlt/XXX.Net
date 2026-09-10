@@ -115,8 +115,20 @@
 
               <!-- 任务节点额外属性 -->
               <template v-if="selectedNode.type === 'task'">
-                <el-form-item label="处理人">
-                  <el-input v-model="selectedNode.data.assignee" placeholder="请输入处理人" @input="emitChange" />
+                <el-form-item label="负责人" required>
+                  <el-select v-model="selectedNode.data.responsibleUserIds" multiple filterable allow-create default-first-option placeholder="输入用户 ID 后回车" @change="emitChange" />
+                </el-form-item>
+                <el-form-item label="负责部门" required>
+                  <el-select v-model="selectedNode.data.responsibleDepartmentIds" multiple filterable allow-create default-first-option placeholder="输入部门 ID 后回车" @change="emitChange" />
+                </el-form-item>
+                <el-form-item label="抄送人">
+                  <el-select v-model="selectedNode.data.ccUserIds" multiple filterable allow-create default-first-option placeholder="输入用户 ID 后回车" @change="emitChange" />
+                </el-form-item>
+                <el-form-item label="预计工期（天）" required>
+                  <el-input-number v-model="selectedNode.data.estimatedDurationDays" :min="1" @change="emitChange" />
+                </el-form-item>
+                <el-form-item label="到期前提醒（天）" required>
+                  <el-input-number v-model="selectedNode.data.reminderBeforeDays" :min="0" @change="emitChange" />
                 </el-form-item>
                 <el-form-item label="任务描述">
                   <el-input v-model="selectedNode.data.description" placeholder="请输入任务描述" type="textarea"

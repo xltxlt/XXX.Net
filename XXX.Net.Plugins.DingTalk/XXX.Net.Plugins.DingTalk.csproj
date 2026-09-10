@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\XXX.Net.Core\XXX.Net.Core.csproj" />
+    <ProjectReference Include="..\XXX.Net.Plugins.WorkFlow\XXX.Net.Plugins.WorkFlow.csproj" />
   </ItemGroup>
 
 </Project>
