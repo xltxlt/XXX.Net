@@ -75,7 +75,8 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             }
 
             // 第一次执行：解析处理人并创建待办
-            var node = await FindNodeAsync(flowData.WorkflowId, nodeId);
+            var definition = await FindDefinitionAsync(flowData.WorkflowId, context.Workflow.Version);
+            var node = definition?.Nodes.FirstOrDefault(n => n.Id == nodeId);
             var assigneeIds = ParseAssigneeIds(node);
             var nodeName = node?.Name ?? nodeId;
 
@@ -96,6 +97,7 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             {
                 InstanceId = instanceId,
                 WorkflowId = flowData.WorkflowId,
+                WorkflowDefinitionId = definition?.Id ?? string.Empty,
                 NodeId = nodeId,
                 NodeName = nodeName,
                 AssigneeId = assigneeIds[0],
@@ -111,10 +113,10 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             return ExecutionResult.WaitForEvent(EventName, taskId, DateTime.UtcNow);
         }
 
-        private async Task<WorkflowNodeModel?> FindNodeAsync(string workflowId, string nodeId)
+        private async Task<WorkflowDefinitionEntity?> FindDefinitionAsync(string workflowId, int version)
         {
             var defs = await _definitionRepo.GetListAsync(d => d.WorkflowId == workflowId);
-            return defs.SelectMany(d => d.Nodes).FirstOrDefault(n => n.Id == nodeId);
+            return defs.FirstOrDefault(d => d.Version == version) ?? defs.OrderByDescending(d => d.Version).FirstOrDefault();
         }
 
         private async Task MergeFormDataAsync(string instanceId, string nodeId, TaskSubmitEvent submit)

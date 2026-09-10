@@ -19,6 +19,7 @@ export interface WorkflowTask {
     'createdTime'?: string;
     'instanceId'?: string | null;
     'workflowId'?: string | null;
+    'workflowDefinitionId'?: string | null;
     'nodeId'?: string | null;
     'nodeName'?: string | null;
     'assigneeId'?: string;
@@ -26,4 +27,3 @@ export interface WorkflowTask {
     'formDataJson'?: string | null;
     'comment'?: string | null;
 }
-

@@ -42,14 +42,18 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [UnitOfWork]
         public async Task<WorkflowDefinition> Save(WorkflowDefinitionDto workflowDefinitionDto)
         {
-            var dto = workflowDefinitionDto.WorkflowDefinition;
-            var WorkflowNodeForms = workflowDefinitionDto.WorkflowNodeForm;
+            if (workflowDefinitionDto.PmFlowTempId <= 0)
+                throw Oops.Oh("请选择要保存的流程模板");
+
+            var dto = workflowDefinitionDto.WorkflowDefinition ?? throw Oops.Oh("流程定义不能为空");
+            var workflowNodeForms = workflowDefinitionDto.WorkflowNodeForm ?? new List<WorkflowNodeForm>();
+            Validate(dto);
             if (string.IsNullOrEmpty(dto.WorkflowId))
             {
                 dto.WorkflowId = Guid.NewGuid().ToString("N");
             }
             var existing = await _repo.GetListAsync(d => d.WorkflowId == dto.WorkflowId);
-            var oldEntity = existing.LastOrDefault();
+            var oldEntity = existing.OrderByDescending(d => d.Version).FirstOrDefault();
             var version = oldEntity != null ? (oldEntity.Version + 1) : 1;
             var mPmFlowTemp= await _msRepository.Master<PmFlowTemp>().AsQueryable().Where(w=>w.Id== workflowDefinitionDto.PmFlowTempId).FirstOrDefaultAsync();
             if (mPmFlowTemp == null) {
@@ -57,16 +61,21 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             }
             
             
-            WorkflowDefinition? entity = new WorkflowDefinition();
-            entity.WorkflowId = dto.WorkflowId;
-            entity.Name = dto.Name;
-            entity.Nodes = dto.Nodes ?? new List<VueFlowModel.VfWorkflowNode>();
-            entity.Edges = dto.Edges ?? new List<VueFlowModel.VfWorkflowEdge>();
-            entity.Status = "draft";
-            entity.Version = version;
+            var entity = new WorkflowDefinition
+            {
+                PmFlowTempId = workflowDefinitionDto.PmFlowTempId,
+                WorkflowId = dto.WorkflowId,
+                Name = dto.Name ?? mPmFlowTemp.Name,
+                Nodes = dto.Nodes ?? new List<VueFlowModel.VfWorkflowNode>(),
+                Edges = dto.Edges ?? new List<VueFlowModel.VfWorkflowEdge>(),
+                Status = "draft",
+                Version = version,
+            };
             await _repo.InsertAsync(entity);
             var mlAddNodeFormTemp = new List<WorkflowNodeForm>();
-            foreach (var nodeFormTemp in WorkflowNodeForms) {
+            foreach (var nodeFormTemp in workflowNodeForms.GroupBy(x => x.NodeId).Select(x => x.Last())) {
+                if (!entity.Nodes.Any(n => n.Id == nodeFormTemp.NodeId))
+                    throw Oops.Oh($"表单节点 {nodeFormTemp.NodeId} 不存在于流程定义中");
                 nodeFormTemp.WorkflowDeginitionId = entity.Id;
                 nodeFormTemp.WorkflowId = entity.WorkflowId;
                 nodeFormTemp.Version = entity.Version;
@@ -88,7 +97,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpPost]
         public async Task<WorkflowDefinition> Publish(string workflowId)
         {
-            var entity = (await _repo.GetListAsync(d => d.WorkflowId == workflowId)).FirstOrDefault()
+            var entity = (await _repo.GetListAsync(d => d.WorkflowId == workflowId)).OrderByDescending(d => d.Version).FirstOrDefault()
                 ?? throw new InvalidOperationException("流程定义不存在");
 
             var wcDef = WorkflowDefinitionConverter.Convert(entity);
@@ -105,7 +114,20 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpGet]
         public async Task<List<WorkflowDefinition>> List()
         {
-            return await _repo.GetListAsync(_ => true);
+            return (await _repo.GetListAsync(_ => true)).OrderByDescending(x => x.CreatedTime).ToList();
+        }
+
+        private static void Validate(VueFlowModel.VfWorkflowDefinition definition)
+        {
+            var nodes = definition.Nodes ?? new List<VueFlowModel.VfWorkflowNode>();
+            var edges = definition.Edges ?? new List<VueFlowModel.VfWorkflowEdge>();
+            if (nodes.Count == 0) throw Oops.Oh("流程至少需要一个节点");
+            if (nodes.Count(n => n.Type == "start") != 1) throw Oops.Oh("流程必须且只能有一个开始节点");
+            if (!nodes.Any(n => n.Type == "end")) throw Oops.Oh("流程必须包含结束节点");
+            if (nodes.Any(n => string.IsNullOrWhiteSpace(n.Id)) || nodes.Select(n => n.Id).Distinct().Count() != nodes.Count)
+                throw Oops.Oh("节点标识不能为空且不能重复");
+            if (edges.Any(e => !nodes.Any(n => n.Id == e.Source) || !nodes.Any(n => n.Id == e.Target)))
+                throw Oops.Oh("连线引用了不存在的节点");
         }
 
         /// <summary>

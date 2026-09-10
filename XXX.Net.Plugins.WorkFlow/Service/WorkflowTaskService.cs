@@ -53,8 +53,14 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpPost]
         public async Task Submit(TaskSubmitDto dto)
         {
-            var task = (await _taskRepo.GetListAsync(t => t.Id == dto.TaskId)).FirstOrDefault()
+            if (dto.Action is not ("save" or "complete" or "skip"))
+                throw new ArgumentException("不支持的任务操作");
+            var task = await _taskRepo.GetOneAsync(t => t.Id == dto.TaskId)
                 ?? throw new InvalidOperationException("待办不存在");
+            if (task.AssigneeId != _currentUser.UserId)
+                throw new UnauthorizedAccessException("只能处理分配给自己的待办");
+            if (task.Status != "pending" && dto.Action != "save")
+                throw new InvalidOperationException("待办已经处理");
 
             task.FormDataJson = JsonSerializer.Serialize(dto.FormData ?? new Dictionary<string, object>());
             task.Comment = dto.Comment ?? string.Empty;
