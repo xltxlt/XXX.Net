@@ -1,0 +1,3037 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XXX.Net.Core</name>
+    </assembly>
+    <members>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere.FiledName">
+            <summary>
+            字段名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere.ConditionalType">
+            <summary>
+            搜索类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere.FiledValue">
+            <summary>
+            字段值
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PageDetailOption`1.Detail">
+            <summary>
+            详情
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PageDetailOption`1.Options">
+            <summary>
+            选项
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedListDto.MenuId">
+            <summary>
+            页面Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedListDto.MenuCode">
+            <summary>
+            页面编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedListDto.TenantId">
+            <summary>
+            指定某租户下
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedListDto.Where">
+            <summary>
+            查询(根据配置字段)
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedListDto.CustomWhere">
+            <summary>
+            自定义高级查询
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedListDto.SearchWhere">
+            <summary>
+            根据搜索类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto.PageIndex">
+            <summary>
+            页面下标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto.PageSize">
+            <summary>
+            页面条数
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedSearchWhere.FieldName">
+            <summary>
+            字段名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedSearchWhere.SearchType">
+            <summary>
+            搜索类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedSearchWhere.FieldValue">
+            <summary>
+            字段值
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedTreeOptions.ParentId">
+            <summary>
+            父节点
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedTreeOptions.Label">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedTreeOptions.Value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.PagedTreeOptions.Children">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Admin.TreeChildrenDto.ParentId">
+            <summary>
+            父级Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.BaseDataSource.DataSourceType">
+            <summary>数据源类型</summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.BaseDataSource.DataSourceValue">
+            <summary>数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.BaseDataSource.HttpType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.BaseDataSource.DataSourcePars">
+            <summary>
+            数据源参数（JSON格式）
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.BaseDataSource.DataSourceHeaders">
+            <summary>
+            headers
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.FatherSonDto`2.Parent">
+            <summary>
+            父表
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.FatherSonDto`2.Children">
+            <summary>
+            子表
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Dto.BaseTenantUpdate.TenantId">
+            <summary>
+            租户
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Dto.BaseTenantUpdateTree`1.TenantId">
+            <summary>
+            租户
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Dto.BaseUpdate.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Dto.BaseUpdateTree`1.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Dto.BaseUpdateTree`1.Path">
+            <summary>
+            /1/2/3/ TODO 待排除自动映射
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseMongoEntity.Id">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseMongoEntity.TenantId">
+            <summary>
+            租户ID
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseMongoEntity.Deleted">
+            <summary>
+            是否删除 0未删除 1已删除
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseMongoEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseMongoEntity.CreatedBy">
+            <summary>
+            创建人
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseMongoEntity.UpdatedTime">
+            <summary>
+            更新时间
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseMongoEntity.UpdatedBy">
+            <summary>
+            更新人
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseParentSonEntity`1.Children">
+            <summary>
+            子级集合
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseSonEntity.ParentId">
+            <summary>
+            父级ID
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.Entity.BaseTenantEntity.BaseConfigure``1(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="builder"></param>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseTenantParentSonEntity`1.TenantId">
+            <summary>
+            租户
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseTenantSonEntity.TenantId">
+            <summary>
+            租户
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseTenantSonEntity.ParentId">
+            <summary>
+            父级ID
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.Entity.BaseTenantSonEntity.BaseConfigure``1(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="builder"></param>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.Entity.BaseTenantTreeEntity.BaseConfigure``1(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="builder"></param>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseTreeEntity.Path">
+            <summary>
+            /1/2/3/
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseTreeEntity.ParentId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseTreeEntity.ClassLevel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.BaseEntitys.Entity.BaseTreeEntity.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.Entity.BaseTreeEntity.BaseConfigure``1(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="builder"></param>
+        </member>
+        <member name="T:XXX.Net.Core.BaseEntitys.Enums.PageFromGroupEnum">
+            <summary>
+            页面分组器
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.BaseEntitys.Enums.PageFromGroupEnum.Group">
+            <summary>
+            分组
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.BaseEntitys.Enums.PageFromGroupEnum.PrivewGroup">
+            <summary>
+            预览分组
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.BaseEntitys.Enums.PageFromGroupEnum.Table">
+            <summary>
+            表格
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.BaseEntitys.Enums.PageFromGroupEnum.List">
+            <summary>
+            列表
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.BaseEntitys.Enums.PageTableFieldTypeEnum">
+            <summary>
+            表头字段类型
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.BaseEntitys.TreeHelper">
+            <summary>
+            树形数据工具 — 扁平列表 ↔ 层级树互转
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.TreeHelper.BuildTree``1(System.Collections.Generic.List{``0},System.Int64)">
+            <summary>
+            将扁平列表转为层级树结构
+            </summary>
+            <param name="flatList">扁平列表（包含所有节点）</param>
+            <param name="rootParentId">根节点的 ParentId 值，默认 0</param>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.TreeHelper.BuildNodes``1(System.Linq.ILookup{System.Int64,``0},System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="lookup"></param>
+            <param name="parentId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.TreeHelper.BuildTree``2(System.Collections.Generic.List{``0},System.Func{``0,System.Collections.Generic.List{``1},``1},System.Int64)">
+            <summary>
+            将扁平列表转为层级树结构
+            </summary>
+            <param name="flatList">扁平列表（包含所有节点）</param>
+            <param name="builderOutput"></param>
+            <param name="rootParentId">根节点的 ParentId 值，默认 0</param>
+        </member>
+        <member name="M:XXX.Net.Core.BaseEntitys.TreeHelper.BuildNodes``2(System.Linq.ILookup{System.Int64,``0},System.Func{``0,System.Collections.Generic.List{``1},``1},System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="lookup"></param>
+            <param name="builderOutput"></param>
+            <param name="parentId"></param>
+            <returns></returns>
+        </member>
+        <member name="P:XXX.Net.Core.PageBasicsInfo.PageCode">
+            <summary>
+            页面编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageBasicsInfo.IsCustom">
+            <summary>
+            是否自定义页面
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageBasicsInfo.IsTreePage">
+            <summary>
+            是否树形页面
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageBasicsInfo.IsPagination">
+            <summary>
+            是否分页
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageBasicsInfo.MaxTableButton">
+            <summary>
+            最大表格按钮数量
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.PageButton">
+            <summary>
+            页面按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageButton.Label">
+            <summary>
+            文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageButton.Color">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageButton.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageButton.BgColor">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageButton.EventName">
+            <summary>
+            事件名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageButton.Describe">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PagedOptions.Label">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PagedOptions.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PagedOptions.Disaebled">
+            <summary>
+            是否禁用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PagedOptions.Desc">
+            <summary>
+            说明
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PagedOptions.Children">
+            <summary>
+            子元素
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageFields.Label">
+            <summary>
+            文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageFields.FieldName">
+            <summary>
+            字段名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageFields.FieldType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageFields.Color">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageFields.BgColor">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageFields.EventName">
+            <summary>
+            事件名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageFields.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRender.Buttons">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRender.Fileds">
+            <summary>
+            表头字段
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRender.TableButtons">
+            <summary>
+            表格按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRender.Searchs">
+            <summary>
+            搜索字段
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRender.Basics">
+            <summary>
+            页面基础信息
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRenderDto.MenuId">
+            <summary>
+            页面Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRenderDto.MenuCode">
+            <summary>
+            页面编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageRenderDto.TenantId">
+            <summary>
+            指定某租户下
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.InputType">
+            <summary>
+            搜索字段类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.Label">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.Value">
+            <summary>
+            默认值
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.FieldName">
+            <summary>
+            字段名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.Placeholder">
+            <summary>
+            提示
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.DataSourceType">
+            <summary>数据源类型：0=无 1=字典 2=数据表 3=枚举 4=API</summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.DataSourceValue">
+            <summary>数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageSearch.DataSourcePars">
+            <summary>
+            数据源参数（JSON格式）
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.PageSearch.Options">
+            <summary>
+            选项
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageTableButton.Label">
+            <summary>
+            文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageTableButton.Color">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageTableButton.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageTableButton.BgColor">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageTableButton.EventName">
+            <summary>
+            事件名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.PageTableButton.Describe">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Cache.CacheOptions.Connection">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Cache.EnumCache.Name">
+            <summary>
+            枚举名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Cache.EnumCache.EnumType">
+            <summary>
+            类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Cache.EnumCache.Items">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan})">
+            <summary>
+            设置
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expire"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.GetAsync``1(System.String)">
+            <summary>
+            获取
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.GetEnumDataAsync(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="mianKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.GetDictDataAsync(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="mianKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.GetSysConfigAsync(System.String,System.String)">
+            <summary>
+            获取系统配置数据
+            </summary>
+            <param name="key"></param>
+            <param name="mianKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.RemoveAsync(System.String)">
+            <summary>
+            删除
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.ExistsAsync(System.String)">
+            <summary>
+            是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Cache.ICacheService.IncrementAsync(System.String,System.Int64)">
+            <summary>
+            增加
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.UserName">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.RealName">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.NickName">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.IsAdmin">
+            <summary>
+            是否为管理员
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.OrgId">
+            <summary>
+            组织机构Id
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.OrgName">
+            <summary>
+            组织机构名称
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.OrgType">
+            <summary>
+            组织机构类型
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.OpenId">
+            <summary>
+            微信OpenId
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Const.ClaimConst.LoginMode">
+            <summary>
+            登录模式PC、APP
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.Consumers.CapCoreMarker">
+            <summary>
+            标记：本程序集包含 CAP Consumer
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.DbContextLocator.SlaveDbContextLocator">
+            <summary>
+            从库数据库上下文定位器
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.Entity.Sys.SysConfig">
+            <summary>
+            系统配置
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysConfig.Key">
+            <summary>配置键</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysConfig.Value">
+            <summary>配置值</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysConfig.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysConfig.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysConfig.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.ShortName">
+            <summary>简称</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.IsTopOrg">
+            <summary>是否为顶级组织</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.DomainName">
+            <summary>域名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.LeaderUserId">
+            <summary>部门主管ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.BusinessAreaCode">
+            <summary>业务大区编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.BusinessAreaId">
+            <summary>业务大区ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.DingTalkDeptId">
+            <summary>钉钉部门ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.CompanyCode">
+            <summary>企业信用代码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.Contacts">
+            <summary>联系人</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.ContactsPhone">
+            <summary>联系人手机</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.ContactsAddress">
+            <summary>地址</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDepartment.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictData.Label">
+            <summary>显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictData.Code">
+            <summary>类型编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictData.Value">
+            <summary>值</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictData.Sort">
+            <summary>排序</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictData.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictData.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictType.Code">
+            <summary>类型编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictType.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDictType.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDocumentRule.DocumentType">
+            <summary>
+            单据类型，用于区分同一租户下的不同单据规则。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDocumentRule.Code">
+            <summary>
+            单据号规则编码，作为业务生成单据号时的查询标识。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDocumentRule.Prefix">
+            <summary>
+            单据号前缀。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDocumentRule.DateFormat">
+            <summary>
+            单据号中的日期格式；为空时不生成日期部分。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDocumentRule.SequenceLength">
+            <summary>
+            流水号补零后的最小长度。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDocumentRule.ResetType">
+            <summary>
+            流水号重置周期。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysDocumentRule.Enabled">
+            <summary>
+            是否启用当前单据号规则。
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Entity.Sys.SysDocumentRule.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{XXX.Net.Core.Entity.Sys.SysDocumentRule},Microsoft.EntityFrameworkCore.DbContext,System.Type)">
+            <summary>
+            配置单据号规则的数据表映射。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Alias">
+            <summary>
+            别名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Identify">
+            <summary>
+            权限标识（如 user:list、user:add）
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.MenuType">
+            <summary>
+            菜单类型：1=目录 2=页面 3=按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Target">
+            <summary>
+            终端：1=PC 2=小程序 3=App 4=全部
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Route">
+            <summary>
+            路由地址
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.EventName">
+            <summary>
+            事件名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.WorkbenchIcon">
+            <summary>
+            工作台
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Description">
+            <summary>
+            说明
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.PageType">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.MaxTableButton">
+            <summary>
+            最大表格按钮数量
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.MenuButtons">
+            <summary>
+            所有按钮（真实导航，EF 用）
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenu.MenuFields">
+            <summary>
+            菜单字段列表
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.MenuId">
+            <summary>所属菜单ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.Label">
+            <summary>字段显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.EventName">
+            <summary>事件名称</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.ButtonType">
+            <summary>字段类型：1=按钮 2=表格按钮</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.Icon">
+            <summary>图标</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.Color">
+            <summary>颜色</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.BgColor">
+            <summary>
+            背景色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.Target">
+            <summary>终端：1=PC 2=App</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.Sort">
+            <summary>排序</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuButton.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.MenuId">
+            <summary>所属菜单ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Label">
+            <summary>字段显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.EventName">
+            <summary>事件名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.FieldName">
+            <summary>对应数据库字段名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.FieldType">
+            <summary>显示类型</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.SearchType">
+            <summary>搜索框类型（文本框/下拉/日期等）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.TotalRow">
+            <summary>
+            合计行
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.TotalRowText">
+            <summary>
+            合计行文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.InitHide">
+            <summary>
+            初始隐藏
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.AlignType">
+            <summary>
+            对齐方式
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.FloatType">
+            <summary>
+            浮动类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.SearchField">
+            <summary>
+            应用搜索
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Template">
+            <summary>
+            自定义模板
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Style">
+            <summary>
+            样式
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Width">
+            <summary>列宽</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Target">
+            <summary>终端：1=PC 2=App</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Sort">
+            <summary>排序</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Placeholder">
+            <summary>
+            提示文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.DataSourceType">
+            <summary>数据源类型：0=无 1=字典 2=数据表 3=枚举 4=API</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.DataSourceValue">
+            <summary>数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.DataSourcePars">
+            <summary>
+            数据源参数（JSON格式）
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.IsCustom">
+            <summary>
+            是否为自定义
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysMenuField.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysPosition.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysPosition.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysPosition.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysPosition.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRole.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRole.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRole.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRole.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRole.Menus">
+            <summary>
+            菜单
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRole.MenuButtons">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRole.MenuFields">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRoleMenu.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRoleMenu.MenuId">
+            <summary>
+            菜单Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRoleMenuButton.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRoleMenuButton.MenuButtonId">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRoleMenuField.RoleId">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysRoleMenuField.MenuFieldId">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysTenant.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysTenant.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysTenant.Remark">
+            <summary>备注</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysUser.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.Entity.Sys.SysUserDepRole">
+            <summary>
+            用户在租户组织机构中的角色关联。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysUserDepRole.UserId">
+            <summary>用户 ID。</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysUserDepRole.DepartmentId">
+            <summary>部门 ID。</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Entity.Sys.SysUserDepRole.RoleId">
+            <summary>角色 ID。</summary>
+        </member>
+        <member name="T:XXX.Net.Core.Enums.ErrorCode">
+            <summary>
+            100000 - 199999  系统模块
+            200000 - 299999  用户模块
+            300000 - 399999  权限模块
+            400000 - 499999  工作流模块
+            600000 - 699999  业务模块
+            
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.EventBus.BaseEvent`1">
+            <summary>
+            通用领域事件消息
+            </summary>
+            <typeparam name="T">事件数据类型</typeparam>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.EventId">
+            <summary>
+            事件唯一标识
+            用于幂等处理
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.EventName">
+            <summary>
+            事件名称
+            例如：UserCreated、InventoryCreated
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.EventVersion">
+            <summary>
+            事件版本
+            用于事件结构升级
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.OccurredOn">
+            <summary>
+            事件发生时间
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.TraceId">
+            <summary>
+            链路追踪ID
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.Source">
+            <summary>
+            事件来源
+            例如：Inventory、User、Order
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.EventBus.BaseEvent`1.Data">
+            <summary>
+            事件数据
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.EventBus.IEventBus.PublishAsync``1(System.String,XXX.Net.Core.EventBus.BaseEvent{``0})">
+            <summary>
+            立即发布
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.EventBus.IEventBus.PublishDelayAsync``1(System.Int32,System.String,XXX.Net.Core.EventBus.BaseEvent{``0})">
+            <summary>
+            延迟发布
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="seconds"></param>
+            <param name="name"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="F:XXX.Net.Core.EventBus.SysUserEvents.UserRegister">
+            <summary>
+            用户注册
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.EventBus.SysUserEvents.UserLogin">
+            <summary>
+            用户登录
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.EventBus.SysUserEvents.UserLogout">
+            <summary>
+            登出
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.BuildListWhere``1(System.Linq.IQueryable{``0},Furion.DatabaseAccessor.IMSRepository,XXX.Net.Core.BaseEntitys.Admin.PagedListDto)">
+            <summary>
+            构建where
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="msRepository"></param>
+            <param name="pagedListDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.BuildListWhere``1(System.Linq.IQueryable{``0},XXX.Net.Core.BaseEntitys.Admin.PagedListDto)">
+            <summary>
+            构建where
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="pagedListDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.BuildListWhere``1(System.Linq.IQueryable{``0},System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere})">
+            <summary>
+            构建where
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="mlPagedCustomeWhere"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.BuildListWhere``1(System.Linq.IQueryable{``0},System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere},System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedSearchWhere})">
+            <summary>
+            构建where
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="mlPagedCustomeWhere"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.ToPagedListAsync``1(System.Linq.IQueryable{``0},Furion.DatabaseAccessor.IMSRepository,XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
+            <summary>
+            查询
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="msRepository"></param>
+            <param name="pagedListDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.ToListAsync``1(System.Linq.IQueryable{``0},Furion.DatabaseAccessor.IMSRepository,XXX.Net.Core.BaseEntitys.Admin.PagedListDto)">
+            <summary>
+            查询
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <param name="queryable"></param>
+            <param name="msRepository"></param>
+            <param name="pagedListDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType">
+            <summary>
+            动态查询条件类型（类似 SqlSugar 的 ConditionalType）
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.Equal">
+            <summary>
+            等于（=）
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.NotEqual">
+            <summary>
+             不等于
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.GreaterThan">
+            <summary>
+            大于
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.LessThan">
+            <summary>
+            小于
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.GreaterThanOrEqual">
+            <summary>
+            大于等于
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.LessThanOrEqual">
+            <summary>
+            小于等于
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.Like">
+            <summary>
+            模糊匹配
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.StartsWith">
+            <summary>
+            左匹配
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.In">
+            <summary>
+            IN 查询
+            Value 必须是 IEnumerable
+            </summary>
+        </member>
+        <member name="F:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalType.NotIn">
+            <summary>
+            NOT IN 查询
+            Value 必须是 IEnumerable
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalModel.FieldName">
+            <summary>
+            字段名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalModel.FieldValue">
+            <summary>
+            字段值
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalModel.ConditionalType">
+            <summary>
+            搜索类型
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.BuildWhere``1(System.Linq.IQueryable{``0},System.Collections.Generic.List{XXX.Net.Core.Extensions.MsRepositoryExtension.ConditionalModel})">
+            <summary>
+            构建查询参数
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.QueryWhereBySysMenuField(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{XXX.Net.Core.Entity.Sys.SysMenuField})">
+            <summary>
+            获取where 
+            </summary>
+            <param name="dic"></param>
+            <param name="mlSysSearch"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.GetSearchTypeWhere(System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedSearchWhere})">
+            <summary>
+            获取where  根据前端页面搜索类型
+            </summary>
+            <param name="wheres"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.GetCustomWhere(System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere})">
+            <summary>
+            获取Customwhere 
+            </summary>
+            <param name="customWheres"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.MsRepositoryExtension.CreateTypedConstant(System.Object,System.Type)">
+            <summary>
+            类型转换
+            </summary>
+            <param name="fieldValue"></param>
+            <param name="targetType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.StringExtension.ToFirstLowerInvariant(System.String)">
+            <summary>
+            首字母小写
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Extensions.StringExtension.ToFirstUpperInvariant(System.String)">
+            <summary>
+            首字母大写
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XXX.Net.Core.MongoDb.IMongoBaseRepository`1">
+            <summary>
+            MongoDB 通用仓储接口
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.GetByIdAsync(System.String)">
+            <summary>
+            根据ID获取实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.GetListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据过滤条件获取实体列表
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.GetListAsync(MongoDB.Driver.FilterDefinition{`0})">
+            <summary>
+            根据过滤定义获取实体列表
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.GetPagedListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="filter">过滤条件</param>
+            <param name="pageIndex">页码，从1开始</param>
+            <param name="pageSize">每页条数</param>
+            <param name="sortBy">排序字段</param>
+            <param name="ascending">是否升序</param>
+            <returns>分页数据和总记录数</returns>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.QuerySingleAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            查询单个实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.QuerySingleLastAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.ExistsAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            判断是否存在
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            统计数量
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.InsertAsync(`0)">
+            <summary>
+            插入单个实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.InsertManyAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            批量插入
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.UpdateAsync(System.String,`0)">
+            <summary>
+            根据ID替换整个实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.UpdateAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},MongoDB.Driver.UpdateDefinition{`0})">
+            <summary>
+            根据过滤条件部分更新
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.DeleteAsync(System.String)">
+            <summary>
+            根据ID删除
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoBaseRepository`1.DeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据过滤条件删除
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.MongoDb.IMongoDbContext">
+            <summary>
+            MongoDB 数据库上下文接口
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.IMongoDbContext.GetCollection``1">
+            <summary>
+            获取指定类型的 MongoDB 集合
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+            <returns>MongoDB 集合</returns>
+        </member>
+        <member name="T:XXX.Net.Core.MongoDb.MongoBaseRepository`1">
+            <summary>
+            MongoDB 通用仓储实现
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.GetByIdAsync(System.String)">
+            <summary>
+            根据ID获取实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.GetListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据过滤条件获取实体列表
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.GetListAsync(MongoDB.Driver.FilterDefinition{`0})">
+            <summary>
+            根据过滤定义获取实体列表
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.GetPagedListAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.QuerySingleAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            查询单个实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.QuerySingleLastAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            查询单个实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.ExistsAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            判断是否存在
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            统计数量
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.InsertAsync(`0)">
+            <summary>
+            插入单个实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.InsertManyAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            批量插入
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.UpdateAsync(System.String,`0)">
+            <summary>
+            根据ID替换整个实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.UpdateAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},MongoDB.Driver.UpdateDefinition{`0})">
+            <summary>
+            根据过滤条件部分更新
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.DeleteAsync(System.String)">
+            <summary>
+            根据ID删除
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoBaseRepository`1.DeleteAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            根据过滤条件删除
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.MongoDb.MongoDbContext">
+            <summary>
+            MongoDB 数据库上下文实现
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.MongoDb.MongoDbContext.GetCollection``1">
+            <summary>
+            获取指定类型的 MongoDB 集合，集合名称默认使用类名驼峰命名
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+            <returns>MongoDB 集合</returns>
+        </member>
+        <member name="T:XXX.Net.Core.MongoDb.MongoOptions">
+            <summary>
+            MongoDB 配置选项
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.MongoDb.MongoOptions.ConnectionString">
+            <summary>
+            MongoDB 连接字符串
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.MongoDb.MongoOptions.DatabaseName">
+            <summary>
+            数据库名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginDto.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginDto.PassWord">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginVo.AccessToken">
+            <summary>
+            令牌
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginVo.RefreshToken">
+            <summary>
+            刷新令牌
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginVo.Homepage">
+            <summary>
+            首页
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginVo.UserInfo">
+            <summary>
+            用户信息
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.Id">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.RealName">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.Mobile">
+            <summary>
+            手机号
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.Avatar">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.LoginUserInfo.IsAdmin">
+            <summary>
+            是否为管理员
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.Services.Auth.Dto.UserLoginEo">
+            <summary>
+            用户登录消息体
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.UserLoginEo.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.UserLoginEo.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.UserLoginEvent.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.UserLoginEvent.Mobile">
+            <summary>
+            手机号
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Dto.UserLoginEvent.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Events.UserLogoutEvent.UserId">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Auth.Events.UserLogoutEvent.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.Services.Auth.SysAuthService">
+            <summary>
+            系统登录授权服务 
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Auth.SysAuthService.Login(XXX.Net.Core.Services.Auth.Dto.LoginDto)">
+            <summary>
+            账号密码登录 
+            </summary>
+            <param name="dto"></param>
+            <remarks>用户名/密码：superadmin/123456</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Auth.SysAuthService.CreateToken(XXX.Net.Core.Entity.Sys.SysUser)">
+            <summary>
+            创建令牌
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XXX.Net.Core.Services.Base.BaseImportExportService`4">
+            <summary>
+            导入导出
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TDto"></typeparam>
+            <typeparam name="TImportDto"></typeparam>
+            <typeparam name="TExportVo"></typeparam>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.Export(XXX.Net.Core.BaseEntitys.Admin.PagedListDto)">
+            <summary>
+            导出数据 
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.AllExport">
+            <summary>
+            导出数据 
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.DownloadTemplate">
+            <summary>
+            下载导入模板 
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.Import(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            导入数据 
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.ImportUpdateByCustomKey(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            导入数据 
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.GetEntityKey(`0)">
+            <summary>
+            获取数据库实体业务Key
+            
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.GetImportKey(`2)">
+            <summary>
+            获取导入数据的业务唯一Key
+            return dto.name+dto.mobilPhone
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.GetExistingListAsync(System.Collections.Generic.List{`2})">
+            <summary>
+            批量查询数据库已有数据
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportExportService`4.UpdateEntity(`0,`2)">
+            <summary>
+            更新已有实体
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportTemplateService.GenerateHeaderOnly``1(System.String)">
+            <summary>仅表头行</summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportTemplateService.GenerateWithSample``1(System.String)">
+            <summary>表头 + 一条示例数据行</summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportTemplateService.GenerateWithEmptyRows``1(System.Int32,System.String)">
+            <summary>表头 + 指定数量空行</summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseImportTemplateService.ResolveHeader(System.Reflection.PropertyInfo)">
+            <summary>表头优先级：ExcelColumnName > DisplayName > 属性名</summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.ToEntity(`1,`0)">
+            <summary>
+            模型到实体的转换
+            </summary>
+            <param name="dto"></param>
+            <param name="oldEntity">原实体类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.ToListEntity(System.Collections.Generic.List{`1},System.Collections.Generic.List{`0})">
+            <summary>
+            模型到实体的批量转换
+            </summary>
+            <param name="mlDto"></param>
+            <param name="oldEntitys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.Detail(System.Int64)">
+            <summary>
+            获取详情 
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.PageOption(XXX.Net.Core.Services.Option.OptionService,System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere})">
+            <summary>
+            获取新增修改页面选项 
+            </summary>
+            <param name="optionService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.DetailOption(XXX.Net.Core.Services.Option.OptionService,System.Nullable{System.Int64})">
+            <summary>
+            获取详情 
+            </summary>
+            <param name="id"></param>
+            <param name="optionService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.Options(System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere})">
+            <summary>
+            获取下拉搜索选项
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.List(XXX.Net.Core.BaseEntitys.Admin.PagedListDto)">
+            <summary>
+            获取集合 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.PageList(XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
+            <summary>
+            获取分页集合 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.AddOrUpdate(`1)">
+            <summary>
+            新增 
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.Add(`1)">
+            <summary>
+            新增 
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.BatchAdd(System.Collections.Generic.List{`1})">
+            <summary>
+            新增 
+            </summary>
+            <param name="mlList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.Update(`1)">
+            <summary>
+            更新 
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.BatchUpdate(System.Collections.Generic.List{`1})">
+            <summary>
+            新增 
+            </summary>
+            <param name="mlList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.Delete(System.Int64)">
+            <summary>
+            删除 
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.BatchDelete(System.Collections.Generic.List{System.Int64})">
+            <summary>
+            删除 
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.LogicDelete(System.Int64)">
+            <summary>
+            逻辑删除 
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseService`2.BatchLogicDelete(System.Collections.Generic.List{System.Int64})">
+            <summary>
+            逻辑删除 
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XXX.Net.Core.Services.Base.Dto.IPagedTreeOutput`1">
+            <summary>
+            页面树形返回限制
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Base.Dto.IPagedTreeOutput`1.Children">
+            <summary>
+            子节点
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.Tree.BaseTreeService`3.ToTreeOutput(`0,System.Collections.Generic.List{`2})">
+            <summary>
+            转换
+            </summary>
+            <param name="entity"></param>
+            <param name="children"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.Tree.BaseTreeService`3.HandlePath(`0,`1)">
+            <summary>
+            处理树形层级
+            </summary>
+            <param name="treeEntity"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.Tree.BaseTreeService`3.TreeOptions(System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere})">
+            <summary>
+            获取树形下拉搜索选项
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.Tree.BaseTreeService`3.Add(`1)">
+            <summary>
+            增加 
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.Tree.BaseTreeService`3.Delete(System.Int64)">
+            <summary>
+            删除 
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.Tree.BaseTreeService`3.LogicDelete(System.Int64)">
+            <summary>
+            逻辑删除 
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.Tree.BaseTreeService`3.DetailOption(XXX.Net.Core.Services.Option.OptionService,System.Nullable{System.Int64})">
+            <summary>
+            获取详情 
+            </summary>
+            <param name="id"></param>
+            <param name="optionService"></param>
+            <returns></returns>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Config.Dto.SysConfigDto.Key">
+            <summary>配置键</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Config.Dto.SysConfigDto.Value">
+            <summary>配置值</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Config.Dto.SysConfigDto.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Config.Dto.SysConfigDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Config.Dto.SysConfigDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.ShortName">
+            <summary>简称</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.IsTopOrg">
+            <summary>顶级组织</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.DomainName">
+            <summary>域名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.CompanyCode">
+            <summary>企业信用代码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.Contacts">
+            <summary>联系人</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.ContactsPhone">
+            <summary>联系人手机</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.ContactsAddress">
+            <summary>地址</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepTreeOutput.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepTreeOutput.Name">
+            <summary>
+            菜单名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepTreeOutput.Children">
+            <summary>
+            子菜单
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepTreeOutput.Description">
+            <summary>
+            说明
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.DepUsers(XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
+            <summary>
+            部门用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.DepUserRoles(XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
+            <summary>
+            部门用户角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.SetDepUserRoles(XXX.Net.Core.Services.Dep.Dto.UserDepRolesDto)">
+            <summary>
+            设置部门用户角色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictDataDto.Label">
+            <summary>显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictDataDto.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictDataDto.Value">
+            <summary>值</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictDataDto.Sort">
+            <summary>排序</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictDataDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictDataDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictTypeDto.Code">
+            <summary>类型编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictTypeDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictTypeDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Document.Dto.DocumentNumberRuleDto.DocumentType">
+            <summary>
+            单据类型，用于区分同一租户下的不同单据规则。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Document.Dto.DocumentNumberRuleDto.Code">
+            <summary>
+            单据号规则编码，作为业务生成单据号时的查询标识。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Document.Dto.DocumentNumberRuleDto.Prefix">
+            <summary>
+            单据号前缀。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Document.Dto.DocumentNumberRuleDto.DateFormat">
+            <summary>
+            单据号中的日期格式；为空时不生成日期部分。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Document.Dto.DocumentNumberRuleDto.SequenceLength">
+            <summary>
+            流水号补零后的最小长度。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Document.Dto.DocumentNumberRuleDto.ResetType">
+            <summary>
+            流水号重置周期。
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Document.Dto.DocumentNumberRuleDto.Enabled">
+            <summary>
+            是否启用当前单据号规则。
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.Services.File.Dto.SysFileOutput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.FileId">
+            <summary>文件ID（数据库主键）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.OriginalName">
+            <summary>原始文件名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.FileName">
+            <summary>服务端存储文件名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.Url">
+            <summary>文件访问URL</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.FileSize">
+            <summary>文件大小（bytes）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.ContentType">
+            <summary>MIME类型</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.Extension">
+            <summary>文件扩展名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.File.Dto.SysFileOutput.UploadTime">
+            <summary>上传时间</summary>
+        </member>
+        <member name="T:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.DtoName">
+            <summary>
+            关联Dto
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.NamespaceName">
+            <summary>
+            命名空间
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.EntityName">
+            <summary>
+            关联实体
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.ServiceName">
+            <summary>
+            关联服务
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.MenuName">
+            <summary>
+            文件名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.AddBtn">
+            <summary>
+            新增功能
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.EditBtn">
+            <summary>
+            修改功能
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.LockBtn">
+            <summary>
+            查看功能
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.DelBtn">
+            <summary>
+            删除功能
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.ImportBtn">
+            <summary>
+            导入功能
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.ExportBtn">
+            <summary>
+            导出功能
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Generate.GenerateService.GenerateDto.MenuGenerate">
+            <summary>
+            菜单生成
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Generate.GenerateService.GeneratePage(XXX.Net.Core.Services.Generate.GenerateService.GenerateDto)">
+            <summary>
+            生成页面 
+            </summary>
+            <param name="generateDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Generate.GenerateService.PageOption(XXX.Net.Core.Services.Option.OptionService)">
+            <summary>
+            获取新增修改页面选项 
+            </summary>
+            <param name="optionService"></param>
+            <returns></returns>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.MenuId">
+            <summary>
+            菜单Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.Label">
+            <summary>
+            按钮显示名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.Color">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.BgColor">
+            <summary>
+            背景色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.EventName">
+            <summary>
+            事件名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.ButtonType">
+            <summary>
+            字段类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.Target" -->
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuButtonDto.Describe">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuCompose.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuCompose.Label">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.MenuId">
+            <summary>所属菜单ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Alias">
+            <summary>
+            别名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Identify">
+            <summary>
+            权限标识（如 user:list、user:add）
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.MenuType">
+            <summary>
+            菜单类型：1=目录 2=页面 3=按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Target">
+            <summary>
+            终端：1=PC 2=小程序 3=App 
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Route">
+            <summary>
+            路由地址
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Description">
+            <summary>
+            说明
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.PageType">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuDto.MaxTableButton">
+            <summary>
+            最大表格按钮数量
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.MenuId">
+            <summary>所属菜单ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Label">
+            <summary>字段显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.EventName">
+            <summary>事件名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.FieldName">
+            <summary>对应数据库字段名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Width">
+            <summary>
+            宽度
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.FieldType">
+            <summary>显示类型</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.SearchType">
+            <summary>搜索框类型（文本框/下拉/日期等）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.FloatType">
+            <summary>
+            浮动类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.TotalRow">
+            <summary>
+            合计行
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.TotalRowText">
+            <summary>
+            合计行文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.InitHide">
+            <summary>
+            初始隐藏
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.AlignType">
+            <summary>
+            对齐方式
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.SearchField">
+            <summary>
+            应用搜索
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Template">
+            <summary>
+            模板
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Style">
+            <summary>
+            样式
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Target">
+            <summary>终端：1=PC 2=App</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Sort">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.Placeholder">
+            <summary>
+            提示文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.DataSourceValue">
+            <summary>数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuFieldDto.DataSourcePars">
+            <summary>
+            数据源参数（JSON格式）
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuHandleButtonDto.MenuId">
+            <summary>所属菜单ID</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuHandleButtonDto.Label">
+            <summary>字段显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuHandleButtonDto.EventName">
+            <summary>事件名称</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuHandleButtonDto.Color">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuHandleButtonDto.BgColor">
+            <summary>
+            背景颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuHandleButtonDto.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Alias">
+            <summary>
+            别名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Identify">
+            <summary>
+            权限标识（如 user:list、user:add）
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.MenuType">
+            <summary>
+            菜单类型：1=目录 2=页面 3=按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Target">
+            <summary>
+            终端：1=PC 2=小程序 3=App 4=全部
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Route">
+            <summary>
+            路由地址
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Description">
+            <summary>
+            说明
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.PageType">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.MaxTableButton">
+            <summary>
+            最大表格按钮数量
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.ParentId">
+            <summary>
+            父菜单
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.MenuButtons">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOnceDto.MenuFields">
+            <summary>
+            字段
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Id">
+            <summary>
+            菜单Id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Name">
+            <summary>
+            菜单名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Alias">
+            <summary>
+            菜单别名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Code">
+            <summary>
+            菜单编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Identify">
+            <summary>
+            权限标识
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Route">
+            <summary>
+            路由
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.PageType">
+            <summary>
+            页面类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuOutputDto.MaxTableButton">
+            <summary>
+            最大表格按钮数量
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuRenderDto.MenuId">
+            <summary>
+            菜单id
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuRenderDto.MenuCode">
+            <summary>
+            菜单编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuSerachFieldDto.Label">
+            <summary>字段显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuSerachFieldDto.EventName">
+            <summary>事件名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuSerachFieldDto.SearchType">
+            <summary>搜索框类型（文本框/下拉/日期等）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuSerachFieldDto.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableButtonDto.Label">
+            <summary>字段显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableButtonDto.EventName">
+            <summary>事件名称</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableButtonDto.Color">
+            <summary>
+            颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableButtonDto.BgColor">
+            <summary>
+            背景颜色
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableButtonDto.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableButtonDto.Describe">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.Label">
+            <summary>字段显示名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.EventName">
+            <summary>事件名</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.FieldType">
+            <summary>显示类型</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.SearchType">
+            <summary>搜索框类型（文本框/下拉/日期等）</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.Width">
+            <summary>列宽</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.TotalRow">
+            <summary>
+            合计行
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.TotalRowText">
+            <summary>
+            合计行文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.InitHide">
+            <summary>
+            初始隐藏
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.AlignType">
+            <summary>
+            对齐方式
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.FloatType">
+            <summary>
+            浮动类型
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.SearchField">
+            <summary>
+            应用搜索
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.Template">
+            <summary>
+            自定义模板
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.Style">
+            <summary>
+            样式
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTableFieldDto.Placeholder">
+            <summary>
+            提示文本
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTreeOutput.Icon">
+            <summary>
+            图标
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTreeOutput.Code">
+            <summary>
+            编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTreeOutput.Name">
+            <summary>
+            菜单名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTreeOutput.Alias">
+            <summary>
+            菜单别名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTreeOutput.Route">
+            <summary>
+            菜单路由
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTreeOutput.Children">
+            <summary>
+            子菜单
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Menu.Dto.SysMenuTreeOutput.Description">
+            <summary>
+            菜单说明
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Menu.SysMenuService.LeftMenu">
+            <summary>
+            获取当前用户左侧菜单
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Option.Attributes.OtherOptionSource.FieldName">
+            <summary>
+            关联字段名
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Option.Attributes.OtherOptionSource.OptionSoureName">
+            <summary>
+            数据源名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Option.Attributes.OtherOptionSource.OptionAttr">
+            <summary>
+            选项来源
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Option.Attributes.OtherOptionSource.Where">
+            <summary>
+            当前选项源使用的固定查询条件
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Option.Attributes.OtherOptionSource.TreeOption">
+            <summary>
+            是否为树形
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.Attribute.OptionEntityAttribute.GetEntityType(System.Reflection.PropertyInfo)">
+            <summary>
+            根据使用此 Attribute 的属性，获取 TEntity
+            </summary>
+            <param name="propertyInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.Attribute.OptionEntityAttribute.GetEntityName(System.Reflection.PropertyInfo)">
+            <summary>
+            获取 TEntity 的名称
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.OptionService.GetOptions``1">
+             <summary>
+            
+             </summary>
+             <typeparam name="TDto"></typeparam>
+             <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.OptionService.GetOptions(System.Collections.Generic.List{XXX.Net.Core.Services.Option.Attributes.OtherOptionSource},System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.Admin.PagedCustomWhere})">
+            <summary>
+            
+            </summary>
+            <param name="otherOptionSources"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.OptionService.GetOptions``1(System.Collections.Generic.List{XXX.Net.Core.Services.Menu.Dto.SysMenuSerachFieldDto})">
+            <summary>
+            根据实体类attr 来获取搜索选项
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.OptionService.GetOptions(System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.BaseDataSource})">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:XXX.Net.Core.Services.Option.Providers.DictOptionProvider">
+            <summary>
+            TODO 待提升效率从缓存中读
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Core.Services.Option.Providers.EnumOptionProvider">
+            <summary>
+            TODO 待提升效率从缓存中读
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Position.Dto.SysPositionDto.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Position.Dto.SysPositionDto.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Position.Dto.SysPositionDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Position.Dto.SysPositionDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleDto.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleDto.General">
+            <summary>
+            全局通用
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleDto.Description">
+            <summary>说明</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleMenuPermissionOutput.Id">
+            <summary>
+            菜单ID
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleMenuPermissionOutput.Name">
+            <summary>
+            菜单名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleMenuPermissionOutput.Checked">
+            <summary>
+            是否拥有菜单权限
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleMenuPermissionOutput.MenuButtons">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RoleMenuPermissionOutput.MenuFields">
+            <summary>
+            字段
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RolePermissionDto.RoleId">
+            <summary>
+            角色ID
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Role.Dto.RolePermissionDto.Menus">
+            <summary>
+            菜单权限
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Tenant.Dto.SysTenantDto.Code">
+            <summary>编码</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Tenant.Dto.SysTenantDto.Enabled">
+            <summary>
+            状态
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Tenant.Dto.SysTenantDto.Remark">
+            <summary>备注</summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.User.Dto.SysUserDto.TenantId">
+            <summary>
+            租户Id
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.User.SysUserService.Add(XXX.Net.Core.Services.User.Dto.SysUserDto)">
+            <summary>
+            添加用户
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BaseFatherSonService`4">
+             <summary>
+             父子表一对多
+            
+             </summary>
+             <typeparam name="TParent"></typeparam>
+             <typeparam name="TSon"></typeparam>
+             <typeparam name="TParentDto"></typeparam>
+             <typeparam name="TSonDto"></typeparam>
+             <typeparam name="TOutputDto"></typeparam>
+        </member>
+        <member name="M:BaseFatherSonService`4.Add(`2)">
+            <summary>
+            1. 新增父子
+            </summary>
+            <param name="parentDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseFatherSonService`4.Update(`2)">
+            <summary>
+            更新父子（Include 核心）
+            </summary>
+            <param name="parentDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseFatherSonService`4.Detail(System.Int64)">
+            <summary>
+            3. 查询详情（Include）
+            </summary>
+            <param name="parentId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

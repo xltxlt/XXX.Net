@@ -1,0 +1,89 @@
+{
+    "msg": "success",
+    "code": 200,
+    "data": [
+        {
+            "title": "系统基础数据",
+            "icon": "Monitor",
+            "children": [
+                {
+                    "title": "角色权限管理",
+                    "icon": "Bell",
+                    "path": "/DataDic"
+                },
+                {
+                    "title": "组织机构管理",
+                    "icon": "Bell",
+                    "path": "/org"
+                },
+                {
+                    "title": "用户账号管理",
+                    "icon": "Bell",
+                    "path": "/user"
+                },
+                {
+                    "title": "菜单资源管理",
+                    "icon": "Bell",
+                    "path": "/sys"
+                }
+            ]
+        },
+        {
+            "title": "车辆信息管理",
+            "icon": "Monitor",
+            "children": [
+                {
+                    "title": "车辆信息管理",
+                    "icon": "Bell",
+                    "path": "/car"
+                },
+                {
+                    "title": "自由车辆管理",
+                    "icon": "Bell",
+                    "path": "/freecar"
+                },
+                {
+                    "title": "租赁车辆管理",
+                    "icon": "Bell",
+                    "path": "/rentcar"
+                },
+                {
+                    "title": "三方车辆管理",
+                    "icon": "Bell",
+                    "path": "/thirdcar"
+                },
+                {
+                    "title": "行政车辆管理",
+                    "icon": "Bell",
+                    "path": "/admincar"
+                }
+            ]
+        },
+        {
+            "title": "能源业务管理",
+            "icon": "Monitor",
+            "children": [
+                {
+                    "title": "主卡信息管理",
+                    "icon": "Bell",
+                    "path": "/maincard"
+                },
+                {
+                    "title": "油卡信息管理",
+                    "icon": "Bell",
+                    "path": "/oilcard"
+                },
+                {
+                    "title": "划拨记录管理",
+                    "icon": "Bell",
+                    "path": "/transfer"
+                },
+                {
+                    "title": "油卡消费记录",
+                    "icon": "Bell",
+                    "path": "/consume"
+                }
+            ]
+        }
+    ]
+}

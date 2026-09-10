@@ -1,0 +1,9 @@
+{
+    "name": "TData",
+    "roles": [
+        "admin",
+        "user"
+    ],
+    "logo": "https://example.com/logo.png",
+    "homePage": "/home"
+}

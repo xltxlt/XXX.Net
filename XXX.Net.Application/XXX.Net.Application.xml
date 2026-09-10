@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XXX.Net.Application</name>
+    </assembly>
+    <members>
+        <member name="T:XXX.Net.Application.SystemService.RegisterSubcibe">
+            <summary>
+            用户注册消费者
+            </summary>
+        </member>
+        <member name="T:XXX.Net.Application.SystemAppService">
+            <summary>
+            系统服务接口
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Application.SystemAppService.GetDescription">
+            <summary>
+            获取系统描述
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Application.SystemAppService.PostRegister(Furion.EventBus.IEventPublisher)">
+            <summary>
+            获取系统描述
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

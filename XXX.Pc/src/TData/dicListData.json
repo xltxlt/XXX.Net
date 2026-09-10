@@ -1,0 +1,37 @@
+{
+    "msg": "success",
+    "code": 200,
+    "data": {
+        "list": [
+            {
+                "date": "2016-05-04",
+                "name": "用户类型",
+                "code": "AleynaKutzner",
+                "address": "安徽省合肥市包河区长春路与黄山路交口",
+                "createTime": "2016-05-04 12:00:00"
+            },
+            {
+                "date": "2016-05-03",
+                "name": "组织类型",
+                "code": "HelenJacobi",
+                "address": "南京市鼓楼区中山路与长江路交口",
+                "createTime": "2016-05-04 12:00:00"
+            },
+            {
+                "date": "2016-05-02",
+                "name": "登录设备类型",
+                "code": "BrandonDeckert",
+                "address": "江苏省南京市鼓楼区中山路",
+                "createTime": "2016-05-04 12:00:00"
+            },
+            {
+                "date": "2016-05-01",
+                "name": "参数类型",
+                "code": "MargieSmith",
+                "address": "上海市浦东新区世纪大道与陆家嘴路交口",
+                "createTime": "2016-05-04 12:00:00"
+            }
+        ],
+        "total": 40
+    }
+}

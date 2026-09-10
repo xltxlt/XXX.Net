@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="20" height="20" style="" filter="none">
+    
+    <g>
+    <title fill="rgba(142,142,147,1)">自定义表单图标</title><path d="M37.25,16.75h1.5a1,1,0,0,1,1,1v15a0,0,0,0,1,0,0h-2.5a1,1,0,0,1-1-1v-14A1,1,0,0,1,37.25,16.75Z" transform="translate(62.75 -13.25) rotate(90)" fill="rgba(142,142,147,1)"></path><path d="M34.25,27.75h1.5a1,1,0,0,1,1,1v9a0,0,0,0,1,0,0h-2.5a1,1,0,0,1-1-1v-8A1,1,0,0,1,34.25,27.75Z" transform="translate(67.75 -2.25) rotate(90)" fill="rgba(142,142,147,1)"></path><path d="M38.25,31.75h1.5a1,1,0,0,1,1,1v17a0,0,0,0,1,0,0h-2.5a1,1,0,0,1-1-1v-16A1,1,0,0,1,38.25,31.75Z" transform="translate(79.75 1.75) rotate(90)" fill="rgba(142,142,147,1)"></path><rect x="16.5" y="4" width="3" height="40" fill="rgba(142,142,147,1)"></rect><rect y="4" width="36" height="3" fill="rgba(142,142,147,1)"></rect><rect x="10.31" y="41" width="15.38" height="3" fill="rgba(142,142,147,1)"></rect><rect y="4" width="3" height="8.14" fill="rgba(142,142,147,1)"></rect><rect x="33" y="4" width="3" height="8.14" fill="rgba(142,142,147,1)"></rect>
+    </g>
+  </svg>

@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Furion.DynamicApiController;
+using Microsoft.AspNetCore.Mvc;
+using WorkflowCore.Interface;
+using XXX.Net.Core.CurrentUser;
+using XXX.Net.Plugins.WorkFlow.Repository;
+using XXX.Net.Plugins.WorkFlow.Entity;
+using XXX.Net.Plugins.WorkFlow.Models;
+using XXX.Net.Plugins.WorkFlow.Service.Dto;
+using XXX.Net.Plugins.WorkFlow.Step;
+
+namespace XXX.Net.Plugins.WorkFlow.Service
+{
+    /// <summary>
+    /// 待办任务服务：查询待办、提交（保存/完成/跳过）
+    /// </summary>
+    [ApiDescriptionSettings("Workflow")]
+
+    public class WorkflowTaskService : IDynamicApiController
+    {
+        private readonly IWorkFlowRepository<WorkflowTask> _taskRepo;
+        private readonly IWorkflowHost _host;
+        private readonly ICurrentUser _currentUser;
+
+        public WorkflowTaskService(
+            IWorkFlowRepository<WorkflowTask> taskRepo,
+            IWorkflowHost host,
+            ICurrentUser currentUser)
+        {
+            _taskRepo = taskRepo;
+            _host = host;
+            _currentUser = currentUser;
+        }
+
+        /// <summary>
+        /// 当前用户的待办列表
+        /// </summary>
+        [HttpGet]
+        public async Task<List<WorkflowTask>> TodoList()
+        {
+            var userId = _currentUser.UserId;
+            return await _taskRepo.GetListAsync(t => t.AssigneeId == userId && t.Status == "pending");
+        }
+
+        /// <summary>
+        /// 提交待办：save=仅保存；complete=完成并流转；skip=跳过并流转
+        /// </summary>
+        [HttpPost]
+        public async Task Submit(TaskSubmitDto dto)
+        {
+            var task = (await _taskRepo.GetListAsync(t => t.Id == dto.TaskId)).FirstOrDefault()
+                ?? throw new InvalidOperationException("待办不存在");
+
+            task.FormDataJson = JsonSerializer.Serialize(dto.FormData ?? new Dictionary<string, object>());
+            task.Comment = dto.Comment ?? string.Empty;
+            if (dto.Action == "complete") task.Status = "completed";
+            else if (dto.Action == "skip") task.Status = "skipped";
+            // save 保持 pending
+            await _taskRepo.UpdateAsync(task.Id, task);
+
+            // 完成/跳过：发布事件唤醒 WorkflowCore 流转
+            if (dto.Action == "complete" || dto.Action == "skip")
+            {
+                var evt = new TaskSubmitEvent
+                {
+                    TaskId = dto.TaskId,
+                    Action = dto.Action,
+                    FormData = dto.FormData ?? new Dictionary<string, object>(),
+                    OperatorId = _currentUser.UserId,
+                    OperatorName = _currentUser.RealName,
+                    Comment = dto.Comment ?? string.Empty,
+                };
+                await _host.PublishEvent(TaskStep.EventName, dto.TaskId, evt);
+            }
+        }
+    }
+}

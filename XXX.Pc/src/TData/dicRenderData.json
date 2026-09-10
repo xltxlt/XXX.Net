@@ -1,0 +1,413 @@
+{
+    "msg": "success",
+    "code": 200,
+    "data": {
+        "search": [
+            {
+                "label": "字典名称",
+                "name": "title",
+                "type": 1,
+                "placeholder": "",
+                "icon": "",
+                "value": "",
+                "options": [],
+                "style": {}
+            },
+            {
+                "label": "字典类型",
+                "name": "dicType",
+                "type": 2,
+                "placeholder": "",
+                "icon": "",
+                "value": "",
+                "options": [
+                    {
+                        "label": "平台字典",
+                        "value": "1"
+                    },
+                    {
+                        "label": "通用字典",
+                        "value": "2"
+                    }
+                ],
+                "style": {}
+            },
+            {
+                "label": "下拉多选",
+                "name": "selectMulti",
+                "type": 3,
+                "placeholder": "",
+                "icon": "",
+                "value": "",
+                "options": [
+                    {
+                        "label": "平台字典",
+                        "value": "1"
+                    },
+                    {
+                        "label": "通用字典",
+                        "value": "2"
+                    }
+                ],
+                "style": {}
+            },
+            {
+                "label": "开始时间",
+                "name": "startTime",
+                "type": 4,
+                "placeholder": "",
+                "icon": "",
+                "value": "",
+                "options": [],
+                "style": {}
+            },
+            {
+                "label": "时间范围",
+                "name": "endTime",
+                "type": 5,
+                "placeholder": "",
+                "icon": "",
+                "value": "",
+                "options": [],
+                "style": {}
+            },
+            {
+                "label": "所属层次",
+                "name": "level",
+                "type": 7,
+                "placeholder": "",
+                "icon": "",
+                "value": "",
+                "style": {},
+                "options": [
+                    {
+                        "value": "guide",
+                        "label": "Guide",
+                        "children": [
+                            {
+                                "value": "disciplines",
+                                "label": "Disciplines",
+                                "children": [
+                                    {
+                                        "value": "consistency",
+                                        "label": "Consistency"
+                                    },
+                                    {
+                                        "value": "feedback",
+                                        "label": "Feedback"
+                                    },
+                                    {
+                                        "value": "efficiency",
+                                        "label": "Efficiency"
+                                    },
+                                    {
+                                        "value": "controllability",
+                                        "label": "Controllability"
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "navigation",
+                                "label": "Navigation",
+                                "children": [
+                                    {
+                                        "value": "idenav",
+                                        "label": "SideNavigation"
+                                    },
+                                    {
+                                        "value": "topnav",
+                                        "label": "TopNavigation"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "value": "component",
+                        "label": "Component",
+                        "children": [
+                            {
+                                "value": "basic",
+                                "label": "Basic",
+                                "children": [
+                                    {
+                                        "value": "layout",
+                                        "label": "Layout"
+                                    },
+                                    {
+                                        "value": "color",
+                                        "label": "Color"
+                                    },
+                                    {
+                                        "value": "typography",
+                                        "label": "Typography"
+                                    },
+                                    {
+                                        "value": "icon",
+                                        "label": "Icon"
+                                    },
+                                    {
+                                        "value": "button",
+                                        "label": "Button"
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "form",
+                                "label": "Form",
+                                "children": [
+                                    {
+                                        "value": "radio",
+                                        "label": "Radio"
+                                    },
+                                    {
+                                        "value": "checkbox",
+                                        "label": "Checkbox"
+                                    },
+                                    {
+                                        "value": "input",
+                                        "label": "Input"
+                                    },
+                                    {
+                                        "value": "inputnumber",
+                                        "label": "InputNumber"
+                                    },
+                                    {
+                                        "value": "select",
+                                        "label": "Select"
+                                    },
+                                    {
+                                        "value": "cascader",
+                                        "label": "Cascader"
+                                    },
+                                    {
+                                        "value": "switch",
+                                        "label": "Switch"
+                                    },
+                                    {
+                                        "value": "slider",
+                                        "label": "Slider"
+                                    },
+                                    {
+                                        "value": "timepicker",
+                                        "label": "TimePicker"
+                                    },
+                                    {
+                                        "value": "datepicker",
+                                        "label": "DatePicker"
+                                    },
+                                    {
+                                        "value": "datetimepicker",
+                                        "label": "DateTimePicker"
+                                    },
+                                    {
+                                        "value": "upload",
+                                        "label": "Upload"
+                                    },
+                                    {
+                                        "value": "rate",
+                                        "label": "Rate"
+                                    },
+                                    {
+                                        "value": "form",
+                                        "label": "Form"
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "data",
+                                "label": "Data",
+                                "children": [
+                                    {
+                                        "value": "table",
+                                        "label": "Table"
+                                    },
+                                    {
+                                        "value": "tag",
+                                        "label": "Tag"
+                                    },
+                                    {
+                                        "value": "progress",
+                                        "label": "Progress"
+                                    },
+                                    {
+                                        "value": "tree",
+                                        "label": "Tree"
+                                    },
+                                    {
+                                        "value": "pagination",
+                                        "label": "Pagination"
+                                    },
+                                    {
+                                        "value": "badge",
+                                        "label": "Badge"
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "notice",
+                                "label": "Notice",
+                                "children": [
+                                    {
+                                        "value": "alert",
+                                        "label": "Alert"
+                                    },
+                                    {
+                                        "value": "loading",
+                                        "label": "Loading"
+                                    },
+                                    {
+                                        "value": "message",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "value": "messgebox",
+                                        "label": "MessageBox"
+                                    },
+                                    {
+                                        "value": "notification",
+                                        "label": "Notification"
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "navigation",
+                                "label": "Navigation",
+                                "children": [
+                                    {
+                                        "value": "menu",
+                                        "label": "Menu"
+                                    },
+                                    {
+                                        "value": "tabs",
+                                        "label": "Tabs"
+                                    },
+                                    {
+                                        "value": "breadcrumb",
+                                        "label": "Breadcrumb"
+                                    },
+                                    {
+                                        "value": "dropdown",
+                                        "label": "Dropdown"
+                                    },
+                                    {
+                                        "value": "steps",
+                                        "label": "Steps"
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "others",
+                                "label": "Others",
+                                "children": [
+                                    {
+                                        "value": "dialog",
+                                        "label": "Dialog"
+                                    },
+                                    {
+                                        "value": "tooltip",
+                                        "label": "Tooltip"
+                                    },
+                                    {
+                                        "value": "popover",
+                                        "label": "Popover"
+                                    },
+                                    {
+                                        "value": "card",
+                                        "label": "Card"
+                                    },
+                                    {
+                                        "value": "carousel",
+                                        "label": "Carousel"
+                                    },
+                                    {
+                                        "value": "collapse",
+                                        "label": "Collapse"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "btns": [
+            {
+                "name": "新增",
+                "type": "addDic",
+                "icon": "search",
+                "bgColor": "#409EFF"
+            },
+            {
+                "name": "删除",
+                "type": "delDic",
+                "icon": "search",
+                "bgColor": "#409EFF"
+            }
+        ],
+        "fields": [
+            {
+                "name": "name",
+                "label": "字典名称",
+                "type": "text",
+                "width": "150px",
+                "align": "center",
+                "fixed": ""
+            },
+            {
+                "name": "code",
+                "label": "字典编码",
+                "type": "text",
+                "width": "150px",
+                "align": "center",
+                "fixed": ""
+            },
+            {
+                "name": "date",
+                "label": "字典简称",
+                "type": "text",
+                "width": "150px",
+                "align": "center",
+                "fixed": ""
+            },
+            {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "width": "150px",
+                "align": "center",
+                "fixed": ""
+            },
+            {
+                "name": "createTime",
+                "label": "创建时间",
+                "type": "text",
+                "width": "150px",
+                "align": "center",
+                "fixed": ""
+            },
+            {
+                "name": "rightTools",
+                "label": "功能操作",
+                "type": "rightTools",
+                "width": "150px",
+                "align": "center",
+                "fixed": "right"
+            }
+        ],
+        "tableBtns": [
+            {
+                "name": "详情",
+                "type": "infoDic",
+                "icon": "search",
+                "bgColor": "#409EFF"
+            },
+            {
+                "name": "修改",
+                "type": "editDic",
+                "icon": "search",
+                "bgColor": "#409EFF"
+            }
+        ]
+    }
+}

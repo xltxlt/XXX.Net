@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<LangVersion>preview</LangVersion>
+		<TargetFramework>net10.0</TargetFramework>
+		<NoWarn>1701;1702;1591</NoWarn>
+		<DocumentationFile>XXX.Net.Web.Core.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="XXX.Net.Web.Core.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\XXX.Net.Application\XXX.Net.Application.csproj" />
+		<ProjectReference Include="..\XXX.Net.Database.Migrations\XXX.Net.Database.Migrations.csproj" />
+		<ProjectReference Include="..\XXX.Net.Plugins.Inventory\XXX.Net.Plugins.Inventory.csproj" />
+		<ProjectReference Include="..\XXX.Net.Plugins.WorkFlow\XXX.Net.Plugins.WorkFlow.csproj" />
+	</ItemGroup>
+
+</Project>

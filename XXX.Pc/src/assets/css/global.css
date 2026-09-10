@@ -1,0 +1,9 @@
+:root{
+    --el-color-info:#000;
+}
+.el-dialog__headerbtn .el-dialog__close{
+    font-size: 15px;
+}
+input:-webkit-autofill {
+ box-shadow: 0 0 0px 1000px #fff inset !important;
+}

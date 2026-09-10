@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<LangVersion>preview</LangVersion>
+		<TargetFramework>net10.0</TargetFramework>
+		<NoWarn>1701;1702;1591</NoWarn>
+		<DocumentationFile>XXX.Net.Core.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="XXX.Net.Core.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DistributedLock.Redis" Version="1.1.1" />
+		<PackageReference Include="DotNetCore.CAP" Version="10.0.2" />
+		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="10.0.2" />
+		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="10.0.2" />
+		<PackageReference Include="DotNetCore.CAP.SqlServer" Version="10.0.2" />
+		<PackageReference Include="Furion" Version="4.9.9.73" />
+		<PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="4.9.9.73" />
+		<PackageReference Include="Furion.Extras.ObjectMapper.Mapster" Version="4.9.9.73" />
+		<PackageReference Include="IdGen" Version="3.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.11" />
+		<PackageReference Include="MiniExcel" Version="1.45.0" />
+		<PackageReference Include="MongoDB.Bson" Version="3.11.0" />
+		<PackageReference Include="MongoDB.Driver" Version="3.11.0" />
+		<PackageReference Include="Mono.TextTemplating" Version="3.0.0" />
+		<PackageReference Include="RabbitMQ.Client" Version="7.2.2" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.3" />
+		<PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="10.105.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Jobs\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+</Project>

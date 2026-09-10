@@ -1,0 +1,15 @@
+global using Furion;
+global using Furion.DatabaseAccessor;
+global using Furion.DynamicApiController;
+global using Furion.FriendlyException;
+global using Furion.DependencyInjection;
+global using XXX.Net.Core.CurrentUser;
+global using XXX.Net.Core.BaseEntitys;
+global using XXX.Net.Core.Services.Option;
+global using Mapster;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using System.ComponentModel;
+global using System.Collections.Generic;
+global using System.Threading.Tasks;
+global using System;

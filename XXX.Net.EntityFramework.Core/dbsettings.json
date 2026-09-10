@@ -1,0 +1,14 @@
+{
+  "$schema": "https://gitee.com/dotnetchina/Furion/raw/v4/schemas/v4/furion-schema.json",
+  "DatabaseProvider": "SqlServer",
+  "ConnectionStrings": {
+    "MasterConnectionString": "Server=111.229.143.94;Database=FyyyCore;User Id=sa;Password=Xlt@123456;MultipleActiveResultSets=True;TrustServerCertificate=True;",
+    "SlaveConnectionString": "Server=111.229.143.94;Database=FyyyCore;User Id=sa;Password=Xlt@123456;MultipleActiveResultSets=True;TrustServerCertificate=True;",
+    //"SlaveConnectionString": "Server=111.229.143.94;Database=FyyyCoreSlave;User Id=sa;Password=Xlt@123456;MultipleActiveResultSets=True;TrustServerCertificate=True;",
+    "MongoDbConnectionString": "mongodb://localhost:27017/FuYuanBaseHistory"
+  },
+  "IdGen": {
+    "GeneratorId": 1,
+    "Epoch": "2020-01-01T00:00:00Z"
+  }
+}

@@ -1,0 +1,95 @@
+pipeline {
+    agent any
+    
+    parameters {
+        gitParameter (
+            branchFilter: 'origin/(.*)',
+            defaultValue: 'master',
+            name: 'BRANCH',
+            description: 'Git分支名称',
+            type: 'PT_BRANCH'
+        )
+        string(name: 'TARGET_SERVER', defaultValue: '8.155.144.41', description: '目标服务器SSH地址')
+        string(name: 'DEPLOY_PATH', defaultValue: '/web/yzPC', description: 'Nginx静态资源目录')
+    }
+
+    environment {
+        NODEJS_HOME = '/usr' 
+        SSH_CREDENTIALS_ID = '574cf00d-1fd3-4fe2-8346-68a2b77bfc23'
+    }
+
+    stages {
+        stage('拉取代码') {
+            steps {
+                cleanWs()
+                git(
+                    branch: "$BRANCH",
+                    url: 'https://codeup.aliyun.com/67847ae6b201a4966f4d35bd/Vue/Yz-Pc.git',
+ credentialsId: 'f45a2c89-194b-4051-941e-91730432b8ac'
+                )
+            }
+        }
+        
+        stage('构建项目') {
+            steps {
+                sh '''
+                    #!/bin/bash
+                    export PATH="/root/.nvm/versions/node/v16.20.2/bin:$PATH"
+                    export NODE_OPTIONS="--experimental-global-webcrypto"
+                    npm install
+                    npm run build
+                '''
+            }
+        }
+
+        stage('打包dist') {
+            steps {
+                sh """
+                    # 将dist目录打包成zip文件
+                    zip -r dist.zip dist/*
+                """
+            }
+        }
+
+        stage('部署到服务器') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(
+                        credentialsId: SSH_CREDENTIALS_ID,
+                        usernameVariable: 'SSH_USER',
+                        passwordVariable: 'SSH_PASSWORD'
+                    )]) {
+                        sh """
+                            # 清空目标目录
+                            sshpass -p "${SSH_PASSWORD}" ssh ${SSH_USER}@${TARGET_SERVER} \
+                                "rm -rf ${DEPLOY_PATH}/*"
+                            
+                            # 上传zip包到服务器
+                            sshpass -p "${SSH_PASSWORD}" scp dist.zip ${SSH_USER}@${TARGET_SERVER}:${DEPLOY_PATH}/
+                            
+                            # 在服务器上解压并清理
+                            sshpass -p "${SSH_PASSWORD}" ssh ${SSH_USER}@${TARGET_SERVER} \
+                                "unzip -o ${DEPLOY_PATH}/dist.zip -d ${DEPLOY_PATH}/ && \
+                                 rm ${DEPLOY_PATH}/dist.zip && \
+                                 mv ${DEPLOY_PATH}/dist/* ${DEPLOY_PATH}/ && \
+                                 rm -rf ${DEPLOY_PATH}/dist"
+                            
+                            # 重新加载Nginx
+                            sshpass -p "${SSH_PASSWORD}" ssh ${SSH_USER}@${TARGET_SERVER} \
+                                "nginx -s reload"
+                        """
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Vue应用部署成功！访问地址：http://${TARGET_SERVER}"
+        }
+        failure {
+            echo '构建失败，请检查日志！'
+        }
+    }
+}

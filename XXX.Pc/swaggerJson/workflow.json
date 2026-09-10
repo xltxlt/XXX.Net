@@ -1,0 +1,2431 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Workflow",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/pm-flow-temp/batchlogicdelete": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "逻辑删除",
+        "operationId": "api-pm-flow-temp-batchlogicdelete-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/logicdelete/{id}": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "逻辑删除",
+        "operationId": "api-pm-flow-temp-logicdelete-id-Post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/delete/{id}": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "删除",
+        "operationId": "api-pm-flow-temp-delete-id-Post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/batchdelete": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "删除",
+        "operationId": "api-pm-flow-temp-batchdelete-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/update": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "更新",
+        "operationId": "api-pm-flow-temp-update-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/batchadd": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-temp-batchadd-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/batchupdate": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-temp-batchupdate-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/addorupdate": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-temp-addorupdate-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/add": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-temp-add-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/pagelist": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "获取分页集合",
+        "operationId": "api-pm-flow-temp-pagelist-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PagedList_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PagedList_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PagedList_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/list": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "获取集合",
+        "operationId": "api-pm-flow-temp-list-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/options": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "获取下拉搜索选项",
+        "operationId": "api-pm-flow-temp-options-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PagedOptions"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PagedOptions"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PagedOptions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/detailoption": {
+      "get": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "获取详情",
+        "operationId": "api-pm-flow-temp-detailoption-Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PageDetailOption_PmFlowTempDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PageDetailOption_PmFlowTempDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PageDetailOption_PmFlowTempDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/pageoption": {
+      "get": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "获取新增修改页面选项",
+        "operationId": "api-pm-flow-temp-pageoption-Get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/detail/{id}": {
+      "get": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "获取详情",
+        "operationId": "api-pm-flow-temp-detail-id-Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-definition/save": {
+      "post": {
+        "tags": [
+          "workflow-definition"
+        ],
+        "operationId": "api-workflow-definition-save-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowDefinitionDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowDefinitionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowDefinitionDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowDefinitionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-definition/publish/{workflowid}": {
+      "post": {
+        "tags": [
+          "workflow-definition"
+        ],
+        "operationId": "api-workflow-definition-publish-workflowid-Post",
+        "parameters": [
+          {
+            "name": "workflowid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-definition/list": {
+      "get": {
+        "tags": [
+          "workflow-definition"
+        ],
+        "operationId": "api-workflow-definition-list-Get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowDefinition"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowDefinition"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowDefinition"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-definition/detail/{workflowdefinitionid}": {
+      "get": {
+        "tags": [
+          "workflow-definition"
+        ],
+        "operationId": "api-workflow-definition-detail-workflowdefinitionid-Get",
+        "parameters": [
+          {
+            "name": "workflowdefinitionid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowDefinition"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-instance/start/{workflowid}": {
+      "post": {
+        "tags": [
+          "workflow-instance"
+        ],
+        "operationId": "api-workflow-instance-start-workflowid-Post",
+        "parameters": [
+          {
+            "name": "workflowid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "additionalProperties": false
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "additionalProperties": false
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "additionalProperties": false
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_String"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_String"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_String"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-instance/list": {
+      "get": {
+        "tags": [
+          "workflow-instance"
+        ],
+        "operationId": "api-workflow-instance-list-Get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowInstance"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowInstance"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowInstance"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-instance/detail/{instanceid}": {
+      "get": {
+        "tags": [
+          "workflow-instance"
+        ],
+        "operationId": "api-workflow-instance-detail-instanceid-Get",
+        "parameters": [
+          {
+            "name": "instanceid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowInstance"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowInstance"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowInstance"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-node-form/save": {
+      "post": {
+        "tags": [
+          "workflow-node-form"
+        ],
+        "operationId": "api-workflow-node-form-save-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowFormDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowFormDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowFormDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowFormDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowNodeForm"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowNodeForm"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowNodeForm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-node-form/{workflowdeginitionid}/{nodeid}": {
+      "get": {
+        "tags": [
+          "workflow-node-form"
+        ],
+        "operationId": "api-workflow-node-form-workflowdeginitionid--nodeid-Get",
+        "parameters": [
+          {
+            "name": "workflowdeginitionid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nodeid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowNodeForm"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowNodeForm"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_WorkflowNodeForm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-task/todo-list": {
+      "get": {
+        "tags": [
+          "workflow-task"
+        ],
+        "operationId": "api-workflow-task-todo-list-Get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowTask"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowTask"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_WorkflowTask"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-task": {
+      "post": {
+        "tags": [
+          "workflow-task"
+        ],
+        "operationId": "api-workflow-task-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskSubmitDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskSubmitDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskSubmitDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskSubmitDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PageDetailOption_PmFlowTempDto": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "$ref": "#/components/schemas/PmFlowTempDto"
+          },
+          "options": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PagedOptions"
+              },
+              "nullable": true
+            },
+            "description": "选项",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedCustomWhere": {
+        "type": "object",
+        "properties": {
+          "filedName": {
+            "type": "string",
+            "description": "字段名称",
+            "nullable": true
+          },
+          "conditionalType": {
+            "type": "integer",
+            "description": "搜索类型",
+            "format": "int32"
+          },
+          "filedValue": {
+            "type": "string",
+            "description": "字段值",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedListDto": {
+        "type": "object",
+        "properties": {
+          "menuId": {
+            "type": "string",
+            "description": "页面Id",
+            "nullable": true
+          },
+          "menuCode": {
+            "type": "string",
+            "description": "页面编码",
+            "nullable": true
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "指定某租户下"
+          },
+          "where": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            },
+            "description": "查询(根据配置字段)",
+            "nullable": true
+          },
+          "customWhere": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PagedCustomWhere"
+            },
+            "description": "自定义高级查询",
+            "nullable": true
+          },
+          "searchWhere": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PagedSearchWhere"
+            },
+            "description": "根据搜索类型",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedList_PmFlowTemp": {
+        "type": "object",
+        "properties": {
+          "pageIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PmFlowTemp"
+            },
+            "nullable": true
+          },
+          "hasPrevPages": {
+            "type": "boolean"
+          },
+          "hasNextPages": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedOptions": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "名称",
+            "nullable": true
+          },
+          "value": {
+            "additionalProperties": false,
+            "description": "值",
+            "nullable": true
+          },
+          "disaebled": {
+            "type": "boolean",
+            "description": "是否禁用"
+          },
+          "desc": {
+            "type": "string",
+            "description": "说明",
+            "nullable": true
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PagedOptions"
+            },
+            "description": "子元素",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedPaginationListDto": {
+        "required": [
+          "pageIndex",
+          "pageSize"
+        ],
+        "type": "object",
+        "properties": {
+          "menuId": {
+            "type": "string",
+            "description": "页面Id",
+            "nullable": true
+          },
+          "menuCode": {
+            "type": "string",
+            "description": "页面编码",
+            "nullable": true
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "指定某租户下"
+          },
+          "where": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            },
+            "description": "查询(根据配置字段)",
+            "nullable": true
+          },
+          "customWhere": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PagedCustomWhere"
+            },
+            "description": "自定义高级查询",
+            "nullable": true
+          },
+          "searchWhere": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PagedSearchWhere"
+            },
+            "description": "根据搜索类型",
+            "nullable": true
+          },
+          "pageIndex": {
+            "type": "integer",
+            "description": "页面下标",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "页面条数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedSearchWhere": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string",
+            "description": "字段名称",
+            "nullable": true
+          },
+          "searchType": {
+            "type": "integer",
+            "description": "搜索类型",
+            "format": "int32"
+          },
+          "fieldValue": {
+            "type": "string",
+            "description": "字段值",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PmFlowTemp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createByName": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedByName": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "tenant": {
+            "$ref": "#/components/schemas/SysTenant"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowDefinitionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastVersion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "general": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PmFlowTempDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "名称",
+            "nullable": true
+          },
+          "tenantId": {
+            "type": "string",
+            "description": "租户"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "general": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_Dictionary_StringList_PagedOptions": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PagedOptions"
+              },
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_Int32": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_List_PagedOptions": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PagedOptions"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_List_PmFlowTemp": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PmFlowTemp"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_List_WorkflowDefinition": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowDefinition"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_List_WorkflowInstance": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowInstance"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_List_WorkflowTask": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowTask"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_PageDetailOption_PmFlowTempDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageDetailOption_PmFlowTempDto"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_PagedList_PmFlowTemp": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagedList_PmFlowTemp"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_PmFlowTemp": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/PmFlowTemp"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_String": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "string",
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_WorkflowDefinition": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowDefinition"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_WorkflowInstance": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowInstance"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_WorkflowNodeForm": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowNodeForm"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SysTenant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createByName": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedByName": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "description": "编码",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "启用/禁用"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskSubmitDto": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "action": {
+            "type": "string",
+            "nullable": true
+          },
+          "formData": {
+            "type": "object",
+            "additionalProperties": {
+              "additionalProperties": false
+            },
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VfWorkflowDefinition": {
+        "type": "object",
+        "properties": {
+          "pmFlowTempId": {
+            "type": "string"
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VfWorkflowNode"
+            },
+            "nullable": true
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VfWorkflowEdge"
+            },
+            "nullable": true
+          },
+          "form": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "attrData": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "buttonList": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VfWorkflowEdge": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "nullable": true
+          },
+          "target": {
+            "type": "string",
+            "nullable": true
+          },
+          "condition": {
+            "type": "string",
+            "nullable": true
+          },
+          "edgeJson": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VfWorkflowNode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "config": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeJson": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkflowDefinition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "pmFlowTempId": {
+            "type": "string"
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VfWorkflowNode"
+            },
+            "nullable": true
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VfWorkflowEdge"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkflowDefinitionDto": {
+        "type": "object",
+        "properties": {
+          "pmFlowTempId": {
+            "type": "string"
+          },
+          "workflowDefinition": {
+            "$ref": "#/components/schemas/VfWorkflowDefinition"
+          },
+          "workflowNodeForm": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowNodeForm"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkflowFormDto": {
+        "type": "object",
+        "properties": {
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "formJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "attrDataJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "buttonListJson": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkflowInstance": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "instanceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "currentNodeId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkflowNodeForm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "workflowDeginitionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nodeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "formJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "attrDataJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "buttonListJson": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkflowTask": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "instanceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "assigneeId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "formDataJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "pm-flow-temp"
+    },
+    {
+      "name": "workflow-definition"
+    },
+    {
+      "name": "workflow-instance"
+    },
+    {
+      "name": "workflow-node-form"
+    },
+    {
+      "name": "workflow-task"
+    }
+  ]
+}
