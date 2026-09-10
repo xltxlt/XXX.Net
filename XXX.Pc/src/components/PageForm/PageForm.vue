@@ -65,23 +65,7 @@
                                                 <!-- 删除 -->
                                                 <div class="temp-page-form-group-right">
 
-                                                    <!-- <el-button type="danger" @click.stop="async () => {
-                                                        await ElMessageBox.confirm(
-                                                            '确定删除吗？',
-                                                            '提示',
-                                                            {
-                                                                type: 'warning',
-                                                                confirmButtonText: '确定',
-                                                                cancelButtonText: '取消'
-                                                            }
-                                                        );
-                                                        tempForm.formData[m.fieldName].splice(
-                                                            sonIndex,
-                                                            1
-                                                        );
-                                                    }">
-                                                        删除项
-                                                    </el-button> -->
+                                                   
                                                     <el-button type="danger"
                                                         @click.stop="pageFun.delGroupItem(m, Number(sonIndex))">
                                                         删除项

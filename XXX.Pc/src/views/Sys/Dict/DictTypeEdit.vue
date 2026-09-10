@@ -26,7 +26,6 @@ const tempForm = ref<TempEditPageData>({
     hideBtn: pars?.lock == 'lock' ? true : false,
     cols: 2,
     form: [
-
         {
             formType: PageFormGroup.Group,
             fieldName: '',
@@ -53,7 +52,7 @@ const tempForm = ref<TempEditPageData>({
             },]
         },
         {
-            formType: PageFormGroup.Table,
+            formType: PageFormGroup.List,
             fieldName: 'children',
             label: "字典项",
             child: [
@@ -188,7 +187,7 @@ const tempForm = ref<TempEditPageData>({
         id: pars?.id ?? null,
         enabled: 1,
         general: 1,
-        children: []
+        children: [{}]
     },
 
     options: {

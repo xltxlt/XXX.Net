@@ -1,14 +1,13 @@
 <template>
   <div class="flow-design-page">
     <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm">
-      <template #toolbar-left>
+      <!-- <template #toolbar-left>
         <span class="flow-title">流程设计</span>
         <el-button size="small" type="warning" :disabled="!workflowId" @click="publish">发布当前版本</el-button>
-      </template>
+      </template> -->
     </FlowDesigner>
-
     <el-dialog v-model="formDesignVisible" title="设计表单" width="100%" draggable align-center style="height: 100%;top:0" :close-on-click-modal="false">
-      <WorkflowFormDesign @release="saveForm" v-if="formDesignVisible" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType"
+      <PageFormDesigner @release="saveForm" v-if="formDesignVisible" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType"
         :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
     </el-dialog>
   </div>
@@ -20,6 +19,7 @@ import { ElMessage } from 'element-plus'
 import FlowDesigner from '@/components/FlowDesigner/index.vue'
 import WorkflowFormDesign from '@/views/Workflow/WorkflowFormDesign.vue'
 import { workflowDefinitionService } from '@/api/workflow'
+import PageFormDesigner from '@/views/PageForm/PageFormDesigner.vue'
 import type { WorkflowNodeForm } from '@/api-services/generated'
 const emit = defineEmits([
     'closeDialog',
@@ -59,21 +59,6 @@ const saveForm = (formData: WorkflowNodeForm) => {
 }
 // 保存流程定义
 const onSave = async (def: any) => {
-  // FlowDesigner 的 save 事件是 PascalCase WorkflowDefinitionDto，转成后端 camelCase，且 config 序列化为 JSON 字符串
-  // const nodes = (def.Nodes ?? def.nodes ?? []).map((n: any) => {
-  //   const cfg = n.Config ?? n.config ?? {}
-  //   return {
-  //     id: n.Id ?? n.id,
-  //     type: n.Type ?? n.type,
-  //     name: n.Name ?? n.name,
-  //     config: typeof cfg === 'string' ? cfg : JSON.stringify(cfg),
-  //   }
-  // })
-  // const edges = (def.Edges ?? def.edges ?? []).map((e: any) => ({
-  //   source: e.Source ?? e.source,
-  //   target: e.Target ?? e.target,
-  //   condition: e.Condition ?? e.condition ?? null,
-  // }))
   const nodes = (def.Nodes ?? def.nodes ?? []).map((node: any) => ({
     id: node.Id ?? node.id,
     type: node.Type ?? node.type,

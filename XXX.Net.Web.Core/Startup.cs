@@ -1,5 +1,6 @@
 ﻿using Consul;
 using Furion;
+using Furion.HttpRemote;
 using XXX.Net.Core.Cache;
 using XXX.Net.Core.Converts;
 using XXX.Net.Core.CurrentUser;
@@ -157,7 +158,10 @@ public class Startup : AppStartup
         //事件总线
         //services.AddEventBus();
         //远程请求
-        services.AddHttpRemote();
+        services.AddHttpRemote(builder =>
+        {
+            builder.AddHttpDeclarative<XXX.NET.Plugin.DingTalk.IDingTalkApi>();
+        });
         //任务调度
         services.AddSchedule();
 

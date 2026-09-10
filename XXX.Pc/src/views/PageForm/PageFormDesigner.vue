@@ -9,6 +9,7 @@
         <el-button @click="previewVisible = true">预览</el-button>
         <el-button @click="showJson">导出 JSON</el-button>
         <el-button type="danger" plain @click="resetDesigner">重置</el-button>
+        <el-button @click="save">保存</el-button>
       </div>
     </header>
 
@@ -26,6 +27,9 @@
           @click="addGroup">分组</el-button>
         <el-button class="palette-button" draggable="true" @dragstart="startPaletteDrag($event, tablePaletteItem)"
           @click="addTable">表格分组</el-button>
+        <el-button class="palette-button" draggable="true" @dragstart="startPaletteDrag($event, listPaletteItem)"
+          @click="addList">列表分组</el-button>
+
       </aside>
 
       <section class="canvas-panel" @click.self="selectedId = ''" @dragover.prevent @drop="dropOnRoot">
@@ -98,14 +102,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineComponent, h, reactive, ref, type PropType } from 'vue'
+import { computed, defineComponent, h, onMounted, reactive, ref, type PropType } from 'vue'
 import type { FormItemRule } from 'element-plus'
 import PageForm from '@/components/PageForm/PageForm.vue'
 import { PageFormGroup, PageFormType, type TempEditForm, type TempEditPageData } from '@/components/PageForm'
+import { workflowNodeFormService } from '@/api/workflow';
+
+const { nodeId, workflowDeginitionId } = defineProps<{ nodeId: string, workflowId: string, nodeType: string, workflowDeginitionId: string }>();
 
 type DesignerItem = Omit<TempEditForm, 'child' | 'ident'> & { ident: string; child?: DesignerItem[]; must?: boolean; optionText?: string }
 type PaletteItem = { label: string; formType: number; choice?: boolean }
-
+var emits = defineEmits(['release'])
 const fieldPalette: PaletteItem[] = [
   { label: '单行文本', formType: PageFormType.Input }, { label: '多行文本', formType: PageFormType.TextAreaInput },
   { label: '数字', formType: PageFormType.Number }, { label: '开关', formType: PageFormType.Switch },
@@ -115,6 +122,8 @@ const fieldPalette: PaletteItem[] = [
 ]
 const groupPaletteItem: PaletteItem = { label: '基础信息', formType: PageFormGroup.Group }
 const tablePaletteItem: PaletteItem = { label: '明细信息', formType: PageFormGroup.Table }
+const listPaletteItem: PaletteItem = { label: '明细信息', formType: PageFormGroup.List }
+
 
 const FieldCard = defineComponent({
   props: { item: { type: Object as PropType<DesignerItem>, required: true }, selected: Boolean },
@@ -160,6 +169,10 @@ const addTable = () => {
   const item: DesignerItem = { ident: nextId(), formType: PageFormGroup.Table, label: '明细信息', fieldName: `details${id}`, child: [{ ident: nextId(), formType: PageFormGroup.Group, label: '', fieldName: '', child: [] }] }
   form.form.push(item as never); select(item)
 }
+const addList = () => {
+  const item: DesignerItem = { ident: nextId(), formType: PageFormGroup.List, label: '明细信息', fieldName: `list${id}`, child: [{ ident: nextId(), formType: PageFormGroup.Group, label: '', fieldName: '', child: [] }] }
+  form.form.push(item as never); select(item)
+}
 const startPaletteDrag = (event: DragEvent, item: PaletteItem) => {
   draggingItemId.value = ''
   draggingPalette.value = item
@@ -184,6 +197,7 @@ const takeDraggedItem = (): DesignerItem | undefined => {
     draggingPalette.value = undefined
     if (palette.formType === PageFormGroup.Group) return { ident: nextId(), formType: PageFormGroup.Group, label: palette.label, fieldName: '', child: [] }
     if (palette.formType === PageFormGroup.Table) return { ident: nextId(), formType: PageFormGroup.Table, label: palette.label, fieldName: `details${id}`, child: [{ ident: nextId(), formType: PageFormGroup.Group, label: '', fieldName: '', child: [] }] }
+    if (palette.formType === PageFormGroup.List) return { ident: nextId(), formType: PageFormGroup.List, label: palette.label, fieldName: `list${id}`, child: [{ ident: nextId(), formType: PageFormGroup.Group, label: '', fieldName: '', child: [] }] }
     return createField(palette)
   }
   const ident = draggingItemId.value
@@ -219,12 +233,26 @@ const optionsFromItem = (item: DesignerItem) => (item.optionText ?? '').split('\
 })
 const cloneItem = (item: DesignerItem): TempEditForm => ({ formType: item.formType, label: item.label, fieldName: item.fieldName, placeholder: item.placeholder || undefined, child: item.child?.map(cloneItem) })
 const buildOptions = (items: DesignerItem[], result: TempEditPageData['options'] = {}) => { items.forEach((item) => { if (isChoice(item) && item.fieldName) result[item.fieldName] = optionsFromItem(item); if (item.child) buildOptions(item.child as DesignerItem[], result) }); return result }
-const buildData = (items: DesignerItem[], result: Record<string, unknown> = {}) => { items.forEach((item) => { if (item.formType === PageFormGroup.Table || item.formType === PageFormGroup.List) { if (item.fieldName) result[item.fieldName] = [] } else if (!isContainer(item) && item.fieldName) result[item.fieldName] = item.formType === PageFormType.MultSelect || item.formType === PageFormType.Checkbox ? [] : item.formType === PageFormType.Switch ? false : ''; if (item.formType === PageFormGroup.Group) buildData((item.child ?? []) as DesignerItem[], result) }); return result }
+const buildData = (items: DesignerItem[], result: Record<string, unknown> = {}) => { items.forEach((item) => { if (item.formType === PageFormGroup.Table || item.formType === PageFormGroup.List) { if (item.fieldName) result[item.fieldName] = [{}] } else if (!isContainer(item) && item.fieldName) result[item.fieldName] = item.formType === PageFormType.MultSelect || item.formType === PageFormType.Checkbox ? [] : item.formType === PageFormType.Switch ? false : ''; if (item.formType === PageFormGroup.Group) buildData((item.child ?? []) as DesignerItem[], result) }); return result }
 const buildRules = (items: DesignerItem[], result: Record<string, FormItemRule[] | Record<string, FormItemRule[]>> = {}) => { items.forEach((item) => { if (item.formType === PageFormGroup.Table || item.formType === PageFormGroup.List) { const nested: Record<string, FormItemRule[]> = {}; buildRules(containerFields(item), nested); if (item.fieldName && Object.keys(nested).length) result[item.fieldName] = nested } else if (item.formType === PageFormGroup.Group) buildRules((item.child ?? []) as DesignerItem[], result); else if (item.must && item.fieldName) result[item.fieldName] = [{ required: true, message: `请${isChoice(item) ? '选择' : '输入'}${item.label}`, trigger: isChoice(item) ? 'change' : 'blur' }] }); return result }
 const previewForm = computed<TempEditPageData>(() => ({ loading: false, hideBtn: true, cols: form.cols, form: form.form.map(cloneItem), formData: buildData(form.form), options: buildOptions(form.form), rules: buildRules(form.form) }))
 const exportData = () => ({ ...previewForm.value, formData: buildData(form.form), options: buildOptions(form.form), rules: buildRules(form.form) })
 const showJson = () => { jsonText.value = JSON.stringify(exportData(), null, 2); jsonVisible.value = true }
 const resetDesigner = () => { form.form.splice(0); selectedId.value = '' }
+const save = () => {
+  var json = exportData();
+  const pushData = {
+    nodeId: nodeId ?? '',
+    formJson: json,
+  }
+  emits('release', json);
+}
+onMounted(async () => {
+  const res = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(workflowDeginitionId ?? '', nodeId ?? '');
+  if (res.data.statusCode==200) {
+    var data=res.data.data||{};
+  }
+})
 </script>
 
 <style scoped lang="less">

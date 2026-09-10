@@ -1,10 +1,14 @@
 ﻿
 using Furion.DatabaseAccessor;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.ComponentModel.DataAnnotations.Schema;
 using XXX.Net.Core.DbContextLocator;
 
 namespace XXX.NET.Plugin.DingTalk;
 
-public class DingTalkWokerflowLog: IEntity<MasterDbContextLocator, SlaveDbContextLocator>
+public class DingTalkWokerflowLog : IEntity<MasterDbContextLocator, SlaveDbContextLocator>,
+    IEntityTypeBuilder<DingTalkWokerflowLog, MasterDbContextLocator, SlaveDbContextLocator>
 {
     /// <summary>
     /// 审批实例ID
@@ -29,7 +33,14 @@ public class DingTalkWokerflowLog: IEntity<MasterDbContextLocator, SlaveDbContex
     /// <summary>
     /// 其他信息
     /// </summary>
+    [NotMapped]
     public Dictionary<string, object>? other_info { get; set; }
+
+    public void Configure(EntityTypeBuilder<DingTalkWokerflowLog> entityBuilder, DbContext dbContext, Type dbContextLocator)
+    {
+        entityBuilder.HasKey(entity => entity.instanceId);
+        entityBuilder.Ignore(entity => entity.other_info);
+    }
 
     /// <summary>
     /// 是否回传结果给第三方
