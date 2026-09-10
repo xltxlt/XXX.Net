@@ -10,12 +10,19 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
     /// </summary>
     public class WorkflowInstance : WorkFlowMongoEntity
     {
+        /// <summary>流程所属租户。</summary>
+        public long TenantId { get; set; }
         /// <summary>
         /// WorkflowCore 实例 Id（StartWorkflow 返回值）
         /// </summary>
         public string InstanceId { get; set; } = string.Empty;
 
         public string WorkflowId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 发起人填写的任务名称。
+        /// </summary>
+        public string TaskName { get; set; } = string.Empty;
 
         public int Version { get; set; } = 1;
 

@@ -12,6 +12,7 @@ import PageInfo from "@/components/ListPage/PageInfo.vue";
 import { pmFlowTempService } from "@/api/workflow.ts";
 import pmFlowTempEdit from "./pmFlowTempEdit.vue";
 import FlowDesign from "./Handle/FlowDesign.vue";
+import PmFlowStart from "./Handle/PmFlowStart.vue";
 import { PagedSearchType, type TempListPageConfig } from "@/components/ListPage";
 import { handleSumbitResBox } from "@/utils/common"; // 假设工具函数在此
 
@@ -21,6 +22,22 @@ const pageConfig: TempListPageConfig = {
   url: pmFlowTempService.apiPmFlowTempPagelistPost.bind(pmFlowTempService),
   optionUrl: pmFlowTempService.apiPmFlowTempPageoptionGet.bind(pmFlowTempService),
   pageFun: {
+    start: (data: any) => {
+      if (!data?.workflowId || !data?.workflowDefinitionId) {
+        ElMessage.warning('请先设计并发布流程');
+        return;
+      }
+      return {
+        title: "发起流程",
+        comp: PmFlowStart,
+        height: "80%",
+        width: "70%",
+        pars: {
+          workflowId: data.workflowId,
+          workflowDefinitionId: data.workflowDefinitionId,
+        },
+      };
+    },
     setFlow: (data: any) => {
       return {
         title: "流程设计",

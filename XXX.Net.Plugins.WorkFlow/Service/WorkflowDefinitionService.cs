@@ -64,6 +64,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             var entity = new WorkflowDefinition
             {
                 PmFlowTempId = workflowDefinitionDto.PmFlowTempId,
+                TenantId = mPmFlowTemp.TenantId,
                 WorkflowId = dto.WorkflowId,
                 Name = dto.Name ?? mPmFlowTemp.Name,
                 Nodes = dto.Nodes ?? new List<VueFlowModel.VfWorkflowNode>(),
@@ -128,6 +129,26 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 throw Oops.Oh("节点标识不能为空且不能重复");
             if (edges.Any(e => !nodes.Any(n => n.Id == e.Source) || !nodes.Any(n => n.Id == e.Target)))
                 throw Oops.Oh("连线引用了不存在的节点");
+            foreach (var taskNode in nodes.Where(n => n.Type == "task"))
+            {
+                try
+                {
+                    using var config = System.Text.Json.JsonDocument.Parse(taskNode.Config ?? "{}");
+                    var root = config.RootElement;
+                    var hasUser = root.TryGetProperty("responsibleUserIds", out var users) && users.ValueKind == System.Text.Json.JsonValueKind.Array && users.GetArrayLength() > 0;
+                    var hasDepartment = root.TryGetProperty("responsibleDepartmentIds", out var departments) && departments.ValueKind == System.Text.Json.JsonValueKind.Array && departments.GetArrayLength() > 0;
+                    var durationDays = root.TryGetProperty("estimatedDurationDays", out var duration) && duration.TryGetInt32(out var durationValue) ? durationValue : 0;
+                    var reminderDays = root.TryGetProperty("reminderBeforeDays", out var reminder) && reminder.TryGetInt32(out var reminderValue) ? reminderValue : -1;
+                    var durationValid = durationDays > 0;
+                    var reminderValid = reminderDays >= 0 && reminderDays <= durationDays;
+                    if (!hasUser && !hasDepartment) throw Oops.Oh($"任务节点 {taskNode.Name} 必须指定负责人或负责部门");
+                    if (!durationValid || !reminderValid) throw Oops.Oh($"任务节点 {taskNode.Name} 的预计工期或提醒天数不正确");
+                }
+                catch (System.Text.Json.JsonException)
+                {
+                    throw Oops.Oh($"任务节点 {taskNode.Name} 的配置格式不正确");
+                }
+            }
         }
 
         /// <summary>

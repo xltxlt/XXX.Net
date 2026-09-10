@@ -11,6 +11,7 @@ using XXX.Net.Core.CurrentUser;
 using XXX.Net.Plugins.WorkFlow.Repository;
 using XXX.Net.Plugins.WorkFlow.Entity;
 using XXX.Net.Plugins.WorkFlow.Models;
+using XXX.Net.Plugins.WorkFlow.Notification;
 using XXX.Net.Plugins.WorkFlow.Service.Dto;
 using XXX.Net.Plugins.WorkFlow.Step;
 
@@ -26,15 +27,18 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         private readonly IWorkFlowRepository<WorkflowTask> _taskRepo;
         private readonly IWorkflowHost _host;
         private readonly ICurrentUser _currentUser;
+        private readonly IEnumerable<IWorkflowMessageSender> _messageSenders;
 
         public WorkflowTaskService(
             IWorkFlowRepository<WorkflowTask> taskRepo,
             IWorkflowHost host,
-            ICurrentUser currentUser)
+            ICurrentUser currentUser,
+            IEnumerable<IWorkflowMessageSender> messageSenders)
         {
             _taskRepo = taskRepo;
             _host = host;
             _currentUser = currentUser;
+            _messageSenders = messageSenders;
         }
 
         /// <summary>
@@ -68,6 +72,21 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             else if (dto.Action == "skip") task.Status = "skipped";
             // save 保持 pending
             await _taskRepo.UpdateAsync(task.Id, task);
+
+            if (dto.Action is "complete" or "skip")
+            {
+                var message = new WorkflowMessage
+                {
+                    Title = $"任务已{(dto.Action == "complete" ? "完成" : "跳过")}：{task.NodeName}",
+                    TenantId = task.TenantId,
+                    Content = $"任务「{task.NodeName}」已由 {_currentUser.RealName}处理。",
+                    InstanceId = task.InstanceId,
+                    TaskId = task.Id,
+                    RecipientUserIds = task.ResponsibleUserIds.Concat(task.CcUserIds).Append(task.AssigneeId).Distinct().ToList(),
+                };
+                foreach (var sender in _messageSenders)
+                    await sender.SendAsync(message);
+            }
 
             // 完成/跳过：发布事件唤醒 WorkflowCore 流转
             if (dto.Action == "complete" || dto.Action == "skip")

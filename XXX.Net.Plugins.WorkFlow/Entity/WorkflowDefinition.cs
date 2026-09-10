@@ -11,6 +11,8 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
     /// </summary>
     public class WorkflowDefinition : WorkFlowMongoEntity
     {
+        /// <summary>流程模板所属租户。</summary>
+        public long TenantId { get; set; }
         /// <summary>
         /// 项目流程Id
         /// </summary>
