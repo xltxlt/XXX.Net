@@ -181,7 +181,17 @@ const baseSelectAttr = computed(() => {
 
   ]
 })
-const { nodeId,workflowDeginitionId } = defineProps<{ nodeId:string,workflowId:string,nodeType:string,workflowDeginitionId:string}>();
+const { nodeId,workflowId,workflowDeginitionId, initialData } = defineProps<{
+  nodeId:string
+  workflowId:string
+  nodeType:string
+  workflowDeginitionId:string
+  initialData?: {
+    form?: any[]
+    attrData?: Record<string, any>
+    buttonList?: buttonItem[]
+  }
+}>();
 const emit = defineEmits(['closeDialog', 'refreshList','release'])
 
 
@@ -646,17 +656,43 @@ const release = async (data: ReleaseData) => {
   }
   emit('release', pushData);
 }
+const cloneData = <T>(value: T): T => {
+  if (value === undefined || value === null) return value
+  return JSON.parse(JSON.stringify(value))
+}
+
+const applyInitialData = (data: any) => {
+  buttonList.value = cloneData(data?.buttonList ?? [])
+  matterData.value.attrData = cloneData(data?.attrData ?? {})
+  matterData.value.form = cloneData(data?.form ?? [])
+}
+
 onMounted(async () => {
-  // const res = await getMatterCustomOptions();
-  // if (res.code == 200) {
-  //     dataSelectSource.value = res.data;
-  // }
-  const res = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(workflowDeginitionId ?? '', nodeId ?? '');
-  if (res.data.statusCode==200) {
-    var data=res.data.data||{};
-    buttonList.value = data.buttonListJson ? JSON.parse(data.buttonListJson) : [];
-    matterData.value.attrData = data.attrDataJson ? JSON.parse(data.attrDataJson) : {};
-    matterData.value.form = data.formJson ? JSON.parse(data.formJson) : [];
+  // FlowDesign 有节点缓存时优先恢复缓存，只有首次进入才读取后端。
+  if (
+    initialData &&
+    (
+      Array.isArray(initialData.form) ||
+      initialData.attrData ||
+      Array.isArray(initialData.buttonList)
+    )
+  ) {
+    applyInitialData(initialData)
+    return
+  }
+
+  const res = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(
+    workflowDeginitionId ?? '',
+    nodeId ?? ''
+  )
+
+  if (res.data.statusCode == 200) {
+    const data = res.data.data || {}
+    applyInitialData({
+      buttonList: data.buttonListJson ? JSON.parse(data.buttonListJson) : [],
+      attrData: data.attrDataJson ? JSON.parse(data.attrDataJson) : {},
+      form: data.formJson ? JSON.parse(data.formJson) : []
+    })
   }
 })
 </script>
