@@ -44,6 +44,7 @@
             :workflow-id="workflowId"
             :node-type="activeNode.type"
             :workflow-deginition-id="workflowDefinitionId"
+            :initial-data="formMap[activeNode.id]"
             @release="handleNodeRelease"
             @close-dialog="handleDesignerClose"
           />
@@ -106,6 +107,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: Record<string, NodeFormJson>): void
   (e: 'back'): void
   (e: 'save', value: Record<string, NodeFormJson>): void
+  (e: 'release', value: any): void
   (e: 'node-change', nodeId: string): void
 }>()
 
