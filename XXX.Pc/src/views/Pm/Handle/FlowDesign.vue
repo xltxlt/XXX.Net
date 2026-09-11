@@ -1,7 +1,6 @@
 <template>
   <div class="flow-design-page">
-    <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm">
-    </FlowDesigner>
+    <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm" />
     <el-dialog v-model="formDesignVisible" title="设计表单" width="100%" draggable align-center style="height: 100%;top:0" :close-on-click-modal="false">
       <PageFormDesigner v-if="formDesignVisible" @release="saveForm" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType" :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
     </el-dialog>
@@ -26,10 +25,7 @@ const designNodeName = ref('')
 const designNodeType = ref('')
 const nodeForms = ref<Record<string, WorkflowNodeForm>>({})
 
-type NodeFormReleaseData = {
-  form: any[]
-  attrData: Record<string, Record<string, any>>
-}
+type NodeFormReleaseData = { form: any[]; attrData: Record<string, Record<string, any>> }
 
 const getNodeId = (node: any): string => String(node?.Id ?? node?.id ?? '')
 const getNodeType = (node: any): string => String(node?.Type ?? node?.type ?? '')
@@ -37,12 +33,15 @@ const getNodeName = (node: any): string => String(node?.Name ?? node?.name ?? no
 
 const isFormDesigned = (form?: WorkflowNodeForm | null): boolean => {
   if (!form?.formJson) return false
-  try {
-    const data = JSON.parse(form.formJson)
-    return Array.isArray(data) && data.length > 0
-  } catch {
-    return false
-  }
+  try { const data = JSON.parse(form.formJson); return Array.isArray(data) && data.length > 0 } catch { return false }
+}
+
+const onDesignForm = (node: any) => {
+  designNodeId.value = getNodeId(node)
+  designNodeType.value = getNodeType(node)
+  designNodeName.value = getNodeName(node)
+  if (!designNodeId.value) return
+  formDesignVisible.value = true
 }
 
 const loadNodeForms = async (definitionId: string, nodes: any[]) => {
@@ -69,9 +68,7 @@ onMounted(async () => {
     const def = res.data.data
     designerRef.value?.loadDefinition(def)
     await loadNodeForms(String(pars.workflowDefinitionId), def.Nodes ?? def.nodes ?? [])
-  } catch (e: any) {
-    ElMessage.error(e?.message ?? '流程加载失败')
-  }
+  } catch (e: any) { ElMessage.error(e?.message ?? '流程加载失败') }
 })
 
 const saveForm = (formData: NodeFormReleaseData) => {
@@ -89,11 +86,7 @@ const saveForm = (formData: NodeFormReleaseData) => {
 const onSave = async (def: any) => {
   const rawNodes = def.Nodes ?? def.nodes ?? []
   const rawEdges = def.Edges ?? def.edges ?? []
-  const nodes = rawNodes.map((node: any) => ({
-    id: getNodeId(node), type: getNodeType(node), name: node.Name ?? node.name,
-    config: typeof (node.Config ?? node.config) === 'string' ? (node.Config ?? node.config) : JSON.stringify(node.Config ?? node.config ?? {}),
-    nodeJson: node.NodeJson ?? node.nodeJson ?? '',
-  }))
+  const nodes = rawNodes.map((node: any) => ({ id: getNodeId(node), type: getNodeType(node), name: node.Name ?? node.name, config: typeof (node.Config ?? node.config) === 'string' ? (node.Config ?? node.config) : JSON.stringify(node.Config ?? node.config ?? {}), nodeJson: node.NodeJson ?? node.nodeJson ?? '' }))
   const edges = rawEdges.map((edge: any) => ({ source: edge.Source ?? edge.source, target: edge.Target ?? edge.target, condition: edge.Condition ?? edge.condition ?? null, edgeJson: edge.EdgeJson ?? edge.edgeJson ?? '' }))
 
   const validNodeIds = new Set(nodes.map((node: any) => node.id))
@@ -101,38 +94,18 @@ const onSave = async (def: any) => {
 
   const requiredFormNodes = rawNodes.filter((node: any) => ['start', 'task'].includes(getNodeType(node)))
   const missingForms = requiredFormNodes.filter((node: any) => !nodeForms.value[getNodeId(node)] || !isFormDesigned(nodeForms.value[getNodeId(node)]))
-  if (missingForms.length > 0) {
-    ElMessage.warning(`以下节点尚未设计表单：${missingForms.map(getNodeName).join('、')}`)
-    return
-  }
+  if (missingForms.length > 0) { ElMessage.warning(`以下节点尚未设计表单：${missingForms.map(getNodeName).join('、')}`); return }
 
-  const payload = {
-    pmFlowTempId: pars?.id ?? '', workflowId: workflowId.value, name: def.Name ?? def.name ?? '',
-    version: def.Version ?? def.version ?? 1, nodes, edges,
-  }
+  const payload = { pmFlowTempId: pars?.id ?? '', workflowId: workflowId.value, name: def.Name ?? def.name ?? '', version: def.Version ?? def.version ?? 1, nodes, edges }
   const workflowNodeForm = Object.values(nodeForms.value).filter(form => validNodeIds.has(String(form.nodeId ?? '')))
 
   try {
-    const res = await workflowDefinitionService.apiWorkflowDefinitionSavePost({
-      pmFlowTempId: pars?.id ?? '', workflowDefinition: payload, workflowNodeForm,
-    })
+    const res = await workflowDefinitionService.apiWorkflowDefinitionSavePost({ pmFlowTempId: pars?.id ?? '', workflowDefinition: payload, workflowNodeForm })
     const data = res.data?.data
     if (data?.workflowId) workflowId.value = data.workflowId
     ElMessage({ message: '流程保存成功', type: 'success', plain: true })
     emit('closeDialog')
     emit('refreshList')
-  } catch (e: any) {
-    ElMessage.error(e?.message ?? '流程保存失败')
-  }
-}
-
-const publish = async () => {
-  if (!workflowId.value) return
-  try {
-    await workflowDefinitionService.apiWorkflowDefinitionPublishWorkflowidPost(workflowId.value)
-    ElMessage.success('流程已发布，可用于发起实例')
-  } catch (e: any) {
-    ElMessage.error(e?.message ?? '流程发布失败')
-  }
+  } catch (e: any) { ElMessage.error(e?.message ?? '流程保存失败') }
 }
 </script>
