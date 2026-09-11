@@ -2,7 +2,7 @@
   <div class="flow-design-page">
     <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm" />
     <el-dialog v-model="formDesignVisible" title="设计表单" width="100%" draggable align-center style="height: 100%;top:0" :close-on-click-modal="false">
-      <PageFormDesigner v-if="formDesignVisible" @release="saveForm" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType" :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
+      <PageFormDesigner v-show="formDesignVisible" @release="saveForm" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType" :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
     </el-dialog>
   </div>
 </template>
