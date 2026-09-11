@@ -100,7 +100,7 @@
         "tags": [
           "sys-menu"
         ],
-        "summary": "获取左侧菜单",
+        "summary": "获取当前用户左侧菜单",
         "operationId": "api-sys-menu-leftmenu-Post",
         "responses": {
           "200": {
@@ -4500,6 +4500,37 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RESTfulResult_SysUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sys-tenant/tenantlist": {
+      "post": {
+        "tags": [
+          "sys-tenant"
+        ],
+        "summary": "租户列表",
+        "operationId": "api-sys-tenant-tenantlist-Post",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysTenantDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysTenantDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysTenantDto"
                 }
               }
             }
@@ -9041,6 +9072,61 @@
         }
       }
     },
+    "/api/sys-user-dep-role/depusertree": {
+      "post": {
+        "tags": [
+          "sys-user-dep-role"
+        ],
+        "summary": "获取部门及子部门用户",
+        "operationId": "api-sys-user-dep-role-depusertree-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserTreeOutput"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserTreeOutput"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserTreeOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sys-user/detail/{id}": {
       "get": {
         "tags": [
@@ -9472,6 +9558,48 @@
         }
       }
     },
+    "/api/sys-dep/detail/{id}": {
+      "get": {
+        "tags": [
+          "sys-dep"
+        ],
+        "summary": "获取详情",
+        "operationId": "api-sys-dep-detail-id-Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_SysDepartment"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_SysDepartment"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_SysDepartment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sys-user-dep-role/depusers": {
       "post": {
         "tags": [
@@ -9520,6 +9648,61 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RESTfulResult_PagedList_SysUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sys-user-dep-role/depusersummary": {
+      "post": {
+        "tags": [
+          "sys-user-dep-role"
+        ],
+        "summary": "租户部门用户汇总",
+        "operationId": "api-sys-user-dep-role-depusersummary-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserSummaryOutput"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserSummaryOutput"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserSummaryOutput"
                 }
               }
             }
@@ -9616,48 +9799,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/sys-dep/detail/{id}": {
-      "get": {
-        "tags": [
-          "sys-dep"
-        ],
-        "summary": "获取详情",
-        "operationId": "api-sys-dep-detail-id-Get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RESTfulResult_SysDepartment"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RESTfulResult_SysDepartment"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RESTfulResult_SysDepartment"
-                }
-              }
-            }
           }
         }
       }
@@ -10696,6 +10837,94 @@
         }
       }
     },
+    "/api/sys-menu/user-menu/{userid}/{tenantid}": {
+      "get": {
+        "tags": [
+          "sys-menu"
+        ],
+        "operationId": "api-sys-menu-user-menu-userid--tenantid-Get",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysMenu"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysMenu"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysMenu"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sys-menu/sys-manager-menu/{tenantid}": {
+      "get": {
+        "tags": [
+          "sys-menu"
+        ],
+        "operationId": "api-sys-menu-sys-manager-menu-tenantid-Get",
+        "parameters": [
+          {
+            "name": "tenantid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysMenu"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysMenu"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_SysMenu"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sys-menu/to-tree-output": {
       "post": {
         "tags": [
@@ -11660,6 +11889,85 @@
   },
   "components": {
     "schemas": {
+      "DepUserSummaryOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "leaderUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userCount": {
+            "type": "integer",
+            "description": "当前部门用户数",
+            "format": "int32"
+          },
+          "depCount": {
+            "type": "integer",
+            "description": "子部门数量",
+            "format": "int32"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepUserSummaryOutput"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DepUserTreeOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "部门ID / 用户ID"
+          },
+          "type": {
+            "type": "integer",
+            "description": "1=部门 2=用户",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "名称",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "description": "部门编码",
+            "nullable": true
+          },
+          "parentId": {
+            "type": "string",
+            "description": "父部门ID",
+            "nullable": true
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepUserTreeOutput"
+            },
+            "description": "子节点",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DocumentNumberResetTypeEnum": {
         "enum": [
           "Daily",
@@ -12853,6 +13161,70 @@
         },
         "additionalProperties": false
       },
+      "RESTfulResult_List_DepUserSummaryOutput": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepUserSummaryOutput"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_List_DepUserTreeOutput": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepUserTreeOutput"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "RESTfulResult_List_PagedOptions": {
         "type": "object",
         "properties": {
@@ -13313,6 +13685,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SysTenant"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_List_SysTenantDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SysTenantDto"
             },
             "nullable": true
           },

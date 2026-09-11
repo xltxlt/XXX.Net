@@ -20,6 +20,7 @@ All URIs are relative to *http://localhost*
 |[**apiSysTenantOptionsPost**](#apisystenantoptionspost) | **POST** /api/sys-tenant/options | 获取下拉搜索选项|
 |[**apiSysTenantPagelistPost**](#apisystenantpagelistpost) | **POST** /api/sys-tenant/pagelist | 获取分页集合|
 |[**apiSysTenantPageoptionGet**](#apisystenantpageoptionget) | **GET** /api/sys-tenant/pageoption | 获取新增修改页面选项|
+|[**apiSysTenantTenantlistPost**](#apisystenanttenantlistpost) | **POST** /api/sys-tenant/tenantlist | 租户列表|
 |[**apiSysTenantToEntityPost**](#apisystenanttoentitypost) | **POST** /api/sys-tenant/to-entity | 模型到实体的转换|
 |[**apiSysTenantToListEntityPost**](#apisystenanttolistentitypost) | **POST** /api/sys-tenant/to-list-entity | 模型到实体的批量转换|
 |[**apiSysTenantToTreeOutputPost**](#apisystenanttotreeoutputpost) | **POST** /api/sys-tenant/to-tree-output | 转换|
@@ -808,6 +809,49 @@ const { status, data } = await apiInstance.apiSysTenantPageoptionGet(
 ### Return type
 
 **RESTfulResultDictionaryStringListPagedOptions**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **apiSysTenantTenantlistPost**
+> RESTfulResultListSysTenantDto apiSysTenantTenantlistPost()
+
+
+### Example
+
+```typescript
+import {
+    SysTenantApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new SysTenantApi(configuration);
+
+const { status, data } = await apiInstance.apiSysTenantTenantlistPost();
+```
+
+### Parameters
+This endpoint does not have any parameters.
+
+
+### Return type
+
+**RESTfulResultListSysTenantDto**
 
 ### Authorization
 

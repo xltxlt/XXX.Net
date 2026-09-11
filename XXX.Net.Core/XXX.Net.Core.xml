@@ -2067,6 +2067,79 @@
             状态
             </summary>
         </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserSummaryDto.UserCount">
+            <summary>
+            当前部门用户数
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserSummaryDto.DepCount">
+            <summary>
+            子部门数量
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserSummaryDto.UserIds">
+            <summary>
+            当前部门以及所有子部门的用户ID
+            只用于内部计算，不返回前端
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserSummaryOutput.UserCount">
+            <summary>
+            当前部门用户数
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserSummaryOutput.DepCount">
+            <summary>
+            子部门数量
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserTreeOutput.Id">
+            <summary>
+            部门ID / 用户ID
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserTreeOutput.Type">
+            <summary>
+            1=部门 2=用户
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserTreeOutput.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserTreeOutput.Code">
+            <summary>
+            部门编码
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserTreeOutput.ParentId">
+            <summary>
+            父部门ID
+            </summary>
+        </member>
+        <member name="P:XXX.Net.Core.Services.Dep.Dto.DepUserTreeOutput.Children">
+            <summary>
+            子节点
+            </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.DepUsers(XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
+            <summary>
+            部门用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.DepUserRoles(XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
+            <summary>
+            部门用户角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.SetDepUserRoles(XXX.Net.Core.Services.Dep.Dto.UserDepRolesDto)">
+            <summary>
+            设置部门用户角色
+            </summary>
+        </member>
         <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.Code">
             <summary>编码</summary>
         </member>
@@ -2114,23 +2187,6 @@
         <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepTreeOutput.Description">
             <summary>
             说明
-            </summary>
-        </member>
-        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.DepUsers(XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
-            <summary>
-            部门用户
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.DepUserRoles(XXX.Net.Core.BaseEntitys.Admin.PagedPaginationListDto)">
-            <summary>
-            部门用户角色
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.SetDepUserRoles(XXX.Net.Core.Services.Dep.Dto.UserDepRolesDto)">
-            <summary>
-            设置部门用户角色
             </summary>
         </member>
         <member name="P:XXX.Net.Core.Services.Dict.Dto.SysDictDataDto.Label">
@@ -2988,6 +3044,12 @@
         </member>
         <member name="P:XXX.Net.Core.Services.Tenant.Dto.SysTenantDto.Remark">
             <summary>备注</summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Tenant.SysTenantService.TenantList">
+            <summary>
+            租户列表
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:XXX.Net.Core.Services.User.Dto.SysUserDto.TenantId">
             <summary>

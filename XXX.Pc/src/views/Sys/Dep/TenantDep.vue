@@ -1,8 +1,8 @@
 <template>
     <div class="company-dep-page" ref="companyDepPageRef">
         <div class="search-div" style="display: flex;">
-            <el-select v-model="companyId" placeholder="清选择公司" class="search-company">
-                <el-option v-for="item in companyListData" :key="item.value" :label="item.label" :value="item.value" />
+            <el-select v-model="companyId" placeholder="请选择公司" class="search-company">
+                <el-option v-for="item in companyListData" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
             <input type="text" placeholder="搜索部门名称" v-model="companyTitle" class="searchText"></input>
             <el-button type="button" id="search-btn" @click="pageFun['loadData']">
@@ -11,7 +11,7 @@
         <div class="orgPage" id="draggablePage" ref="orgPageEle"
             :style="{ transform: `scale(${zoomSize / 100})`, transformOrigin: 'center center' }"
             style="display: inline-block;">
-            <TreeDep @btn-click="handleBtnFun" @content-click="openDepInfo" :org-tree="depData" :draging="draging"
+            <TreeDep @btn-click="handleBtnFun" @content-click="openDepInfo" :org-tree="depData||[]" :draging="draging"
                 :allow-drop="pageFun.allowDrop" :drop="pageFun.drop" :drag="pageFun.drag" :root="true"></TreeDep>
         </div>
         <div class="scale-div">
@@ -25,27 +25,28 @@
 </template>
 <script setup lang='ts'>
 import { ref, onUnmounted, onMounted } from 'vue'
-import TreeDep from '@/components/common/TreeDep/TreeDep.vue';
+import TreeDep, { type OrgItem } from '@/components/common/TreeDep/TreeDep.vue';
 import { getQueryByName } from '@/utils/pcRouter';
 import { ElMessageBox } from 'element-plus';
 import { handleSumbitResTip } from '@/utils/common';
 import YzPopup from '@/components/common/YzPopup/YzPopup.vue';
-import CompanyDepUser from '@/views/Dep/Handle/CompanyDepUser.vue';
-import SetDepManage from './Handle/SetDepManage.vue';
-import DepMemberManage from './Handle/DepMemberManage.vue';
-import InviteMember from './Handle/InviteMember.vue';
+import DepUser from './DepUser.vue';
+import SetDepManage from './SetDepManage.vue';
+import DepMemberManage from './DepMemberManage.vue';
 import type { YzDialogPars } from '@/components/common/YzPopup';
-import AddDep from './Handle/AddDep.vue';
+import DepEdit from './DepEdit.vue';
+import { depService, tenantService, userDepRoleService } from '@/api/index.ts';
+import type { DepUserSummaryOutput, SysTenantDto } from '@/api-services/generated/index.ts';
 const companyDepPageRef = ref<HTMLElement | null>(null)
 const orgPageEle = ref<HTMLElement | null>(null)
 const draging = ref<boolean>(false)
 const companyTitle = ref<string>('')
 const companyId = ref<string>('')
-const companyListData = ref<any[]>();
+const companyListData = ref<SysTenantDto[]>();
 const menuId = getQueryByName('menuId')
 
-const depData = ref<any[]>([])
-const oldDepData = ref<any[]>([])
+const depData = ref<OrgItem[]>([])
+const oldDepData = ref<DepUserSummaryOutput[]>([])
 
 const yzPopupRef = ref()
 const yzPopupPars: YzDialogPars = {
@@ -62,9 +63,9 @@ const yzPopupPars: YzDialogPars = {
 const openDepInfo = (id: string, item: any) => {
     yzPopupPars.height = '80%';
     yzPopupPars.width = '950px';
-    yzPopupPars.comp = CompanyDepUser
+    yzPopupPars.comp = DepUser
     yzPopupPars.title = item?.title ?? '部门信息'
-    yzPopupPars.pars = { id, type: 'openDepInfo' }
+    yzPopupPars.pars = { id, type: 'openDepInfo',tenantId:companyId.value }
     yzPopupRef.value.open(yzPopupPars)
 }
 const handleBtnFun = (type: string, item: any) => {
@@ -73,19 +74,19 @@ const handleBtnFun = (type: string, item: any) => {
 }
 const btnFuns: Record<string, Function> = {
     addDep: (item: any) => {
-        yzPopupPars.comp = AddDep
+        yzPopupPars.comp = DepEdit
         yzPopupPars.height = '70%';
         yzPopupPars.width = '750px';
         yzPopupPars.title = `添加子部门（${item?.title ?? ''}）`;
-        yzPopupPars.pars = { parentId: item.id, pltAndEntId: item.pltAndEntId }
+        yzPopupPars.pars = { parentId: item.id,tenantId:companyId.value }
         yzPopupRef.value.open(yzPopupPars)
     },
     editDep: (item: any) => {
-        yzPopupPars.comp = AddDep
+        yzPopupPars.comp = DepEdit
         yzPopupPars.height = '70%';
         yzPopupPars.width = '750px';
         yzPopupPars.title = `编辑部门（${item?.title ?? ''}）`;
-        yzPopupPars.pars = { id: item.id, parentId: item.pId, pltAndEntId: item.pltAndEntId }
+        yzPopupPars.pars = { id: item.id, parentId: item.pId,tenantId:companyId.value }
         yzPopupRef.value.open(yzPopupPars)
     },
     setDepManage:(item:any)=>{
@@ -93,25 +94,18 @@ const btnFuns: Record<string, Function> = {
         yzPopupPars.height = '80%';
         yzPopupPars.width = '900px';
         yzPopupPars.title = `设置负责人（${item?.title ?? ''}）`;
-        yzPopupPars.pars = { id: item.id, parentId: item.pId, pltAndEntId: item.pltAndEntId,depTitle:item?.title??'' }
+        yzPopupPars.pars = { id: item.id, parentId: item.pId,tenantId:companyId.value,depTitle:item?.name??'' }
         yzPopupRef.value.open(yzPopupPars)
     },
      addDepMember:(item:any)=>{
         yzPopupPars.comp = DepMemberManage
         yzPopupPars.height = '80%';
         yzPopupPars.width = '900px';
-        yzPopupPars.title = `部门成员管理（${item?.title ?? ''}）`;
-        yzPopupPars.pars = { id: item.id, parentId: item.pId, pltAndEntId: item.pltAndEntId,depTitle:item?.title??'' }
+        yzPopupPars.title = `部门成员管理（${item?.name ?? ''}）`;
+        yzPopupPars.pars = { id: item.id,tenantId:companyId.value, parentId: item.pId, depTitle:item?.name??'' }
         yzPopupRef.value.open(yzPopupPars)
     },
-    inviteMember:(item:any)=>{
-        yzPopupPars.comp = InviteMember
-        yzPopupPars.height = '80%';
-        yzPopupPars.width = '1100px';
-        yzPopupPars.title = `邀请好友入职（${item?.title ?? ''}）`;
-        yzPopupPars.pars = { id: item.id, parentId: item.pId, pltAndEntId: item.pltAndEntId,depTitle:item?.title??'' }
-        yzPopupRef.value.open(yzPopupPars)
-    }
+   
 }
 // 滚动到中间位置
 const toCenter = () => {
@@ -258,11 +252,13 @@ const pageFun: Record<string, Function> = {
         pageFun[name](data)
     },
     loadData: async () => {
-        // const data = await getCompanyTreeData(menuId, {
-        //     pltAndEntId: companyId.value,
-        //     title: companyTitle.value
-        // });
-        // depData.value = data;
+        const res= await userDepRoleService.apiSysUserDepRoleDepusersummaryPost({
+            where:{
+                'tenantId':companyId.value
+            }
+        })
+        if(res.data.statusCode!=200)return;
+        depData.value = (res.data.data||[]) as OrgItem[];
     },
     allowDrop: (ev: any) => {
         ev.preventDefault();
@@ -309,7 +305,7 @@ const pageFun: Record<string, Function> = {
             // handleSumbitResTip(res, '移动成功');
             pageFun['loadData']()
         }).catch(() => {
-            depData.value = oldDepData.value;
+            depData.value = oldDepData.value  as OrgItem[];
         });
     },
     findItem: (data: any[], id: string, parItem: any, del: boolean = false) => {
@@ -345,10 +341,11 @@ const pageFun: Record<string, Function> = {
 }
 // 组件挂载时初始化
 onMounted(async () => {
+    var res = await tenantService.apiSysTenantTenantlistPost();
+    if(res.data.statusCode!=200)return;
+    companyListData.value=res.data.data??[];
+    companyId.value = companyListData.value[0].id??'';
     await pageFun.loadData();
-    // companyListData.value = await getCompanyListFill();
-    const checked = companyListData.value?.filter(m => m.checked);
-    (checked && checked?.length > 0) && (companyId.value = checked[0].value);
     orgPageEle.value = document.querySelector(".orgPage")
     // 添加滚轮事件监听器
     if (companyDepPageRef.value) {

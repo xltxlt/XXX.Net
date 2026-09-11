@@ -51,6 +51,14 @@ const systemRoutes: Array<RouteRecordRaw> = [
         name: "document",
         component: () => import('@/views/Sys/Document/Document.vue'),
     },
+{
+        path: '/sys/tenantDep',
+        name: "tenantDep",
+        component: () => import('@/views/Sys/Dep/TenantDep.vue'),
+    },
+
+
+    
 ]
 
 export default systemRoutes

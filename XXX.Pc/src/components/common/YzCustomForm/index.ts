@@ -16,7 +16,7 @@ interface componentAttrData { ident:string,pTitle?:string,pIdent:string,label:st
 /** 持久化时使用的控件属性结构：外层 key 为控件 ident，内层 key 为属性 name/code。 */
 type AttrData=Record<string,Record<string,any>>
 /** 编辑器内部 release 结构，保留属性编辑器需要的元数据。 */
-interface ReleaseData { form:componentForm[], attrData:Record<string,componentAttrData[]> }
+interface ReleaseData { form:componentForm[], attrData:Record<string,componentAttrData[]>,cols?:number|null }
 /** 后端 WorkflowNodeForm.AttrDataJson 使用的规范化结构。 */
 interface PersistReleaseData { form:componentForm[], attrData:AttrData }
 interface componentForm { formType:number,rules?:any,placeholder?:string,custom?:boolean,code?:string,pIdent?:string,ident?:string,fieldName:string,title?:string,label?:string,uploadPath?:string,componentAttr?:componentAttr[],must?:boolean,cb?:Function,props?:string|[]|{},on?:string|[]|{},comOn?:string|[]|{},comProps?:string|[]|{},option?:any,child?:componentForm[],hide?:boolean,showPicker?:boolean }

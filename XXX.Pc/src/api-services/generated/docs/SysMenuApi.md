@@ -16,13 +16,14 @@ All URIs are relative to *http://localhost*
 |[**apiSysMenuDetailIdGet**](#apisysmenudetailidget) | **GET** /api/sys-menu/detail/{id} | 获取详情|
 |[**apiSysMenuDetailoptionGet**](#apisysmenudetailoptionget) | **GET** /api/sys-menu/detailoption | 获取详情|
 |[**apiSysMenuHandlePathPost**](#apisysmenuhandlepathpost) | **POST** /api/sys-menu/handle-path | 处理树形层级|
-|[**apiSysMenuLeftmenuPost**](#apisysmenuleftmenupost) | **POST** /api/sys-menu/leftmenu | 获取左侧菜单|
+|[**apiSysMenuLeftmenuPost**](#apisysmenuleftmenupost) | **POST** /api/sys-menu/leftmenu | 获取当前用户左侧菜单|
 |[**apiSysMenuListPost**](#apisysmenulistpost) | **POST** /api/sys-menu/list | 获取集合|
 |[**apiSysMenuLogicdeleteIdPost**](#apisysmenulogicdeleteidpost) | **POST** /api/sys-menu/logicdelete/{id} | 逻辑删除|
 |[**apiSysMenuMenurenderPost**](#apisysmenumenurenderpost) | **POST** /api/sys-menu/menurender | 获取菜单渲染数据|
 |[**apiSysMenuOptionsPost**](#apisysmenuoptionspost) | **POST** /api/sys-menu/options | 获取下拉搜索选项|
 |[**apiSysMenuPagelistPost**](#apisysmenupagelistpost) | **POST** /api/sys-menu/pagelist | 获取分页集合|
 |[**apiSysMenuPageoptionGet**](#apisysmenupageoptionget) | **GET** /api/sys-menu/pageoption | 获取新增修改页面选项|
+|[**apiSysMenuSysManagerMenuTenantidGet**](#apisysmenusysmanagermenutenantidget) | **GET** /api/sys-menu/sys-manager-menu/{tenantid} | |
 |[**apiSysMenuToEntityPost**](#apisysmenutoentitypost) | **POST** /api/sys-menu/to-entity | 模型到实体的转换|
 |[**apiSysMenuToListEntityPost**](#apisysmenutolistentitypost) | **POST** /api/sys-menu/to-list-entity | 模型到实体的批量转换|
 |[**apiSysMenuToTreeOutputPost**](#apisysmenutotreeoutputpost) | **POST** /api/sys-menu/to-tree-output | 转换|
@@ -30,6 +31,7 @@ All URIs are relative to *http://localhost*
 |[**apiSysMenuTreelistPost**](#apisysmenutreelistpost) | **POST** /api/sys-menu/treelist | 获取树形页面数据 带筛选|
 |[**apiSysMenuTreeoptionsPost**](#apisysmenutreeoptionspost) | **POST** /api/sys-menu/treeoptions | 获取树形下拉搜索选项|
 |[**apiSysMenuUpdatePost**](#apisysmenuupdatepost) | **POST** /api/sys-menu/update | 更新|
+|[**apiSysMenuUserMenuUseridTenantidGet**](#apisysmenuusermenuuseridtenantidget) | **GET** /api/sys-menu/user-menu/{userid}/{tenantid} | |
 
 # **apiSysMenuAddPost**
 > RESTfulResultSysMenu apiSysMenuAddPost()
@@ -966,6 +968,56 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **apiSysMenuSysManagerMenuTenantidGet**
+> RESTfulResultListSysMenu apiSysMenuSysManagerMenuTenantidGet()
+
+
+### Example
+
+```typescript
+import {
+    SysMenuApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new SysMenuApi(configuration);
+
+let tenantid: string; // (default to undefined)
+
+const { status, data } = await apiInstance.apiSysMenuSysManagerMenuTenantidGet(
+    tenantid
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **tenantid** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**RESTfulResultListSysMenu**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **apiSysMenuToEntityPost**
 > RESTfulResultSysMenu apiSysMenuToEntityPost()
 
@@ -1311,6 +1363,59 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json, text/json, application/*+json, text/plain
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **apiSysMenuUserMenuUseridTenantidGet**
+> RESTfulResultListSysMenu apiSysMenuUserMenuUseridTenantidGet()
+
+
+### Example
+
+```typescript
+import {
+    SysMenuApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new SysMenuApi(configuration);
+
+let userid: string; // (default to undefined)
+let tenantid: string; // (default to undefined)
+
+const { status, data } = await apiInstance.apiSysMenuUserMenuUseridTenantidGet(
+    userid,
+    tenantid
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **userid** | [**string**] |  | defaults to undefined|
+| **tenantid** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**RESTfulResultListSysMenu**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: text/plain, application/json, text/json
 
 

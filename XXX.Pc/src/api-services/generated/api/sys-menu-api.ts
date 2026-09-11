@@ -457,7 +457,7 @@ export const SysMenuApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary 获取左侧菜单
+         * @summary 获取当前用户左侧菜单
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -673,6 +673,39 @@ export const SysMenuApiAxiosParamCreator = function (configuration?: Configurati
             if (where) {
                 localVarQueryParameter['where'] = where.join(COLLECTION_FORMATS.csv);
             }
+
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} tenantid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysMenuSysManagerMenuTenantidGet: async (tenantid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'tenantid' is not null or undefined
+            assertParamExists('apiSysMenuSysManagerMenuTenantidGet', 'tenantid', tenantid)
+            const localVarPath = `/api/sys-menu/sys-manager-menu/{tenantid}`
+                .replace('{tenantid}', encodeURIComponent(String(tenantid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
 
             localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
 
@@ -916,6 +949,43 @@ export const SysMenuApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} userid 
+         * @param {string} tenantid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysMenuUserMenuUseridTenantidGet: async (userid: string, tenantid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userid' is not null or undefined
+            assertParamExists('apiSysMenuUserMenuUseridTenantidGet', 'userid', userid)
+            // verify required parameter 'tenantid' is not null or undefined
+            assertParamExists('apiSysMenuUserMenuUseridTenantidGet', 'tenantid', tenantid)
+            const localVarPath = `/api/sys-menu/user-menu/{userid}/{tenantid}`
+                .replace('{userid}', encodeURIComponent(String(userid)))
+                .replace('{tenantid}', encodeURIComponent(String(tenantid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1081,7 +1151,7 @@ export const SysMenuApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 获取左侧菜单
+         * @summary 获取当前用户左侧菜单
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1167,6 +1237,18 @@ export const SysMenuApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiSysMenuPageoptionGet(where, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SysMenuApi.apiSysMenuPageoptionGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} tenantid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSysMenuSysManagerMenuTenantidGet(tenantid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListSysMenu>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSysMenuSysManagerMenuTenantidGet(tenantid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SysMenuApi.apiSysMenuSysManagerMenuTenantidGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1258,6 +1340,19 @@ export const SysMenuApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiSysMenuUpdatePost(sysMenuDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SysMenuApi.apiSysMenuUpdatePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} userid 
+         * @param {string} tenantid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSysMenuUserMenuUseridTenantidGet(userid: string, tenantid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListSysMenu>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSysMenuUserMenuUseridTenantidGet(userid, tenantid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SysMenuApi.apiSysMenuUserMenuUseridTenantidGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -1389,7 +1484,7 @@ export const SysMenuApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary 获取左侧菜单
+         * @summary 获取当前用户左侧菜单
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1455,6 +1550,15 @@ export const SysMenuApiFactory = function (configuration?: Configuration, basePa
          */
         apiSysMenuPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultDictionaryStringListPagedOptions> {
             return localVarFp.apiSysMenuPageoptionGet(where, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} tenantid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysMenuSysManagerMenuTenantidGet(tenantid: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListSysMenu> {
+            return localVarFp.apiSysMenuSysManagerMenuTenantidGet(tenantid, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1525,6 +1629,16 @@ export const SysMenuApiFactory = function (configuration?: Configuration, basePa
          */
         apiSysMenuUpdatePost(sysMenuDto?: SysMenuDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultSysMenu> {
             return localVarFp.apiSysMenuUpdatePost(sysMenuDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} userid 
+         * @param {string} tenantid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysMenuUserMenuUseridTenantidGet(userid: string, tenantid: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListSysMenu> {
+            return localVarFp.apiSysMenuUserMenuUseridTenantidGet(userid, tenantid, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1665,7 +1779,7 @@ export class SysMenuApi extends BaseAPI {
 
     /**
      * 
-     * @summary 获取左侧菜单
+     * @summary 获取当前用户左侧菜单
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -1737,6 +1851,16 @@ export class SysMenuApi extends BaseAPI {
      */
     public apiSysMenuPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig) {
         return SysMenuApiFp(this.configuration).apiSysMenuPageoptionGet(where, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} tenantid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiSysMenuSysManagerMenuTenantidGet(tenantid: string, options?: RawAxiosRequestConfig) {
+        return SysMenuApiFp(this.configuration).apiSysMenuSysManagerMenuTenantidGet(tenantid, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1814,6 +1938,17 @@ export class SysMenuApi extends BaseAPI {
      */
     public apiSysMenuUpdatePost(sysMenuDto?: SysMenuDto, options?: RawAxiosRequestConfig) {
         return SysMenuApiFp(this.configuration).apiSysMenuUpdatePost(sysMenuDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} userid 
+     * @param {string} tenantid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiSysMenuUserMenuUseridTenantidGet(userid: string, tenantid: string, options?: RawAxiosRequestConfig) {
+        return SysMenuApiFp(this.configuration).apiSysMenuUserMenuUseridTenantidGet(userid, tenantid, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

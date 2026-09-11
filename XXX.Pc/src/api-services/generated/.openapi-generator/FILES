@@ -34,6 +34,8 @@ api/workflow-task-api.ts
 base.ts
 common.ts
 configuration.ts
+docs/DepUserSummaryOutput.md
+docs/DepUserTreeOutput.md
 docs/DocumentApi.md
 docs/DocumentNumberResetTypeEnum.md
 docs/DocumentNumberRuleDto.md
@@ -139,6 +141,8 @@ docs/RESTfulResultInventoryStock.md
 docs/RESTfulResultInventoryStockDto.md
 docs/RESTfulResultInventoryType.md
 docs/RESTfulResultInventoryWarehouse.md
+docs/RESTfulResultListDepUserSummaryOutput.md
+docs/RESTfulResultListDepUserTreeOutput.md
 docs/RESTfulResultListInventoryAttributeDefinition.md
 docs/RESTfulResultListInventoryDocument.md
 docs/RESTfulResultListInventoryDomain.md
@@ -165,6 +169,7 @@ docs/RESTfulResultListSysMenuTreeOutput.md
 docs/RESTfulResultListSysPosition.md
 docs/RESTfulResultListSysRole.md
 docs/RESTfulResultListSysTenant.md
+docs/RESTfulResultListSysTenantDto.md
 docs/RESTfulResultListSysTenantTreeOutput.md
 docs/RESTfulResultListSysUser.md
 docs/RESTfulResultListUserDepRolesOutput.md
@@ -316,6 +321,8 @@ docs/WorkflowTask.md
 docs/WorkflowTaskApi.md
 git_push.sh
 index.ts
+models/dep-user-summary-output.ts
+models/dep-user-tree-output.ts
 models/document-number-reset-type-enum.ts
 models/document-number-rule-dto.ts
 models/enabled-enum.ts
@@ -410,6 +417,8 @@ models/restful-result-inventory-stock-dto.ts
 models/restful-result-inventory-stock.ts
 models/restful-result-inventory-type.ts
 models/restful-result-inventory-warehouse.ts
+models/restful-result-list-dep-user-summary-output.ts
+models/restful-result-list-dep-user-tree-output.ts
 models/restful-result-list-inventory-attribute-definition.ts
 models/restful-result-list-inventory-document.ts
 models/restful-result-list-inventory-domain.ts
@@ -435,6 +444,7 @@ models/restful-result-list-sys-menu-tree-output.ts
 models/restful-result-list-sys-menu.ts
 models/restful-result-list-sys-position.ts
 models/restful-result-list-sys-role.ts
+models/restful-result-list-sys-tenant-dto.ts
 models/restful-result-list-sys-tenant-tree-output.ts
 models/restful-result-list-sys-tenant.ts
 models/restful-result-list-sys-user.ts

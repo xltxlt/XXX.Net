@@ -3,21 +3,21 @@
         'org-ul-root': root
     }">
         <li v-for="(item, index) in orgTree" :draggable="!root"
-            @dragstart.self="(event) => props.drag && props.drag(event, item.id, item.pId, root,item)" class="org-li "
+            @dragstart.self="(event) => props.drag && props.drag(event, item.id, item.parentId, root,item)" class="org-li "
             :key="index" :class="{
                 'org-li-root': root,
                 'org-li-range': draging
 
-            }" :id="'org-li-id_' + item.id" :data-id="item.id" :data-pid="item.pId">
+            }" :id="'org-li-id_' + item.id" :data-id="item.id" :data-pid="item.parentId">
             <div class="org-item" @drop="(event) => props.drop && props.drop(event, 'org-li-id_' + item.id, item.id,item)"
                 @dragover="(event) => props.allowDrop && props.allowDrop(event, 'org-li-id_' + item.id, item.id,item)"
-                :id="'org-item-id_' + item.id" :data-pid="item.pId" :class="{
+                :id="'org-item-id_' + item.id" :data-pid="item.parentId" :class="{
                     'org-no-children': !item.children || item.children.length == 0
                 }">
                 <div class="org-item-top-bg"></div>
                 <div class="org-item-header">
                     <img src="/imgs/company/addDep.png" class="addDep" @click.stop="btnClick('addDep',item)" alt="">
-                    {{ item.title }}
+                    {{ item.name ?? '' }}
                     <div class="org-item-tools">
                         <el-dropdown @command="(funName:string)=>btnClick(funName,item)" ref="dropdownRef" type="primary" trigger="click">
                             <img src="/imgs/company/tools.png" class="toolsBtn" alt="">
@@ -27,7 +27,6 @@
                                     <el-dropdown-item :command="'editDep'">编辑部门</el-dropdown-item>
                                     <el-dropdown-item :command="'setDepManage'">设置负责人</el-dropdown-item>
                                     <el-dropdown-item :command="'addDepMember'">添加成员</el-dropdown-item>
-                                    <el-dropdown-item :command="'inviteMember'">邀请入职</el-dropdown-item>
                                     <!-- <el-dropdown-item :command="'delDep'">移除部门</el-dropdown-item> -->
                                 </el-dropdown-menu>
                             </template>
@@ -35,7 +34,7 @@
                     </div>
                 </div>
                 <div class="org-item-content" @click="() => emits('contentClick', item.id, item)">
-                    <div class="org-item-content-row">部门数：{{ item.orgCount }}</div>
+                    <div class="org-item-content-row">部门数：{{ item.depCount }}</div>
                     <div class="org-item-content-row">员工数：{{ item.userCount }}</div>
                 </div>
 
@@ -46,23 +45,17 @@
             </div>
             <TreeDep @btn-click="btnClick" @content-click="(id, item) => emits('contentClick', id, item)" v-show="!item.hide"
                 :draging="props.draging" :allow-drop="props.allowDrop" :drop="props.drop" :drag="props.drag"
-                :org-tree="item.children" :root="false">
+                :org-tree="(item.children||[]) " :root="false">
             </TreeDep>
         </li>
     </ul>
 </template>
 <script setup lang='ts'>
+import type { DepUserSummaryOutput } from '@/api-services/generated';
 import { ref } from 'vue'
 const tableBtns=ref([])
-interface OrgItem {
-    id: string,
-    pId: string,
-    title: string,
-    pltAndEntId: string,
-    orgCount: number,
-    userCount: number,
+export interface OrgItem extends DepUserSummaryOutput {
     hide: boolean,
-    children: OrgItem[]
 }
 const props = defineProps<{
     orgTree: OrgItem[],

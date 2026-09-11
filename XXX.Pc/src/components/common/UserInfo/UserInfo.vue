@@ -6,11 +6,17 @@
                 <img class="dep-user-card-logo"
                     :src="userInfo.profilePhotoUrl??'https://ldbj-pubilc-files.oss-cn-hangzhou.aliyuncs.com/head/header.png'" alt="">
                 <div class="dep-user-card-info">
-                    <p class="dep-user-card-name">{{userInfo.name}}</p>
+                    <p class="dep-user-card-name">{{userInfo.realName}}</p>
                     <p class="dep-user-card-roles ldyz-text">{{(userInfo?.roleNames??[]).join('、')}}</p>
                 </div>
             </div>
             <div class="dep-user-card-items">
+                 <div class="dep-user-card-item">
+                    <label for="">用户名</label>
+                    <div class="dep-user-card-val ldyz-text">
+                        {{userInfo.userName}}
+                    </div>
+                </div>
                 <div class="dep-user-card-item">
                     <label for="">手机号码</label>
                     <div class="dep-user-card-val ldyz-text">
@@ -21,24 +27,6 @@
                     <label for="">员工工号</label>
                     <div class="dep-user-card-val ldyz-text">
                         {{userInfo.no}}
-                    </div>
-                </div>
-                 <div class="dep-user-card-item">
-                    <label for="">员工性别</label>
-                    <div class="dep-user-card-val ldyz-text">
-                        {{userInfo.gender}}
-                    </div>
-                </div>
-                <div class="dep-user-card-item">
-                    <label for="">所属部门</label>
-                    <div class="dep-user-card-val ldyz-text">
-                        {{userInfo.orgDepName}}
-                    </div>
-                </div>
-                <div class="dep-user-card-item">
-                    <label for="">所属企业</label>
-                    <div class="dep-user-card-val ldyz-text">
-                        {{userInfo.companyName}}
                     </div>
                 </div>
             </div>

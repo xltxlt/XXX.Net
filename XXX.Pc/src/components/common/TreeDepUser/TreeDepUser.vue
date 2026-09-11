@@ -16,7 +16,7 @@
                             'tree-item-dep': data.type == 1,
 
                         }">
-                            {{ data.title }}
+                            {{ data.name }}
                         </div>
                     </div>
 

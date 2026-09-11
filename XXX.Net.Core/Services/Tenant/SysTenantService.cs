@@ -1,11 +1,13 @@
-﻿using XXX.Net.Core.Entity.Sys;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using XXX.Net.Core.Entity.Sys;
+using XXX.Net.Core.EventBus;
+using XXX.Net.Core.Services.Base.Dto;
 using XXX.Net.Core.Services.Base.Tree;
 using XXX.Net.Core.Services.Menu.Dto;
 using XXX.Net.Core.Services.Tenant.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using XXX.Net.Core.Services.Base.Dto;
+using XXX.Net.Core.Services.User.Dto;
 
 namespace XXX.Net.Core.Services.Tenant
 {
@@ -20,6 +22,19 @@ namespace XXX.Net.Core.Services.Tenant
             _httpContextAccessor = httpContextAccessor;
             _currentUser = currentUser;
             _msRepository = msRepository;
+        }
+        /// <summary>
+        /// 租户列表
+        /// </summary>
+        /// <returns></returns>
+        [ApiDescriptionSettings(Name = "TenantList", Order = 400), HttpPost]
+        [DisplayName("租户列表")]
+        public  async Task<List<SysTenantDto>> TenantList()
+        {
+
+            var tPath="/"+ _currentUser.TenantId+"/";
+            var mlTenant= await _msRepository.Slave<SysTenant>().AsQueryable().AsNoTracking().Where(x => x.Path.Contains(tPath) || x.Id == _currentUser.TenantId).ToListAsync();
+            return mlTenant.Adapt<List<SysTenantDto>>();
         }
     }
 }

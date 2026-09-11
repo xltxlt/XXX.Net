@@ -56,7 +56,10 @@ namespace XXX.Net.Core.BaseEntitys.Admin
         }
         public long GetIdWhere(string name)
         {
-
+            var val = GetWhere(name);
+            if (string.IsNullOrEmpty(GetWhere(name))) {
+                return 0;
+            }
             return Convert.ToInt64(GetWhere(name)??"0");
         }
     }

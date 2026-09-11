@@ -22,7 +22,13 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
+import type { PagedListDto } from '../models';
+// @ts-ignore
 import type { PagedPaginationListDto } from '../models';
+// @ts-ignore
+import type { RESTfulResultListDepUserSummaryOutput } from '../models';
+// @ts-ignore
+import type { RESTfulResultListDepUserTreeOutput } from '../models';
 // @ts-ignore
 import type { RESTfulResultListUserDepRolesOutput } from '../models';
 // @ts-ignore
@@ -102,6 +108,72 @@ export const SysUserDepRoleApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
+         * @summary 租户部门用户汇总
+         * @param {PagedListDto} [pagedListDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysUserDepRoleDepusersummaryPost: async (pagedListDto?: PagedListDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/sys-user-dep-role/depusersummary`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(pagedListDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 获取部门及子部门用户
+         * @param {PagedListDto} [pagedListDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysUserDepRoleDepusertreePost: async (pagedListDto?: PagedListDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/sys-user-dep-role/depusertree`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(pagedListDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 设置部门用户角色
          * @param {UserDepRolesDto} [userDepRolesDto] 
          * @param {*} [options] Override http request option.
@@ -169,6 +241,32 @@ export const SysUserDepRoleApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 租户部门用户汇总
+         * @param {PagedListDto} [pagedListDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSysUserDepRoleDepusersummaryPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListDepUserSummaryOutput>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSysUserDepRoleDepusersummaryPost(pagedListDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SysUserDepRoleApi.apiSysUserDepRoleDepusersummaryPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 获取部门及子部门用户
+         * @param {PagedListDto} [pagedListDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSysUserDepRoleDepusertreePost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListDepUserTreeOutput>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSysUserDepRoleDepusertreePost(pagedListDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SysUserDepRoleApi.apiSysUserDepRoleDepusertreePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 设置部门用户角色
          * @param {UserDepRolesDto} [userDepRolesDto] 
          * @param {*} [options] Override http request option.
@@ -211,6 +309,26 @@ export const SysUserDepRoleApiFactory = function (configuration?: Configuration,
         },
         /**
          * 
+         * @summary 租户部门用户汇总
+         * @param {PagedListDto} [pagedListDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysUserDepRoleDepusersummaryPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListDepUserSummaryOutput> {
+            return localVarFp.apiSysUserDepRoleDepusersummaryPost(pagedListDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 获取部门及子部门用户
+         * @param {PagedListDto} [pagedListDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysUserDepRoleDepusertreePost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListDepUserTreeOutput> {
+            return localVarFp.apiSysUserDepRoleDepusertreePost(pagedListDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 设置部门用户角色
          * @param {UserDepRolesDto} [userDepRolesDto] 
          * @param {*} [options] Override http request option.
@@ -246,6 +364,28 @@ export class SysUserDepRoleApi extends BaseAPI {
      */
     public apiSysUserDepRoleDepusersPost(pagedPaginationListDto?: PagedPaginationListDto, options?: RawAxiosRequestConfig) {
         return SysUserDepRoleApiFp(this.configuration).apiSysUserDepRoleDepusersPost(pagedPaginationListDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 租户部门用户汇总
+     * @param {PagedListDto} [pagedListDto] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiSysUserDepRoleDepusersummaryPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig) {
+        return SysUserDepRoleApiFp(this.configuration).apiSysUserDepRoleDepusersummaryPost(pagedListDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 获取部门及子部门用户
+     * @param {PagedListDto} [pagedListDto] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiSysUserDepRoleDepusertreePost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig) {
+        return SysUserDepRoleApiFp(this.configuration).apiSysUserDepRoleDepusertreePost(pagedListDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

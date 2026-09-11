@@ -117,7 +117,7 @@ import PageForm from '@/components/PageForm/PageForm.vue'
 import { PageFormGroup, PageFormType, type TempEditForm, type TempEditPageData } from '@/components/PageForm'
 import { workflowNodeFormService } from '@/api/workflow'
 
-const { nodeId, workflowDeginitionId } = defineProps<{ nodeId: string, workflowId: string, nodeType: string, workflowDeginitionId: string }>()
+// const { nodeId, workflowDeginitionId } = defineProps<{  }>()
 
 type DesignerItem = Omit<TempEditForm, 'child' | 'ident'> & {
   ident: string
@@ -127,11 +127,15 @@ type DesignerItem = Omit<TempEditForm, 'child' | 'ident'> & {
 }
 type PaletteItem = { label: string; formType: number; choice?: boolean }
 type AttrData = Record<string, Record<string, any>>
-type ReleaseData = {
+export type ReleaseData = {
   form: DesignerItem[]
+  cols:number
   attrData: AttrData
 }
 
+const props= defineProps<{
+  designerData?: ReleaseData|null|undefined
+}>()
 const emits = defineEmits<{ (e: 'release', data: ReleaseData): void }>()
 const fieldPalette: PaletteItem[] = [
   { label: '单行文本', formType: PageFormType.Input }, { label: '多行文本', formType: PageFormType.TextAreaInput },
@@ -155,6 +159,8 @@ const FieldCard = defineComponent({
     ])
   },
 })
+
+
 
 const form = reactive({ cols: 2, form: [] as DesignerItem[] })
 const attrData = ref<AttrData>({})
@@ -290,42 +296,16 @@ const save = () => {
   emits('release', {
     form: form.form,
     attrData: attrData.value,
+    cols: form.cols,
   })
 }
 onMounted(async () => {
-  if (!workflowDeginitionId || !nodeId) return
+  if (!props.designerData) return
   try {
-    const res = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(workflowDeginitionId, nodeId)
-    if (res.data.statusCode !== 200 || !res.data.data) return
 
-    const data: any = res.data.data
-    const formData = parseFormJson(data.formJson)
-    const savedForm = Array.isArray(formData) ? formData : (formData.form ?? [])
-    form.form = savedForm as DesignerItem[]
-    form.cols = Number(formData.cols ?? 2) || 2
-
-    attrData.value = parseJsonObject(data.attrDataJson)
-
-    // 兼容旧数据：如果旧版本把控件属性放在 componentAttr 中，则迁移到 ident 关系表。
-    const collectAttrs = (items: DesignerItem[]) => {
-      items.forEach(item => {
-        if (!attrData.value[item.ident]) {
-          const legacyAttrs: any = (item as any).componentAttr
-          if (Array.isArray(legacyAttrs)) {
-            const values: Record<string, any> = {}
-            legacyAttrs.forEach((attr: any) => {
-              const key = attr?.name ?? attr?.code
-              if (key) values[key] = attr?.value
-            })
-            attrData.value[item.ident] = values
-          } else {
-            attrData.value[item.ident] = {}
-          }
-        }
-        if (item.child) collectAttrs(item.child)
-      })
-    }
-    collectAttrs(form.form)
+    form.cols = props.designerData.cols||2;
+    form.form = parseFormJson(props.designerData.form)
+    attrData.value = parseJsonObject(props.designerData.attrData)
   } catch {
     // 新节点或历史版本不存在表单时保持空设计器。
   }

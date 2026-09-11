@@ -1,19 +1,21 @@
 <template>
-  <div class="flow-design-page">
-    <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm" />
+  <div class="flow-design-page" style="height: 100%;">
+    <FlowDesigner ref="designerRef"  @save="onSave" @designer-form="onDesignForm" />
     <el-dialog v-model="formDesignVisible" title="设计表单" width="100%" draggable align-center style="height: 100%;top:0" :close-on-click-modal="false">
-      <PageFormDesigner v-if="formDesignVisible" @release="saveForm" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType" :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
+      <PageFormDesigner v-if="formDesignVisible" :designer-data="desingnFormData||{}" @release="saveForm" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType" :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
     </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import FlowDesigner from '@/components/FlowDesigner/index.vue'
 import { workflowDefinitionService, workflowNodeFormService } from '@/api/workflow'
 import PageFormDesigner from '@/views/PageForm/PageFormDesigner.vue'
 import type { WorkflowNodeForm } from '@/api-services/generated'
+import type { ReleaseData } from '@/views/PageForm/PageFormDesigner.vue'
+import { isEmptyVal, isNullOrUnDef } from '@/utils/is'
 
 const emit = defineEmits(['closeDialog', 'refreshList'])
 const { pars } = defineProps<{ pars?: Record<string, any> }>()
@@ -26,7 +28,19 @@ const designNodeType = ref('')
 const nodeForms = ref<Record<string, WorkflowNodeForm>>({})
 
 type NodeFormReleaseData = { form: any[]; attrData: Record<string, Record<string, any>> }
-
+const desingnFormData=computed<ReleaseData>(()=>{
+   var nodeForm= nodeForms.value[designNodeId.value] ;
+   if(isNullOrUnDef(nodeForm))return {
+    form:[],
+    attrData:{},
+    cols:2
+   } as ReleaseData;
+  return {
+    cols:nodeForm.cols??2,
+    form:isEmptyVal(nodeForm.formJson)?[]: JSON.parse(nodeForm.formJson??''), 
+    attrData:isEmptyVal(nodeForm.attrDataJson)?[]: JSON.parse(nodeForm.attrDataJson??''), 
+  } as ReleaseData
+})
 const getNodeId = (node: any): string => String(node?.Id ?? node?.id ?? '')
 const getNodeType = (node: any): string => String(node?.Type ?? node?.type ?? '')
 const getNodeName = (node: any): string => String(node?.Name ?? node?.name ?? node?.data?.label ?? node?.Id ?? node?.id ?? '')
@@ -40,6 +54,7 @@ const onDesignForm = (node: any) => {
   designNodeId.value = getNodeId(node)
   designNodeType.value = getNodeType(node)
   designNodeName.value = getNodeName(node)
+  const old = nodeForms.value[designNodeId.value]
   if (!designNodeId.value) return
   formDesignVisible.value = true
 }
@@ -71,14 +86,14 @@ onMounted(async () => {
   } catch (e: any) { ElMessage.error(e?.message ?? '流程加载失败') }
 })
 
-const saveForm = (formData: NodeFormReleaseData) => {
+const saveForm = (formData: ReleaseData) => {
   if (!designNodeId.value) return
-  const old = nodeForms.value[designNodeId.value]
+
   nodeForms.value[designNodeId.value] = {
-    ...(old ?? {}),
     nodeId: designNodeId.value,
     formJson: JSON.stringify(formData.form ?? []),
     attrDataJson: JSON.stringify(formData.attrData ?? {}),
+    cols:formData.cols,
   }
   formDesignVisible.value = false
 }

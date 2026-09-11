@@ -38,6 +38,8 @@ import type { RESTfulResultListPagedTreeOptions } from '../models';
 // @ts-ignore
 import type { RESTfulResultListSysTenant } from '../models';
 // @ts-ignore
+import type { RESTfulResultListSysTenantDto } from '../models';
+// @ts-ignore
 import type { RESTfulResultListSysTenantTreeOutput } from '../models';
 // @ts-ignore
 import type { RESTfulResultPageDetailOptionSysTenantDto } from '../models';
@@ -588,6 +590,36 @@ export const SysTenantApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
+         * @summary 租户列表
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysTenantTenantlistPost: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/sys-tenant/tenantlist`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 模型到实体的转换
          * @param {SysTenantDto} [sysTenantDto] 
          * @param {*} [options] Override http request option.
@@ -1035,6 +1067,18 @@ export const SysTenantApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 租户列表
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSysTenantTenantlistPost(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListSysTenantDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSysTenantTenantlistPost(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SysTenantApi.apiSysTenantTenantlistPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 模型到实体的转换
          * @param {SysTenantDto} [sysTenantDto] 
          * @param {*} [options] Override http request option.
@@ -1294,6 +1338,15 @@ export const SysTenantApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
+         * @summary 租户列表
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSysTenantTenantlistPost(options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListSysTenantDto> {
+            return localVarFp.apiSysTenantTenantlistPost(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 模型到实体的转换
          * @param {SysTenantDto} [sysTenantDto] 
          * @param {*} [options] Override http request option.
@@ -1542,6 +1595,16 @@ export class SysTenantApi extends BaseAPI {
      */
     public apiSysTenantPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig) {
         return SysTenantApiFp(this.configuration).apiSysTenantPageoptionGet(where, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 租户列表
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiSysTenantTenantlistPost(options?: RawAxiosRequestConfig) {
+        return SysTenantApiFp(this.configuration).apiSysTenantTenantlistPost(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
