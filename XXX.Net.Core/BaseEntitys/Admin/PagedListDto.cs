@@ -51,8 +51,15 @@ namespace XXX.Net.Core.BaseEntitys.Admin
 
         public string GetWhere(string name)
         {
-            this.Where.TryGetValue(name, out string val);
-            return val;
+            try
+            {
+                this.Where.TryGetValue(name, out string val);
+                return val;
+            }
+            catch {
+                return string.Empty;
+            }
+            
         }
         public long GetIdWhere(string name)
         {

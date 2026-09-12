@@ -9803,6 +9803,61 @@
         }
       }
     },
+    "/api/sys-user-dep-role/depuseroption": {
+      "post": {
+        "tags": [
+          "sys-user-dep-role"
+        ],
+        "summary": "部门用户选择",
+        "operationId": "api-sys-user-dep-role-depuseroption-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserTreeOutput"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserTreeOutput"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_DepUserTreeOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sys-config/detail/{id}": {
       "get": {
         "tags": [

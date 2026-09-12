@@ -581,5 +581,102 @@ namespace XXX.Net.Core.Services.Dep
                     .InsertAsync(entitys);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [DisplayName("部门用户选择")]
+        [ApiDescriptionSettings(Name = "DepUserOption", Order = 100), HttpPost]
+        public async Task<List<DepUserTreeOutput>> DepUserOption(PagedListDto pagedListDto) {
+
+            var tenantId = pagedListDto.GetIdWhere("tenantId");
+            if (tenantId == 0) {
+                tenantId = _currentUser.TenantId;
+            }
+
+            var searchName = pagedListDto.GetWhere("searchName");
+
+
+            var departments = await _msRepository
+                .Slave<SysDepartment>()
+                .AsQueryable()
+                .AsNoTracking()
+                .Where(x => x.TenantId == tenantId)
+                .Include(x=>x.UserDepRoles)
+                .ThenInclude(w=>w.User)
+                .OrderBy(x => x.Sort)
+                .ToListAsync();
+
+
+            var mTenant =await _msRepository.Slave<SysTenant>().AsQueryable().AsNoTracking().Where(x => x.Id == tenantId).FirstOrDefaultAsync();
+
+            if (departments == null)
+            {
+                return new List<DepUserTreeOutput>();
+            }
+
+            var mlTenantUser =await _msRepository.Slave<SysTenantUser>().AsQueryable().AsNoTracking()
+                .Where(x => !x.Deleted && x.TenantId == tenantId).Include(x=>x.User).ToListAsync();
+
+            foreach (var item in departments.Where(w => w.ClassLevel == 1 && w.ParentId == 0))
+            {
+                item.ParentId = item.TenantId;
+            }
+            departments.Add(new SysDepartment()
+            {
+                Name = mTenant.Name,
+                ShortName = mTenant.Name,
+                Id = mTenant.Id,
+                ParentId = 0,
+                Code=mTenant.Code
+            });
+
+            var noDepUsers = mlTenantUser.Where(x => !departments.SelectMany(s => s.UserDepRoles).Select(s => s.UserId).Contains(x.UserId)).ToList();
+            var data= TreeHelper.BuildTree<SysDepartment, DepUserTreeOutput>(departments, (mDep, children) =>
+            {
+                var userItems = new List<DepUserTreeOutput>();
+                //租户级 无部门角色的用户都放在这个
+                if (mDep.Id == mTenant.Id && mDep.ParentId == 0)
+                {
+
+                    userItems=noDepUsers.Select(s => new DepUserTreeOutput
+                    {
+                        Name = s.User.UserName,
+                        Id = s.User.Id,
+                        ParentId = mDep.Id,
+                        Code = s.User.Code,
+                        Type = 2,
+                    }).ToList();
+
+                }
+                else {
+                    userItems = mDep.UserDepRoles.Select(s => new DepUserTreeOutput
+                    {
+                        Name = s.User?.UserName,
+                        Id = s.User.Id,
+                        ParentId = mDep.Id,
+                        Code = s.User.Code,
+                        Type = 2,
+                    }).ToList();
+                }
+                if (userItems.Count() > 0) {
+                    children.AddRange(userItems);
+                }
+                return new DepUserTreeOutput()
+                {
+                    Name= mDep.Name,
+                    Id= mDep.Id,
+                    ParentId= mDep.ParentId,
+                    Code= mDep.Code,
+                    Type=1,
+                    Children=children,
+                };
+            });
+
+            return data;
+
+        }
+
     }
 }

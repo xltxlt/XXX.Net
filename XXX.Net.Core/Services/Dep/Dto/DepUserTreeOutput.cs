@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using XXX.Net.Core.Services.Base.Dto;
 
 namespace XXX.Net.Core.Services.Dep.Dto
 {
-    public class DepUserTreeOutput
+    public class DepUserTreeOutput:IPagedTreeOutput<DepUserTreeOutput>
     {
         /// <summary>
         /// 部门ID / 用户ID

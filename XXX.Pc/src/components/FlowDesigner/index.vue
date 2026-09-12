@@ -93,6 +93,7 @@
               <!-- 审批节点额外属性 -->
               <template v-if="selectedNode.type === 'approval'">
                 <el-form-item label="审批人">
+
                   <el-input v-model="selectedNode.data.approver" @input="emitChange" />
                 </el-form-item>
                 <el-form-item label="审批模式">
@@ -116,13 +117,19 @@
               <!-- 任务节点额外属性 -->
               <template v-if="selectedNode.type === 'task'">
                 <el-form-item label="负责人" required>
-                  <el-select v-model="selectedNode.data.responsibleUserIds" multiple filterable allow-create default-first-option placeholder="输入用户 ID 后回车" @change="emitChange" />
+                  <ElInputTag @change="emitChange" readonly v-model="selectedNode.data.responsibleUser" draggable
+                    placeholder="请选择负责人" @click="pageFun['openSelectUser']('responsibleUser')" delimiter=",">
+
+                  </ElInputTag>
                 </el-form-item>
-                <el-form-item label="负责部门" required>
-                  <el-select v-model="selectedNode.data.responsibleDepartmentIds" multiple filterable allow-create default-first-option placeholder="输入部门 ID 后回车" @change="emitChange" />
-                </el-form-item>
+                <!-- <el-form-item label="负责部门" required>
+                  <el-select v-model="selectedNode.data.responsibleDepartmentIds" multiple filterable allow-create
+                    default-first-option placeholder="输入部门 ID 后回车" @change="emitChange" />
+                </el-form-item> -->
                 <el-form-item label="抄送人">
-                  <el-select v-model="selectedNode.data.ccUserIds" multiple filterable allow-create default-first-option placeholder="输入用户 ID 后回车" @change="emitChange" />
+                  <ElInputTag @change="emitChange" readonly v-model="selectedNode.data.ccUser" draggable
+                    placeholder="请选择抄送人" @click="pageFun['openSelectUser']('ccUser')" delimiter=",">
+                  </ElInputTag>
                 </el-form-item>
                 <el-form-item label="预计工期（天）" required>
                   <el-input-number v-model="selectedNode.data.estimatedDurationDays" :min="1" @change="emitChange" />
@@ -149,7 +156,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="指定时间">
-                  <el-input v-model="selectedNode.data.delayTime"  @change="emitChange" placeholder="请输入指定时间或参数" />
+                  <el-input v-model="selectedNode.data.delayTime" @change="emitChange" placeholder="请输入指定时间或参数" />
                 </el-form-item>
 
               </template>
@@ -167,7 +174,7 @@
                   <el-input v-model="selectedNode.data.message" type="textarea" placeholder="请输入通知内容"
                     @input="emitChange" />
                 </el-form-item>
-                  <el-form-item label="接受者">
+                <el-form-item label="接受者">
                   <el-input v-model="selectedNode.data.recipient" type="textarea" placeholder="请输入接受者"
                     @input="emitChange" />
                 </el-form-item>
@@ -217,7 +224,11 @@
         </div>
       </div>
     </div>
+    <SelectUser v-if="selectUserShow" :checked-items="selectUserItems" :pars={} v-model:show="selectUserShow"
+      @sure="(items) => { pageFun['setResponsibleUserIds'](items) }">
+    </SelectUser>
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -242,7 +253,7 @@ import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
 import '@vue-flow/controls/dist/style.css'
 import '@vue-flow/minimap/dist/style.css'
-import { ElMessage } from 'element-plus'
+import { ElInputTag, ElMessage } from 'element-plus'
 
 import StartNode from './nodes/StartNode.vue'
 import TaskNode from './nodes/TaskNode.vue'
@@ -266,9 +277,16 @@ import {
 } from '@element-plus/icons-vue'
 import useDragAndDrop from './hooks/useDnD'
 import type { VfWorkflowDefinition } from '@/api-services/generated/index.ts'
+import SelectUser from '../business/SelectUser/SelectUser.vue'
+import type { YzDialogPars } from '../common/YzPopup/index.ts'
 
 const { onDragStart, onDrop } = useDragAndDrop()
-
+const selectUserShow = ref<boolean>(false)
+const selectUserItems = computed(()=>{
+    var node = nodes.value.find((n) => n.id === selectedNodeId.value) ?? null;
+    return node?.data[thisNodeAttr.value+'Ids']||[];
+   
+});
 const props = withDefaults(defineProps<FlowDesignerProps>(), {
   title: '流程设计器',
   showNodePanel: true,
@@ -304,6 +322,21 @@ const nodeTypes = {
   end: markRaw(EndNode),
 } as unknown as NodeTypesObject
 
+const thisNodeAttr=ref<string>();
+const pageFun: Record<string, Function> = {
+  openSelectUser: (name:string) => {
+    thisNodeAttr.value=name;
+    selectUserShow.value = true;
+  },
+  setResponsibleUserIds: (items: any[]) => {
+    selectUserShow.value = false;
+    var node = nodes.value.find((n) => n.id === selectedNodeId.value) ?? null;
+    if (node) {
+      node.data[thisNodeAttr.value+'Ids'] = items.map(m => m.id);
+      node.data[thisNodeAttr.value+''] = items.map(m => m.name);
+    }
+  }
+};
 // 选中状态（用 id 而非对象快照，实时解析）
 const selectedNodeId = ref<string | null>(null)
 const selectedEdgeId = ref<string | null>(null)
@@ -486,7 +519,7 @@ function autoLayout() {
   if (!nodes.value.length) return
   const levels = new Map<string, number>()
   const startIds = nodes.value.filter((node) => node.type === 'start').map((node) => node.id)
-  ;(startIds.length ? startIds : [nodes.value[0].id]).forEach((id) => levels.set(id, 0))
+    ; (startIds.length ? startIds : [nodes.value[0].id]).forEach((id) => levels.set(id, 0))
   for (let pass = 0; pass < nodes.value.length; pass += 1) {
     edges.value.forEach((edge) => {
       const sourceLevel = levels.get(edge.source)

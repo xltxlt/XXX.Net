@@ -44,7 +44,7 @@ watch(filterText, (val) => {
 })
 const filterNode: FilterNodeMethodFunction = (value: string, data: Tree) => {
     if (!value) return true
-    return data.label.includes(value)
+    return data.name.includes(value)
 }
 const defData = ref<any[]>([])
 const treeDepUserData = inject<Ref<any[]>>('treeDepUserData', defData)

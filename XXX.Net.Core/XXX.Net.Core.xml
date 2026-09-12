@@ -2140,6 +2140,12 @@
             设置部门用户角色
             </summary>
         </member>
+        <member name="M:XXX.Net.Core.Services.Dep.SysUserDepRoleService.DepUserOption(XXX.Net.Core.BaseEntitys.Admin.PagedListDto)">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:XXX.Net.Core.Services.Org.Dto.SysDepDto.Code">
             <summary>编码</summary>
         </member>
