@@ -25,7 +25,7 @@ import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import YzCustomForm from '@/components/common/YzCustomForm/index.vue'
 import type { matterExpose, ReleaseData } from '@/components/common/YzCustomForm/index'
-import { workflowDefinitionService, workflowInstanceService, workflowNodeFormService } from '@/api/workflow'
+import { workflowDefinitionService, workflowInstanceService, workflowNodeFormService } from '@/api/pm'
 
 const { pars } = defineProps<{ pars: { workflowId?: string; workflowDefinitionId?: string } }>()
 const emit = defineEmits(['closeDialog', 'refreshList'])

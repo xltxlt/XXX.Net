@@ -9,53 +9,21 @@
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import PageInfo from "@/components/ListPage/PageInfo.vue";
-import { pmFlowTempService } from "@/api/pm.ts";
-import pmFlowTempEdit from "./pmFlowTempEdit.vue";
-import FlowDesign from "./Handle/FlowDesign.vue";
-import PmFlowStart from "./Handle/PmFlowStart.vue";
+import { pmFlowItemService } from "@/api/pm.ts";
+import pmFlowItemEdit from "./pmFlowItemEdit.vue";
 import { PagedSearchType, type TempListPageConfig } from "@/components/ListPage";
 import { handleSumbitResBox } from "@/utils/common"; // 假设工具函数在此
 
 const pageInfoRef = ref();
 
 const pageConfig: TempListPageConfig = {
-  url: pmFlowTempService.apiPmFlowTempPagelistPost.bind(pmFlowTempService),
-  optionUrl: pmFlowTempService.apiPmFlowTempPageoptionGet.bind(pmFlowTempService),
+  url: pmFlowItemService.apiPmFlowItemPagelistPost.bind(pmFlowItemService),
+  optionUrl: pmFlowItemService.apiPmFlowItemPageoptionGet.bind(pmFlowItemService),
   pageFun: {
-    start: (data: any) => {
-      if (!data?.workflowId || !data?.workflowDefinitionId) {
-        ElMessage.warning('请先设计并发布流程');
-        return;
-      }
-      return {
-        title: "发起流程",
-        comp: PmFlowStart,
-        height: "80%",
-        width: "70%",
-        pars: {
-          workflowId: data.workflowId,
-          workflowDefinitionId: data.workflowDefinitionId,
-        },
-      };
-    },
-    setFlow: (data: any) => {
-      return {
-        title: "流程设计",
-        comp: FlowDesign,
-        height: "100%",
-        width: "100%",
-        pars: {
-          workflowId: data?.workflowId,
-          version: data?.lastVersion, 
-          id:data?.id,
-          workflowDefinitionId: data?.workflowDefinitionId,
-        },
-      };
-    },
     add: (data: any) => {
       return {
         title: "新增",
-        comp: pmFlowTempEdit,
+        comp: pmFlowItemEdit,
         height: "70%",
         pars: {},
       };
@@ -63,7 +31,7 @@ const pageConfig: TempListPageConfig = {
     edit: (data: any) => {
       return {
         title: "修改",
-        comp: pmFlowTempEdit,
+        comp: pmFlowItemEdit,
         height: "70%",
         pars: {
           id: data?.id, // 使用行数据的 id
@@ -80,7 +48,7 @@ const pageConfig: TempListPageConfig = {
         ElMessage({ type: 'info', message: '批量删除仅支持单条记录' });
         return;
       }
-      const res = await pmFlowTempService.apiPmFlowTempBatchlogicdeletePost(ids);
+      const res = await pmFlowItemService.apiPmFlowItemBatchlogicdeletePost(ids);
       handleSumbitResBox(res, '删除成功', () => {
         pageInfoRef.value?.onRefresh();
       });
@@ -91,7 +59,7 @@ const pageConfig: TempListPageConfig = {
         cancelButtonText: '取消',
         type: 'warning',
       });
-      const res = await pmFlowTempService.apiPmFlowTempLogicdeleteIdPost(data.id);
+      const res = await pmFlowItemService.apiPmFlowItemLogicdeleteIdPost(data.id);
       handleSumbitResBox(res, '删除成功', () => {
         pageInfoRef.value?.onRefresh();
       });
@@ -99,7 +67,7 @@ const pageConfig: TempListPageConfig = {
     lock: (data: any) => {
       return {
         title: "查看",
-        comp: pmFlowTempEdit,
+        comp: pmFlowItemEdit,
         height: "70%",
         pars: {
           id: data?.id, // 使用行数据的 id

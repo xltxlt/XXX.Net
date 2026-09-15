@@ -17,11 +17,21 @@
 export interface WorkflowTask {
     'id'?: string | null;
     'createdTime'?: string;
+    'tenantId'?: string;
     'instanceId'?: string | null;
     'workflowId'?: string | null;
+    'workflowDefinitionId'?: string | null;
     'nodeId'?: string | null;
     'nodeName'?: string | null;
     'assigneeId'?: string;
+    'responsibleUserIds'?: Array<string> | null;
+    'responsibleDepartmentIds'?: Array<string> | null;
+    'ccUserIds'?: Array<string> | null;
+    'estimatedDurationDays'?: number;
+    'reminderBeforeDays'?: number;
+    'dueTime'?: string | null;
+    'reminderTime'?: string | null;
+    'reminderSent'?: boolean;
     'status'?: string | null;
     'formDataJson'?: string | null;
     'comment'?: string | null;

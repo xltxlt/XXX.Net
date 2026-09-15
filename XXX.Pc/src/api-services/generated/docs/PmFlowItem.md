@@ -1,4 +1,4 @@
-# PmFlowTemp
+# PmFlowItem
 
 
 ## Properties
@@ -16,20 +16,23 @@ Name | Type | Description | Notes
 **name** | **string** |  | [optional] [default to undefined]
 **tenantId** | **string** |  | [optional] [default to undefined]
 **tenant** | [**SysTenant**](SysTenant.md) |  | [optional] [default to undefined]
-**code** | **string** |  | [optional] [default to undefined]
+**pmFlowTempId** | **string** |  | [optional] [default to undefined]
+**startTime** | **string** |  | [optional] [default to undefined]
+**endTime** | **string** |  | [optional] [default to undefined]
+**planStartTime** | **string** |  | [optional] [default to undefined]
+**planEndTime** | **string** |  | [optional] [default to undefined]
 **workflowId** | **string** |  | [optional] [default to undefined]
 **workflowDefinitionId** | **string** |  | [optional] [default to undefined]
-**lastVersion** | **number** |  | [optional] [default to undefined]
+**version** | **number** |  | [optional] [default to undefined]
 **description** | **string** |  | [optional] [default to undefined]
-**general** | **boolean** |  | [optional] [default to undefined]
 **enabled** | **boolean** |  | [optional] [default to undefined]
 
 ## Example
 
 ```typescript
-import { PmFlowTemp } from './api';
+import { PmFlowItem } from './api';
 
-const instance: PmFlowTemp = {
+const instance: PmFlowItem = {
     id,
     deleted,
     createdTime,
@@ -41,12 +44,15 @@ const instance: PmFlowTemp = {
     name,
     tenantId,
     tenant,
-    code,
+    pmFlowTempId,
+    startTime,
+    endTime,
+    planStartTime,
+    planEndTime,
     workflowId,
     workflowDefinitionId,
-    lastVersion,
+    version,
     description,
-    general,
     enabled,
 };
 ```

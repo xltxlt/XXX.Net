@@ -8,6 +8,13 @@ const pmRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Pm/PmFlowTemp.vue'),
     },
 
+     
+   {
+        path: '/pm/pmFlowItem',
+        name: "pmFlowItem",
+        component: () => import('@/views/Pm/FlowItem/PmFlowItem.vue'),
+    },
+
 ]
 
 export default pmRoutes

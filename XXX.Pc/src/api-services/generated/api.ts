@@ -25,6 +25,7 @@ export * from './api/inventory-stock-api';
 export * from './api/inventory-type-api';
 export * from './api/inventory-warehouse-api';
 export * from './api/inventorystockmanage-api';
+export * from './api/pm-flow-item-api';
 export * from './api/pm-flow-temp-api';
 export * from './api/sys-auth-api';
 export * from './api/sys-config-api';

@@ -16,7 +16,7 @@
 import { onMounted, ref } from 'vue'
 import YzCustomForm from '@/components/common/YzCustomForm/index.vue'
 import type { ReleaseData, matterExpose } from '@/components/common/YzCustomForm/index'
-import { workflowTaskService, workflowNodeFormService } from '@/api/workflow'
+import { workflowTaskService, workflowNodeFormService } from '@/api/pm'
 import { ElMessage } from 'element-plus'
 
 const { taskId, workflowDefinitionId, nodeId } = defineProps<{

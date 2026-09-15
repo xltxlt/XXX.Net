@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [optional] [default to undefined]
 **createdTime** | **string** |  | [optional] [default to undefined]
+**tenantId** | **string** |  | [optional] [default to undefined]
 **pmFlowTempId** | **string** |  | [optional] [default to undefined]
 **workflowId** | **string** |  | [optional] [default to undefined]
 **name** | **string** |  | [optional] [default to undefined]
@@ -23,6 +24,7 @@ import { WorkflowDefinition } from './api';
 const instance: WorkflowDefinition = {
     id,
     createdTime,
+    tenantId,
     pmFlowTempId,
     workflowId,
     name,

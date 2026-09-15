@@ -28,7 +28,7 @@ import type { PagedListDto } from '../models';
 // @ts-ignore
 import type { PagedPaginationListDto } from '../models';
 // @ts-ignore
-import type { PmFlowTempDto } from '../models';
+import type { PmFlowItemDto } from '../models';
 // @ts-ignore
 import type { RESTfulResultDictionaryStringListPagedOptions } from '../models';
 // @ts-ignore
@@ -36,27 +36,27 @@ import type { RESTfulResultInt32 } from '../models';
 // @ts-ignore
 import type { RESTfulResultListPagedOptions } from '../models';
 // @ts-ignore
-import type { RESTfulResultListPmFlowTemp } from '../models';
+import type { RESTfulResultListPmFlowItem } from '../models';
 // @ts-ignore
-import type { RESTfulResultPageDetailOptionPmFlowTempDto } from '../models';
+import type { RESTfulResultPageDetailOptionPmFlowItemDto } from '../models';
 // @ts-ignore
-import type { RESTfulResultPagedListPmFlowTemp } from '../models';
+import type { RESTfulResultPagedListPmFlowItem } from '../models';
 // @ts-ignore
-import type { RESTfulResultPmFlowTemp } from '../models';
+import type { RESTfulResultPmFlowItem } from '../models';
 /**
- * PmFlowTempApi - axios parameter creator
+ * PmFlowItemApi - axios parameter creator
  */
-export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configuration) {
+export const PmFlowItemApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
          * @summary 新增
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempAddPost: async (pmFlowTempDto?: PmFlowTempDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/add`;
+        apiPmFlowItemAddPost: async (pmFlowItemDto?: PmFlowItemDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/add`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -74,7 +74,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowTempDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowItemDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -84,12 +84,12 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary 新增
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempAddorupdatePost: async (pmFlowTempDto?: PmFlowTempDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/addorupdate`;
+        apiPmFlowItemAddorupdatePost: async (pmFlowItemDto?: PmFlowItemDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/addorupdate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -107,7 +107,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowTempDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowItemDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -117,12 +117,12 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary 新增
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchaddPost: async (pmFlowTempDto?: Array<PmFlowTempDto>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/batchadd`;
+        apiPmFlowItemBatchaddPost: async (pmFlowItemDto?: Array<PmFlowItemDto>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/batchadd`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -140,7 +140,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowTempDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowItemDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -154,8 +154,8 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchdeletePost: async (requestBody?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/batchdelete`;
+        apiPmFlowItemBatchdeletePost: async (requestBody?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/batchdelete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -186,8 +186,8 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchlogicdeletePost: async (requestBody?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/batchlogicdelete`;
+        apiPmFlowItemBatchlogicdeletePost: async (requestBody?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/batchlogicdelete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -214,12 +214,12 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary 新增
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchupdatePost: async (pmFlowTempDto?: Array<PmFlowTempDto>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/batchupdate`;
+        apiPmFlowItemBatchupdatePost: async (pmFlowItemDto?: Array<PmFlowItemDto>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/batchupdate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -237,7 +237,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowTempDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowItemDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -251,10 +251,10 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempDeleteIdPost: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiPmFlowItemDeleteIdPost: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiPmFlowTempDeleteIdPost', 'id', id)
-            const localVarPath = `/api/pm-flow-temp/delete/{id}`
+            assertParamExists('apiPmFlowItemDeleteIdPost', 'id', id)
+            const localVarPath = `/api/pm-flow-item/delete/{id}`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -284,10 +284,10 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempDetailIdGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiPmFlowItemDetailIdGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiPmFlowTempDetailIdGet', 'id', id)
-            const localVarPath = `/api/pm-flow-temp/detail/{id}`
+            assertParamExists('apiPmFlowItemDetailIdGet', 'id', id)
+            const localVarPath = `/api/pm-flow-item/detail/{id}`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -318,8 +318,8 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempDetailoptionGet: async (id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/detailoption`;
+        apiPmFlowItemDetailoptionGet: async (id?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/detailoption`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -353,8 +353,8 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempListPost: async (pagedListDto?: PagedListDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/list`;
+        apiPmFlowItemListPost: async (pagedListDto?: PagedListDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -386,10 +386,10 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempLogicdeleteIdPost: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiPmFlowItemLogicdeleteIdPost: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiPmFlowTempLogicdeleteIdPost', 'id', id)
-            const localVarPath = `/api/pm-flow-temp/logicdelete/{id}`
+            assertParamExists('apiPmFlowItemLogicdeleteIdPost', 'id', id)
+            const localVarPath = `/api/pm-flow-item/logicdelete/{id}`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -419,8 +419,8 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempOptionsPost: async (pagedCustomWhere?: Array<PagedCustomWhere>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/options`;
+        apiPmFlowItemOptionsPost: async (pagedCustomWhere?: Array<PagedCustomWhere>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/options`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -452,8 +452,8 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempPagelistPost: async (pagedPaginationListDto?: PagedPaginationListDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/pagelist`;
+        apiPmFlowItemPagelistPost: async (pagedPaginationListDto?: PagedPaginationListDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/pagelist`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -485,8 +485,8 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempPageoptionGet: async (where?: Array<PagedCustomWhere>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/pageoption`;
+        apiPmFlowItemPageoptionGet: async (where?: Array<PagedCustomWhere>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/pageoption`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -516,12 +516,12 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary 模型到实体的转换
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempToEntityPost: async (pmFlowTempDto?: PmFlowTempDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/to-entity`;
+        apiPmFlowItemToEntityPost: async (pmFlowItemDto?: PmFlowItemDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/to-entity`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -539,7 +539,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowTempDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowItemDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -549,12 +549,12 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary 模型到实体的批量转换
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempToListEntityPost: async (pmFlowTempDto?: Array<PmFlowTempDto>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/to-list-entity`;
+        apiPmFlowItemToListEntityPost: async (pmFlowItemDto?: Array<PmFlowItemDto>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/to-list-entity`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -572,7 +572,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowTempDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowItemDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -582,12 +582,12 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary 更新
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempUpdatePost: async (pmFlowTempDto?: PmFlowTempDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/pm-flow-temp/update`;
+        apiPmFlowItemUpdatePost: async (pmFlowItemDto?: PmFlowItemDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/pm-flow-item/update`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -605,7 +605,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowTempDto, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(pmFlowItemDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -616,48 +616,48 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
 };
 
 /**
- * PmFlowTempApi - functional programming interface
+ * PmFlowItemApi - functional programming interface
  */
-export const PmFlowTempApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = PmFlowTempApiAxiosParamCreator(configuration)
+export const PmFlowItemApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PmFlowItemApiAxiosParamCreator(configuration)
     return {
         /**
          * 
          * @summary 新增
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempAddPost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempAddPost(pmFlowTempDto, options);
+        async apiPmFlowItemAddPost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemAddPost(pmFlowItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempAddPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemAddPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 新增
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempAddorupdatePost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempAddorupdatePost(pmFlowTempDto, options);
+        async apiPmFlowItemAddorupdatePost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemAddorupdatePost(pmFlowItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempAddorupdatePost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemAddorupdatePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 新增
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempBatchaddPost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultInt32>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempBatchaddPost(pmFlowTempDto, options);
+        async apiPmFlowItemBatchaddPost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultInt32>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemBatchaddPost(pmFlowItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempBatchaddPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemBatchaddPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -667,10 +667,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempBatchdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempBatchdeletePost(requestBody, options);
+        async apiPmFlowItemBatchdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemBatchdeletePost(requestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempBatchdeletePost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemBatchdeletePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -680,23 +680,23 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempBatchlogicdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempBatchlogicdeletePost(requestBody, options);
+        async apiPmFlowItemBatchlogicdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemBatchlogicdeletePost(requestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempBatchlogicdeletePost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemBatchlogicdeletePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 新增
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempBatchupdatePost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultInt32>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempBatchupdatePost(pmFlowTempDto, options);
+        async apiPmFlowItemBatchupdatePost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultInt32>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemBatchupdatePost(pmFlowItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempBatchupdatePost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemBatchupdatePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -706,10 +706,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempDeleteIdPost(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempDeleteIdPost(id, options);
+        async apiPmFlowItemDeleteIdPost(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemDeleteIdPost(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempDeleteIdPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemDeleteIdPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -719,10 +719,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempDetailIdGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempDetailIdGet(id, options);
+        async apiPmFlowItemDetailIdGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemDetailIdGet(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempDetailIdGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemDetailIdGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -732,10 +732,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempDetailoptionGet(id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPageDetailOptionPmFlowTempDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempDetailoptionGet(id, options);
+        async apiPmFlowItemDetailoptionGet(id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPageDetailOptionPmFlowItemDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemDetailoptionGet(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempDetailoptionGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemDetailoptionGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -745,10 +745,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempListPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempListPost(pagedListDto, options);
+        async apiPmFlowItemListPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemListPost(pagedListDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempListPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemListPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -758,10 +758,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempLogicdeleteIdPost(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempLogicdeleteIdPost(id, options);
+        async apiPmFlowItemLogicdeleteIdPost(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemLogicdeleteIdPost(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempLogicdeleteIdPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemLogicdeleteIdPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -771,10 +771,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempOptionsPost(pagedCustomWhere?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListPagedOptions>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempOptionsPost(pagedCustomWhere, options);
+        async apiPmFlowItemOptionsPost(pagedCustomWhere?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListPagedOptions>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemOptionsPost(pagedCustomWhere, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempOptionsPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemOptionsPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -784,10 +784,10 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempPagelistPost(pagedPaginationListDto?: PagedPaginationListDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPagedListPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempPagelistPost(pagedPaginationListDto, options);
+        async apiPmFlowItemPagelistPost(pagedPaginationListDto?: PagedPaginationListDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPagedListPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemPagelistPost(pagedPaginationListDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempPagelistPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemPagelistPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -797,89 +797,89 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultDictionaryStringListPagedOptions>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempPageoptionGet(where, options);
+        async apiPmFlowItemPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultDictionaryStringListPagedOptions>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemPageoptionGet(where, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempPageoptionGet']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemPageoptionGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 模型到实体的转换
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempToEntityPost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempToEntityPost(pmFlowTempDto, options);
+        async apiPmFlowItemToEntityPost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemToEntityPost(pmFlowItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempToEntityPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemToEntityPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 模型到实体的批量转换
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempToListEntityPost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempToListEntityPost(pmFlowTempDto, options);
+        async apiPmFlowItemToListEntityPost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemToListEntityPost(pmFlowItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempToListEntityPost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemToListEntityPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
          * @summary 更新
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiPmFlowTempUpdatePost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowTemp>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowTempUpdatePost(pmFlowTempDto, options);
+        async apiPmFlowItemUpdatePost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultPmFlowItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiPmFlowItemUpdatePost(pmFlowItemDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PmFlowTempApi.apiPmFlowTempUpdatePost']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PmFlowItemApi.apiPmFlowItemUpdatePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * PmFlowTempApi - factory interface
+ * PmFlowItemApi - factory interface
  */
-export const PmFlowTempApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = PmFlowTempApiFp(configuration)
+export const PmFlowItemApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PmFlowItemApiFp(configuration)
     return {
         /**
          * 
          * @summary 新增
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempAddPost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowTemp> {
-            return localVarFp.apiPmFlowTempAddPost(pmFlowTempDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemAddPost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowItem> {
+            return localVarFp.apiPmFlowItemAddPost(pmFlowItemDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 新增
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempAddorupdatePost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowTemp> {
-            return localVarFp.apiPmFlowTempAddorupdatePost(pmFlowTempDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemAddorupdatePost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowItem> {
+            return localVarFp.apiPmFlowItemAddorupdatePost(pmFlowItemDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 新增
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchaddPost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultInt32> {
-            return localVarFp.apiPmFlowTempBatchaddPost(pmFlowTempDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemBatchaddPost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultInt32> {
+            return localVarFp.apiPmFlowItemBatchaddPost(pmFlowItemDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -888,8 +888,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.apiPmFlowTempBatchdeletePost(requestBody, options).then((request) => request(axios, basePath));
+        apiPmFlowItemBatchdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.apiPmFlowItemBatchdeletePost(requestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -898,18 +898,18 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchlogicdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.apiPmFlowTempBatchlogicdeletePost(requestBody, options).then((request) => request(axios, basePath));
+        apiPmFlowItemBatchlogicdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.apiPmFlowItemBatchlogicdeletePost(requestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 新增
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempBatchupdatePost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultInt32> {
-            return localVarFp.apiPmFlowTempBatchupdatePost(pmFlowTempDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemBatchupdatePost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultInt32> {
+            return localVarFp.apiPmFlowItemBatchupdatePost(pmFlowItemDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -918,8 +918,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempDeleteIdPost(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.apiPmFlowTempDeleteIdPost(id, options).then((request) => request(axios, basePath));
+        apiPmFlowItemDeleteIdPost(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.apiPmFlowItemDeleteIdPost(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -928,8 +928,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempDetailIdGet(id: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowTemp> {
-            return localVarFp.apiPmFlowTempDetailIdGet(id, options).then((request) => request(axios, basePath));
+        apiPmFlowItemDetailIdGet(id: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowItem> {
+            return localVarFp.apiPmFlowItemDetailIdGet(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -938,8 +938,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempDetailoptionGet(id?: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPageDetailOptionPmFlowTempDto> {
-            return localVarFp.apiPmFlowTempDetailoptionGet(id, options).then((request) => request(axios, basePath));
+        apiPmFlowItemDetailoptionGet(id?: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPageDetailOptionPmFlowItemDto> {
+            return localVarFp.apiPmFlowItemDetailoptionGet(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -948,8 +948,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempListPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListPmFlowTemp> {
-            return localVarFp.apiPmFlowTempListPost(pagedListDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemListPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListPmFlowItem> {
+            return localVarFp.apiPmFlowItemListPost(pagedListDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -958,8 +958,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempLogicdeleteIdPost(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.apiPmFlowTempLogicdeleteIdPost(id, options).then((request) => request(axios, basePath));
+        apiPmFlowItemLogicdeleteIdPost(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.apiPmFlowItemLogicdeleteIdPost(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -968,8 +968,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempOptionsPost(pagedCustomWhere?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListPagedOptions> {
-            return localVarFp.apiPmFlowTempOptionsPost(pagedCustomWhere, options).then((request) => request(axios, basePath));
+        apiPmFlowItemOptionsPost(pagedCustomWhere?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListPagedOptions> {
+            return localVarFp.apiPmFlowItemOptionsPost(pagedCustomWhere, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -978,8 +978,8 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempPagelistPost(pagedPaginationListDto?: PagedPaginationListDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPagedListPmFlowTemp> {
-            return localVarFp.apiPmFlowTempPagelistPost(pagedPaginationListDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemPagelistPost(pagedPaginationListDto?: PagedPaginationListDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPagedListPmFlowItem> {
+            return localVarFp.apiPmFlowItemPagelistPost(pagedPaginationListDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -988,77 +988,77 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultDictionaryStringListPagedOptions> {
-            return localVarFp.apiPmFlowTempPageoptionGet(where, options).then((request) => request(axios, basePath));
+        apiPmFlowItemPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultDictionaryStringListPagedOptions> {
+            return localVarFp.apiPmFlowItemPageoptionGet(where, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 模型到实体的转换
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempToEntityPost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowTemp> {
-            return localVarFp.apiPmFlowTempToEntityPost(pmFlowTempDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemToEntityPost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowItem> {
+            return localVarFp.apiPmFlowItemToEntityPost(pmFlowItemDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 模型到实体的批量转换
-         * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+         * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempToListEntityPost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListPmFlowTemp> {
-            return localVarFp.apiPmFlowTempToListEntityPost(pmFlowTempDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemToListEntityPost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListPmFlowItem> {
+            return localVarFp.apiPmFlowItemToListEntityPost(pmFlowItemDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary 更新
-         * @param {PmFlowTempDto} [pmFlowTempDto] 
+         * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiPmFlowTempUpdatePost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowTemp> {
-            return localVarFp.apiPmFlowTempUpdatePost(pmFlowTempDto, options).then((request) => request(axios, basePath));
+        apiPmFlowItemUpdatePost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultPmFlowItem> {
+            return localVarFp.apiPmFlowItemUpdatePost(pmFlowItemDto, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * PmFlowTempApi - object-oriented interface
+ * PmFlowItemApi - object-oriented interface
  */
-export class PmFlowTempApi extends BaseAPI {
+export class PmFlowItemApi extends BaseAPI {
     /**
      * 
      * @summary 新增
-     * @param {PmFlowTempDto} [pmFlowTempDto] 
+     * @param {PmFlowItemDto} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempAddPost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempAddPost(pmFlowTempDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemAddPost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemAddPost(pmFlowItemDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 新增
-     * @param {PmFlowTempDto} [pmFlowTempDto] 
+     * @param {PmFlowItemDto} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempAddorupdatePost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempAddorupdatePost(pmFlowTempDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemAddorupdatePost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemAddorupdatePost(pmFlowItemDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 新增
-     * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+     * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempBatchaddPost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempBatchaddPost(pmFlowTempDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemBatchaddPost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemBatchaddPost(pmFlowItemDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1068,8 +1068,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempBatchdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempBatchdeletePost(requestBody, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemBatchdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemBatchdeletePost(requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1079,19 +1079,19 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempBatchlogicdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempBatchlogicdeletePost(requestBody, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemBatchlogicdeletePost(requestBody?: Array<string>, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemBatchlogicdeletePost(requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 新增
-     * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+     * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempBatchupdatePost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempBatchupdatePost(pmFlowTempDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemBatchupdatePost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemBatchupdatePost(pmFlowItemDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1101,8 +1101,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempDeleteIdPost(id: string, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempDeleteIdPost(id, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemDeleteIdPost(id: string, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemDeleteIdPost(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1112,8 +1112,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempDetailIdGet(id: string, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempDetailIdGet(id, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemDetailIdGet(id: string, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemDetailIdGet(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1123,8 +1123,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempDetailoptionGet(id?: string, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempDetailoptionGet(id, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemDetailoptionGet(id?: string, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemDetailoptionGet(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1134,8 +1134,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempListPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempListPost(pagedListDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemListPost(pagedListDto?: PagedListDto, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemListPost(pagedListDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1145,8 +1145,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempLogicdeleteIdPost(id: string, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempLogicdeleteIdPost(id, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemLogicdeleteIdPost(id: string, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemLogicdeleteIdPost(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1156,8 +1156,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempOptionsPost(pagedCustomWhere?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempOptionsPost(pagedCustomWhere, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemOptionsPost(pagedCustomWhere?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemOptionsPost(pagedCustomWhere, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1167,8 +1167,8 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempPagelistPost(pagedPaginationListDto?: PagedPaginationListDto, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempPagelistPost(pagedPaginationListDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemPagelistPost(pagedPaginationListDto?: PagedPaginationListDto, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemPagelistPost(pagedPaginationListDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1178,41 +1178,41 @@ export class PmFlowTempApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempPageoptionGet(where, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemPageoptionGet(where?: Array<PagedCustomWhere>, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemPageoptionGet(where, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 模型到实体的转换
-     * @param {PmFlowTempDto} [pmFlowTempDto] 
+     * @param {PmFlowItemDto} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempToEntityPost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempToEntityPost(pmFlowTempDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemToEntityPost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemToEntityPost(pmFlowItemDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 模型到实体的批量转换
-     * @param {Array<PmFlowTempDto>} [pmFlowTempDto] 
+     * @param {Array<PmFlowItemDto>} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempToListEntityPost(pmFlowTempDto?: Array<PmFlowTempDto>, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempToListEntityPost(pmFlowTempDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemToListEntityPost(pmFlowItemDto?: Array<PmFlowItemDto>, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemToListEntityPost(pmFlowItemDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary 更新
-     * @param {PmFlowTempDto} [pmFlowTempDto] 
+     * @param {PmFlowItemDto} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public apiPmFlowTempUpdatePost(pmFlowTempDto?: PmFlowTempDto, options?: RawAxiosRequestConfig) {
-        return PmFlowTempApiFp(this.configuration).apiPmFlowTempUpdatePost(pmFlowTempDto, options).then((request) => request(this.axios, this.basePath));
+    public apiPmFlowItemUpdatePost(pmFlowItemDto?: PmFlowItemDto, options?: RawAxiosRequestConfig) {
+        return PmFlowItemApiFp(this.configuration).apiPmFlowItemUpdatePost(pmFlowItemDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

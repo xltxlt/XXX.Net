@@ -17,8 +17,10 @@
 export interface WorkflowInstance {
     'id'?: string | null;
     'createdTime'?: string;
+    'tenantId'?: string;
     'instanceId'?: string | null;
     'workflowId'?: string | null;
+    'taskName'?: string | null;
     'version'?: number;
     'status'?: string | null;
     'dataJson'?: string | null;

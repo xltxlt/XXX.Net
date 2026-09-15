@@ -11,7 +11,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import FlowDesigner from '@/components/FlowDesigner/index.vue'
-import { workflowDefinitionService, workflowNodeFormService } from '@/api/workflow'
+import { workflowDefinitionService, workflowNodeFormService } from '@/api/pm'
 import PageFormDesigner from '@/views/PageForm/PageFormDesigner.vue'
 import type { WorkflowNodeForm } from '@/api-services/generated'
 import type { ReleaseData } from '@/views/PageForm/PageFormDesigner.vue'

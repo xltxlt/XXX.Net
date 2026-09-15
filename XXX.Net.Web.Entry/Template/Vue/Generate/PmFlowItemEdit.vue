@@ -1,9 +1,14 @@
 
+
+
+
+
 <script setup lang='ts'>
+
 import PageForm from '@/components/PageForm/PageForm.vue';
-import { ref } from 'vue';
+import { onMounted,ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { pmFlowTempService } from "@/api/pm";
+import { pmFlowItemService } from "@/api/index.ts";
 
 import {
     type TempEditPageData,
@@ -22,61 +27,65 @@ const emit = defineEmits([
 
 const tempForm = ref<TempEditPageData>({
     loading: false,
+    hideBtn:pars?.lock=='lock' ? true : false,
     form: [
-        {
-            formType: PageFormType.OneSelectSearch,
-            label: "租户",
-            fieldName: "tenantId"
-        },
         {
             formType: PageFormType.Input,
             label: "名称",
             fieldName: "name"
         },
         {
+            formType: PageFormType.OneSelectSearch,
+            label: "PmFlowTempId",
+            fieldName: "pmFlowTempId"
+        },
+        {
             formType: PageFormType.Input,
-            label: "编码",
-            fieldName: "code"
-        },
-        
-        {
-            formType: PageFormType.Radio,
-            label: "是否通用",
-            fieldName: "general"
+            label: "StartTime",
+            fieldName: "startTime"
         },
         {
-            formType: PageFormType.Radio,
-            label: "状态",
-            fieldName: "enabled"
+            formType: PageFormType.Input,
+            label: "EndTime",
+            fieldName: "endTime"
+        },
+        {
+            formType: PageFormType.Input,
+            label: "PlanStartTime",
+            fieldName: "planStartTime"
+        },
+        {
+            formType: PageFormType.Input,
+            label: "PlanEndTime",
+            fieldName: "planEndTime"
         },
         {
             formType: PageFormType.TextAreaInput,
-            label: "说明",
+            label: "Description",
             fieldName: "description"
+        },
+        {
+            formType: PageFormType.Radio,
+            label: "Enabled",
+            fieldName: "enabled"
         },
     ],
 
     rules: {
-         tenantId: [{ required: true, message: '请选择租户', trigger: 'blur' },],
-         name: [{ required: true, message: '请填写名称', trigger: 'blur' },],
-
-          code: [{ required: true, message: '请填写编码', trigger: 'blur' },],
-          
     },
 
     formData: {
         id: pars?.id ?? null,
-        enabled:1,
-        general:1
     },
 
     options: {
     },
 });
 
+onMounted(async () => {
 
-pmFlowTempService.apiPmFlowTempDetailoptionGet(pars?.id)
-    .then((res) => {
+    var res=await pmFlowItemService.apiPmFlowItemDetailoptionGet(pars?.id);
+    
 
         tempForm.value.options =  Object.assign(
                 tempForm.value.options,
@@ -87,7 +96,8 @@ pmFlowTempService.apiPmFlowTempDetailoptionGet(pars?.id)
                 tempForm.value.formData,
                 res.data.data?.detail ?? {}
             );
-    });
+});
+ 
 
 
 const sumbit = () => {
@@ -96,21 +106,9 @@ const sumbit = () => {
         ...tempForm.value.formData
     };
 
-    if (
-        Array.isArray(formData.classList) &&
-        formData.classList.length > 0
-    ) {
-        formData.parentId =
-            formData.classList[
-                formData.classList.length - 1
-            ];
-    }
-
-    formData.classLayer =
-        formData.classList?.length ?? 0;
 
 
-    pmFlowTempService.apiPmFlowTempAddorupdatePost(formData)
+    pmFlowItemService.apiPmFlowItemAddorupdatePost(formData)
         .then((res) => {
 
             if (res.data.statusCode != 200) {

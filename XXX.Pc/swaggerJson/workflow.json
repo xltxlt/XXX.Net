@@ -5,6 +5,57 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/pm-flow-item/batchlogicdelete": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "逻辑删除",
+        "operationId": "api-pm-flow-item-batchlogicdelete-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/pm-flow-temp/batchlogicdelete": {
       "post": {
         "tags": [
@@ -56,6 +107,31 @@
         }
       }
     },
+    "/api/pm-flow-item/logicdelete/{id}": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "逻辑删除",
+        "operationId": "api-pm-flow-item-logicdelete-id-Post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/pm-flow-temp/logicdelete/{id}": {
       "post": {
         "tags": [
@@ -74,6 +150,82 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/delete/{id}": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "删除",
+        "operationId": "api-pm-flow-item-delete-id-Post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/batchdelete": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "删除",
+        "operationId": "api-pm-flow-item-batchdelete-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -157,6 +309,62 @@
         }
       }
     },
+    "/api/pm-flow-item/update": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "更新",
+        "operationId": "api-pm-flow-item-update-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/pm-flow-temp/update": {
       "post": {
         "tags": [
@@ -206,6 +414,142 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/batchadd": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-item-batchadd-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/batchupdate": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-item-batchupdate-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Int32"
                 }
               }
             }
@@ -349,6 +693,118 @@
         }
       }
     },
+    "/api/pm-flow-item/addorupdate": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-item-addorupdate-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/add": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "新增",
+        "operationId": "api-pm-flow-item-add-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/pm-flow-temp/addorupdate": {
       "post": {
         "tags": [
@@ -461,6 +917,61 @@
         }
       }
     },
+    "/api/pm-flow-item/pagelist": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "获取分页集合",
+        "operationId": "api-pm-flow-item-pagelist-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedPaginationListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PagedList_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PagedList_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PagedList_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/pm-flow-temp/pagelist": {
       "post": {
         "tags": [
@@ -516,6 +1027,61 @@
         }
       }
     },
+    "/api/pm-flow-item/list": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "获取集合",
+        "operationId": "api-pm-flow-item-list-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/pm-flow-temp/list": {
       "post": {
         "tags": [
@@ -564,6 +1130,74 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RESTfulResult_List_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/options": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "获取下拉搜索选项",
+        "operationId": "api-pm-flow-item-options-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PagedCustomWhere"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PagedOptions"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PagedOptions"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PagedOptions"
                 }
               }
             }
@@ -639,6 +1273,47 @@
         }
       }
     },
+    "/api/pm-flow-item/detailoption": {
+      "get": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "获取详情",
+        "operationId": "api-pm-flow-item-detailoption-Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PageDetailOption_PmFlowItemDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PageDetailOption_PmFlowItemDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PageDetailOption_PmFlowItemDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/pm-flow-temp/detailoption": {
       "get": {
         "tags": [
@@ -680,13 +1355,25 @@
         }
       }
     },
-    "/api/pm-flow-temp/pageoption": {
+    "/api/pm-flow-item/pageoption": {
       "get": {
         "tags": [
-          "pm-flow-temp"
+          "pm-flow-item"
         ],
         "summary": "获取新增修改页面选项",
-        "operationId": "api-pm-flow-temp-pageoption-Get",
+        "operationId": "api-pm-flow-item-pageoption-Get",
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PagedCustomWhere"
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -704,6 +1391,91 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/pageoption": {
+      "get": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "获取新增修改页面选项",
+        "operationId": "api-pm-flow-temp-pageoption-Get",
+        "parameters": [
+          {
+            "name": "where",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PagedCustomWhere"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/detail/{id}": {
+      "get": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "获取详情",
+        "operationId": "api-pm-flow-item-detail-id-Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
                 }
               }
             }
@@ -746,6 +1518,254 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/to-entity": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "模型到实体的转换",
+        "operationId": "api-pm-flow-item-to-entity-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/to-list-entity": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "模型到实体的批量转换",
+        "operationId": "api-pm-flow-item-to-list-entity-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowItemDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/to-entity": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "模型到实体的转换",
+        "operationId": "api-pm-flow-temp-to-entity-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowTempDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowTemp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-temp/to-list-entity": {
+      "post": {
+        "tags": [
+          "pm-flow-temp"
+        ],
+        "summary": "模型到实体的批量转换",
+        "operationId": "api-pm-flow-temp-to-list-entity-Post",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PmFlowTempDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowTemp"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowTemp"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_List_PmFlowTemp"
                 }
               }
             }
@@ -1235,6 +2255,27 @@
   },
   "components": {
     "schemas": {
+      "PageDetailOption_PmFlowItemDto": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "$ref": "#/components/schemas/PmFlowItemDto"
+          },
+          "options": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PagedOptions"
+              },
+              "nullable": true
+            },
+            "description": "选项",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PageDetailOption_PmFlowTempDto": {
         "type": "object",
         "properties": {
@@ -1318,6 +2359,41 @@
             },
             "description": "根据搜索类型",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedList_PmFlowItem": {
+        "type": "object",
+        "properties": {
+          "pageIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PmFlowItem"
+            },
+            "nullable": true
+          },
+          "hasPrevPages": {
+            "type": "boolean"
+          },
+          "hasNextPages": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -1470,6 +2546,134 @@
         },
         "additionalProperties": false
       },
+      "PmFlowItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdByName": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedByName": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "tenant": {
+            "$ref": "#/components/schemas/SysTenant"
+          },
+          "pmFlowTempId": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "planStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "planEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowDefinitionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PmFlowItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "名称",
+            "nullable": true
+          },
+          "pmFlowTempId": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "planStartTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "planEndTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "PmFlowTemp": {
         "type": "object",
         "properties": {
@@ -1486,7 +2690,7 @@
           "createdBy": {
             "type": "string"
           },
-          "createByName": {
+          "createdByName": {
             "type": "string",
             "nullable": true
           },
@@ -1671,6 +2875,38 @@
         },
         "additionalProperties": false
       },
+      "RESTfulResult_List_PmFlowItem": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PmFlowItem"
+            },
+            "nullable": true
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "RESTfulResult_List_PmFlowTemp": {
         "type": "object",
         "properties": {
@@ -1799,6 +3035,34 @@
         },
         "additionalProperties": false
       },
+      "RESTfulResult_PageDetailOption_PmFlowItemDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageDetailOption_PmFlowItemDto"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "RESTfulResult_PageDetailOption_PmFlowTempDto": {
         "type": "object",
         "properties": {
@@ -1827,6 +3091,34 @@
         },
         "additionalProperties": false
       },
+      "RESTfulResult_PagedList_PmFlowItem": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/PagedList_PmFlowItem"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "RESTfulResult_PagedList_PmFlowTemp": {
         "type": "object",
         "properties": {
@@ -1837,6 +3129,34 @@
           },
           "data": {
             "$ref": "#/components/schemas/PagedList_PmFlowTemp"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RESTfulResult_PmFlowItem": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/PmFlowItem"
           },
           "succeeded": {
             "type": "boolean"
@@ -2012,7 +3332,7 @@
           "createdBy": {
             "type": "string"
           },
-          "createByName": {
+          "createdByName": {
             "type": "string",
             "nullable": true
           },
@@ -2033,6 +3353,25 @@
             "type": "string",
             "nullable": true
           },
+          "path": {
+            "type": "string",
+            "description": "/1/2/3/",
+            "nullable": true
+          },
+          "parentId": {
+            "type": "string",
+            "description": ""
+          },
+          "classLevel": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "integer",
+            "description": "排序",
+            "format": "int32"
+          },
           "code": {
             "type": "string",
             "description": "编码",
@@ -2040,7 +3379,7 @@
           },
           "enabled": {
             "type": "boolean",
-            "description": "启用/禁用"
+            "description": "状态"
           },
           "remark": {
             "type": "string",
@@ -2190,6 +3529,9 @@
             "type": "string",
             "format": "date-time"
           },
+          "tenantId": {
+            "type": "string"
+          },
           "pmFlowTempId": {
             "type": "string"
           },
@@ -2282,11 +3624,18 @@
             "type": "string",
             "format": "date-time"
           },
+          "tenantId": {
+            "type": "string"
+          },
           "instanceId": {
             "type": "string",
             "nullable": true
           },
           "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskName": {
             "type": "string",
             "nullable": true
           },
@@ -2362,11 +3711,18 @@
             "type": "string",
             "format": "date-time"
           },
+          "tenantId": {
+            "type": "string"
+          },
           "instanceId": {
             "type": "string",
             "nullable": true
           },
           "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowDefinitionId": {
             "type": "string",
             "nullable": true
           },
@@ -2380,6 +3736,48 @@
           },
           "assigneeId": {
             "type": "string"
+          },
+          "responsibleUserIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "responsibleDepartmentIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "ccUserIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "estimatedDurationDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reminderBeforeDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dueTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "reminderTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "reminderSent": {
+            "type": "boolean"
           },
           "status": {
             "type": "string",
@@ -2412,6 +3810,9 @@
     }
   ],
   "tags": [
+    {
+      "name": "pm-flow-item"
+    },
     {
       "name": "pm-flow-temp"
     },

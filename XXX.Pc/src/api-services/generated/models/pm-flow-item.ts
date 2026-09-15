@@ -17,7 +17,7 @@
 // @ts-ignore
 import type { SysTenant } from './sys-tenant';
 
-export interface PmFlowTemp {
+export interface PmFlowItem {
     'id'?: string;
     'deleted'?: boolean;
     'createdTime'?: string;
@@ -29,12 +29,15 @@ export interface PmFlowTemp {
     'name'?: string | null;
     'tenantId'?: string;
     'tenant'?: SysTenant;
-    'code'?: string | null;
+    'pmFlowTempId'?: string;
+    'startTime'?: string | null;
+    'endTime'?: string | null;
+    'planStartTime'?: string;
+    'planEndTime'?: string;
     'workflowId'?: string | null;
     'workflowDefinitionId'?: string | null;
-    'lastVersion'?: number;
+    'version'?: number;
     'description'?: string | null;
-    'general'?: boolean;
     'enabled'?: boolean;
 }
 

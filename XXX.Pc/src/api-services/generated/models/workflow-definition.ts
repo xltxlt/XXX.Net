@@ -23,6 +23,7 @@ import type { VfWorkflowNode } from './vf-workflow-node';
 export interface WorkflowDefinition {
     'id'?: string | null;
     'createdTime'?: string;
+    'tenantId'?: string;
     'pmFlowTempId'?: string;
     'workflowId'?: string | null;
     'name'?: string | null;

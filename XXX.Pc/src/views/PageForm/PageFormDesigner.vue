@@ -115,7 +115,7 @@ import { ElMessage } from 'element-plus'
 import type { FormItemRule } from 'element-plus'
 import PageForm from '@/components/PageForm/PageForm.vue'
 import { PageFormGroup, PageFormType, type TempEditForm, type TempEditPageData } from '@/components/PageForm'
-import { workflowNodeFormService } from '@/api/workflow'
+import { workflowNodeFormService } from '@/api/pm'
 
 // const { nodeId, workflowDeginitionId } = defineProps<{  }>()
 

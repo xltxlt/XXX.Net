@@ -6,18 +6,29 @@ using System.Collections.Generic;
 using System.Text;
 using XXX.Net.Core.BaseEntitys.Entity;
 using XXX.Net.Core.DbContextLocator;
-using XXX.Net.Core.Entity.Sys;
 using XXX.Net.Core.Enums;
 using XXX.Net.Core.Services.Option.Attribute;
 
 namespace XXX.Net.Plugins.WorkFlow.Entity
 {
-    public class PmFlowTemp : BaseTenantEntity, IEntity<MasterDbContextLocator, SlaveDbContextLocator>, IEntityTypeBuilder<PmFlowTemp, MasterDbContextLocator, SlaveDbContextLocator>
-    {
+    public class PmFlowItem : BaseTenantEntity, IEntity<MasterDbContextLocator, SlaveDbContextLocator>, IEntityTypeBuilder<PmFlowItem, MasterDbContextLocator, SlaveDbContextLocator>
+    {   
+
+        public long PmFlowTempId { get; set; }
+
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
+
         /// <summary>
-        /// 编码
+        ///   计划开始时间
         /// </summary>
-        public string Code { get; set; } = string.Empty;
+        public DateTime PlanStartTime { get; set; }
+
+        /// <summary>
+        ///   计划结束时间
+        /// </summary>
+        public DateTime PlanEndTime { get; set; }
+
         /// <summary>
         /// 模板Id
         /// </summary>
@@ -29,14 +40,13 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         /// <summary>
         /// 模板版本
         /// </summary>
-        public Int32 LastVersion { get; set; }
+        public Int32 Version { get; set; }
 
-        public string Description { get; set; } = string.Empty;
         /// <summary>
-        /// 是否全局通用
+        /// 说明
         /// </summary>
-        [OptionEnum(typeof(GeneralEnum))]
-        public bool General { get; set; }
+        public string Description { get; set; } = string.Empty;
+    
 
         /// <summary>
         /// 启用/禁用
@@ -44,10 +54,10 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         [OptionEnum(typeof(EnabledEnum))]
         public bool Enabled { get; set; } = true;
 
-        public void Configure(EntityTypeBuilder<PmFlowTemp> entityBuilder, DbContext dbContext, Type dbContextLocator)
+        public void Configure(EntityTypeBuilder<PmFlowItem> entityBuilder, DbContext dbContext, Type dbContextLocator)
         {
 
-            BaseTenantEntity.BaseConfigure<PmFlowTemp>(entityBuilder);
+            BaseTenantEntity.BaseConfigure<PmFlowItem>(entityBuilder);
             entityBuilder.Property(e => e.WorkflowId).HasMaxLength(64);
             entityBuilder.Property(e => e.WorkflowDefinitionId).HasMaxLength(64);
             entityBuilder.Property(e => e.Description).HasMaxLength(512);

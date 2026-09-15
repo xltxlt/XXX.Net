@@ -1985,6 +1985,22 @@
             <param name="ids"></param>
             <returns></returns>
         </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseTenantService`2.ToEntity(`1,`0)">
+            <summary>
+            模型到实体的转换
+            </summary>
+            <param name="dto"></param>
+            <param name="oldEntity">原实体类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Base.BaseTenantService`2.ToListEntity(System.Collections.Generic.List{`1},System.Collections.Generic.List{`0})">
+            <summary>
+            模型到实体的批量转换
+            </summary>
+            <param name="mlDto"></param>
+            <param name="oldEntitys"></param>
+            <returns></returns>
+        </member>
         <member name="T:XXX.Net.Core.Services.Base.Dto.IPagedTreeOutput`1">
             <summary>
             页面树形返回限制

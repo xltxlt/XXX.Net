@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using XXX.Net.EntityFramework.Core.DbContexts;
 
@@ -11,9 +12,11 @@ using XXX.Net.EntityFramework.Core.DbContexts;
 namespace XXX.Net.Database.Migrations.Migrations
 {
     [DbContext(typeof(MasterDbContext))]
-    partial class MasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260915082246_v0.0.15")]
+    partial class v0015
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2262,24 +2265,12 @@ namespace XXX.Net.Database.Migrations.Migrations
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<DateTime>("PlanEndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("PlanStartTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<long>("PmFlowTempId")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<long>("TenantId")
                         .HasColumnType("bigint");

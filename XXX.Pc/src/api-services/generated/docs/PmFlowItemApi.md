@@ -1,47 +1,47 @@
-# PmFlowTempApi
+# PmFlowItemApi
 
 All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**apiPmFlowTempAddPost**](#apipmflowtempaddpost) | **POST** /api/pm-flow-temp/add | 新增|
-|[**apiPmFlowTempAddorupdatePost**](#apipmflowtempaddorupdatepost) | **POST** /api/pm-flow-temp/addorupdate | 新增|
-|[**apiPmFlowTempBatchaddPost**](#apipmflowtempbatchaddpost) | **POST** /api/pm-flow-temp/batchadd | 新增|
-|[**apiPmFlowTempBatchdeletePost**](#apipmflowtempbatchdeletepost) | **POST** /api/pm-flow-temp/batchdelete | 删除|
-|[**apiPmFlowTempBatchlogicdeletePost**](#apipmflowtempbatchlogicdeletepost) | **POST** /api/pm-flow-temp/batchlogicdelete | 逻辑删除|
-|[**apiPmFlowTempBatchupdatePost**](#apipmflowtempbatchupdatepost) | **POST** /api/pm-flow-temp/batchupdate | 新增|
-|[**apiPmFlowTempDeleteIdPost**](#apipmflowtempdeleteidpost) | **POST** /api/pm-flow-temp/delete/{id} | 删除|
-|[**apiPmFlowTempDetailIdGet**](#apipmflowtempdetailidget) | **GET** /api/pm-flow-temp/detail/{id} | 获取详情|
-|[**apiPmFlowTempDetailoptionGet**](#apipmflowtempdetailoptionget) | **GET** /api/pm-flow-temp/detailoption | 获取详情|
-|[**apiPmFlowTempListPost**](#apipmflowtemplistpost) | **POST** /api/pm-flow-temp/list | 获取集合|
-|[**apiPmFlowTempLogicdeleteIdPost**](#apipmflowtemplogicdeleteidpost) | **POST** /api/pm-flow-temp/logicdelete/{id} | 逻辑删除|
-|[**apiPmFlowTempOptionsPost**](#apipmflowtempoptionspost) | **POST** /api/pm-flow-temp/options | 获取下拉搜索选项|
-|[**apiPmFlowTempPagelistPost**](#apipmflowtemppagelistpost) | **POST** /api/pm-flow-temp/pagelist | 获取分页集合|
-|[**apiPmFlowTempPageoptionGet**](#apipmflowtemppageoptionget) | **GET** /api/pm-flow-temp/pageoption | 获取新增修改页面选项|
-|[**apiPmFlowTempToEntityPost**](#apipmflowtemptoentitypost) | **POST** /api/pm-flow-temp/to-entity | 模型到实体的转换|
-|[**apiPmFlowTempToListEntityPost**](#apipmflowtemptolistentitypost) | **POST** /api/pm-flow-temp/to-list-entity | 模型到实体的批量转换|
-|[**apiPmFlowTempUpdatePost**](#apipmflowtempupdatepost) | **POST** /api/pm-flow-temp/update | 更新|
+|[**apiPmFlowItemAddPost**](#apipmflowitemaddpost) | **POST** /api/pm-flow-item/add | 新增|
+|[**apiPmFlowItemAddorupdatePost**](#apipmflowitemaddorupdatepost) | **POST** /api/pm-flow-item/addorupdate | 新增|
+|[**apiPmFlowItemBatchaddPost**](#apipmflowitembatchaddpost) | **POST** /api/pm-flow-item/batchadd | 新增|
+|[**apiPmFlowItemBatchdeletePost**](#apipmflowitembatchdeletepost) | **POST** /api/pm-flow-item/batchdelete | 删除|
+|[**apiPmFlowItemBatchlogicdeletePost**](#apipmflowitembatchlogicdeletepost) | **POST** /api/pm-flow-item/batchlogicdelete | 逻辑删除|
+|[**apiPmFlowItemBatchupdatePost**](#apipmflowitembatchupdatepost) | **POST** /api/pm-flow-item/batchupdate | 新增|
+|[**apiPmFlowItemDeleteIdPost**](#apipmflowitemdeleteidpost) | **POST** /api/pm-flow-item/delete/{id} | 删除|
+|[**apiPmFlowItemDetailIdGet**](#apipmflowitemdetailidget) | **GET** /api/pm-flow-item/detail/{id} | 获取详情|
+|[**apiPmFlowItemDetailoptionGet**](#apipmflowitemdetailoptionget) | **GET** /api/pm-flow-item/detailoption | 获取详情|
+|[**apiPmFlowItemListPost**](#apipmflowitemlistpost) | **POST** /api/pm-flow-item/list | 获取集合|
+|[**apiPmFlowItemLogicdeleteIdPost**](#apipmflowitemlogicdeleteidpost) | **POST** /api/pm-flow-item/logicdelete/{id} | 逻辑删除|
+|[**apiPmFlowItemOptionsPost**](#apipmflowitemoptionspost) | **POST** /api/pm-flow-item/options | 获取下拉搜索选项|
+|[**apiPmFlowItemPagelistPost**](#apipmflowitempagelistpost) | **POST** /api/pm-flow-item/pagelist | 获取分页集合|
+|[**apiPmFlowItemPageoptionGet**](#apipmflowitempageoptionget) | **GET** /api/pm-flow-item/pageoption | 获取新增修改页面选项|
+|[**apiPmFlowItemToEntityPost**](#apipmflowitemtoentitypost) | **POST** /api/pm-flow-item/to-entity | 模型到实体的转换|
+|[**apiPmFlowItemToListEntityPost**](#apipmflowitemtolistentitypost) | **POST** /api/pm-flow-item/to-list-entity | 模型到实体的批量转换|
+|[**apiPmFlowItemUpdatePost**](#apipmflowitemupdatepost) | **POST** /api/pm-flow-item/update | 更新|
 
-# **apiPmFlowTempAddPost**
-> RESTfulResultPmFlowTemp apiPmFlowTempAddPost()
+# **apiPmFlowItemAddPost**
+> RESTfulResultPmFlowItem apiPmFlowItemAddPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration,
-    PmFlowTempDto
+    PmFlowItemDto
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
-let pmFlowTempDto: PmFlowTempDto; // (optional)
+let pmFlowItemDto: PmFlowItemDto; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempAddPost(
-    pmFlowTempDto
+const { status, data } = await apiInstance.apiPmFlowItemAddPost(
+    pmFlowItemDto
 );
 ```
 
@@ -49,12 +49,12 @@ const { status, data } = await apiInstance.apiPmFlowTempAddPost(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **pmFlowTempDto** | **PmFlowTempDto**|  | |
+| **pmFlowItemDto** | **PmFlowItemDto**|  | |
 
 
 ### Return type
 
-**RESTfulResultPmFlowTemp**
+**RESTfulResultPmFlowItem**
 
 ### Authorization
 
@@ -73,26 +73,26 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempAddorupdatePost**
-> RESTfulResultPmFlowTemp apiPmFlowTempAddorupdatePost()
+# **apiPmFlowItemAddorupdatePost**
+> RESTfulResultPmFlowItem apiPmFlowItemAddorupdatePost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration,
-    PmFlowTempDto
+    PmFlowItemDto
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
-let pmFlowTempDto: PmFlowTempDto; // (optional)
+let pmFlowItemDto: PmFlowItemDto; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempAddorupdatePost(
-    pmFlowTempDto
+const { status, data } = await apiInstance.apiPmFlowItemAddorupdatePost(
+    pmFlowItemDto
 );
 ```
 
@@ -100,12 +100,12 @@ const { status, data } = await apiInstance.apiPmFlowTempAddorupdatePost(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **pmFlowTempDto** | **PmFlowTempDto**|  | |
+| **pmFlowItemDto** | **PmFlowItemDto**|  | |
 
 
 ### Return type
 
-**RESTfulResultPmFlowTemp**
+**RESTfulResultPmFlowItem**
 
 ### Authorization
 
@@ -124,25 +124,25 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempBatchaddPost**
-> RESTfulResultInt32 apiPmFlowTempBatchaddPost()
+# **apiPmFlowItemBatchaddPost**
+> RESTfulResultInt32 apiPmFlowItemBatchaddPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
-let pmFlowTempDto: Array<PmFlowTempDto>; // (optional)
+let pmFlowItemDto: Array<PmFlowItemDto>; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempBatchaddPost(
-    pmFlowTempDto
+const { status, data } = await apiInstance.apiPmFlowItemBatchaddPost(
+    pmFlowItemDto
 );
 ```
 
@@ -150,7 +150,7 @@ const { status, data } = await apiInstance.apiPmFlowTempBatchaddPost(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **pmFlowTempDto** | **Array<PmFlowTempDto>**|  | |
+| **pmFlowItemDto** | **Array<PmFlowItemDto>**|  | |
 
 
 ### Return type
@@ -174,24 +174,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempBatchdeletePost**
-> apiPmFlowTempBatchdeletePost()
+# **apiPmFlowItemBatchdeletePost**
+> apiPmFlowItemBatchdeletePost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let requestBody: Array<string>; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempBatchdeletePost(
+const { status, data } = await apiInstance.apiPmFlowItemBatchdeletePost(
     requestBody
 );
 ```
@@ -224,24 +224,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempBatchlogicdeletePost**
-> apiPmFlowTempBatchlogicdeletePost()
+# **apiPmFlowItemBatchlogicdeletePost**
+> apiPmFlowItemBatchlogicdeletePost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let requestBody: Array<string>; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempBatchlogicdeletePost(
+const { status, data } = await apiInstance.apiPmFlowItemBatchlogicdeletePost(
     requestBody
 );
 ```
@@ -274,25 +274,25 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempBatchupdatePost**
-> RESTfulResultInt32 apiPmFlowTempBatchupdatePost()
+# **apiPmFlowItemBatchupdatePost**
+> RESTfulResultInt32 apiPmFlowItemBatchupdatePost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
-let pmFlowTempDto: Array<PmFlowTempDto>; // (optional)
+let pmFlowItemDto: Array<PmFlowItemDto>; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempBatchupdatePost(
-    pmFlowTempDto
+const { status, data } = await apiInstance.apiPmFlowItemBatchupdatePost(
+    pmFlowItemDto
 );
 ```
 
@@ -300,7 +300,7 @@ const { status, data } = await apiInstance.apiPmFlowTempBatchupdatePost(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **pmFlowTempDto** | **Array<PmFlowTempDto>**|  | |
+| **pmFlowItemDto** | **Array<PmFlowItemDto>**|  | |
 
 
 ### Return type
@@ -324,24 +324,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempDeleteIdPost**
-> apiPmFlowTempDeleteIdPost()
+# **apiPmFlowItemDeleteIdPost**
+> apiPmFlowItemDeleteIdPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let id: string; // (default to undefined)
 
-const { status, data } = await apiInstance.apiPmFlowTempDeleteIdPost(
+const { status, data } = await apiInstance.apiPmFlowItemDeleteIdPost(
     id
 );
 ```
@@ -374,24 +374,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempDetailIdGet**
-> RESTfulResultPmFlowTemp apiPmFlowTempDetailIdGet()
+# **apiPmFlowItemDetailIdGet**
+> RESTfulResultPmFlowItem apiPmFlowItemDetailIdGet()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let id: string; // (default to undefined)
 
-const { status, data } = await apiInstance.apiPmFlowTempDetailIdGet(
+const { status, data } = await apiInstance.apiPmFlowItemDetailIdGet(
     id
 );
 ```
@@ -405,7 +405,7 @@ const { status, data } = await apiInstance.apiPmFlowTempDetailIdGet(
 
 ### Return type
 
-**RESTfulResultPmFlowTemp**
+**RESTfulResultPmFlowItem**
 
 ### Authorization
 
@@ -424,24 +424,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempDetailoptionGet**
-> RESTfulResultPageDetailOptionPmFlowTempDto apiPmFlowTempDetailoptionGet()
+# **apiPmFlowItemDetailoptionGet**
+> RESTfulResultPageDetailOptionPmFlowItemDto apiPmFlowItemDetailoptionGet()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let id: string; // (optional) (default to undefined)
 
-const { status, data } = await apiInstance.apiPmFlowTempDetailoptionGet(
+const { status, data } = await apiInstance.apiPmFlowItemDetailoptionGet(
     id
 );
 ```
@@ -455,7 +455,7 @@ const { status, data } = await apiInstance.apiPmFlowTempDetailoptionGet(
 
 ### Return type
 
-**RESTfulResultPageDetailOptionPmFlowTempDto**
+**RESTfulResultPageDetailOptionPmFlowItemDto**
 
 ### Authorization
 
@@ -474,25 +474,25 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempListPost**
-> RESTfulResultListPmFlowTemp apiPmFlowTempListPost()
+# **apiPmFlowItemListPost**
+> RESTfulResultListPmFlowItem apiPmFlowItemListPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration,
     PagedListDto
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let pagedListDto: PagedListDto; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempListPost(
+const { status, data } = await apiInstance.apiPmFlowItemListPost(
     pagedListDto
 );
 ```
@@ -506,7 +506,7 @@ const { status, data } = await apiInstance.apiPmFlowTempListPost(
 
 ### Return type
 
-**RESTfulResultListPmFlowTemp**
+**RESTfulResultListPmFlowItem**
 
 ### Authorization
 
@@ -525,24 +525,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempLogicdeleteIdPost**
-> apiPmFlowTempLogicdeleteIdPost()
+# **apiPmFlowItemLogicdeleteIdPost**
+> apiPmFlowItemLogicdeleteIdPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let id: string; // (default to undefined)
 
-const { status, data } = await apiInstance.apiPmFlowTempLogicdeleteIdPost(
+const { status, data } = await apiInstance.apiPmFlowItemLogicdeleteIdPost(
     id
 );
 ```
@@ -575,24 +575,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempOptionsPost**
-> RESTfulResultListPagedOptions apiPmFlowTempOptionsPost()
+# **apiPmFlowItemOptionsPost**
+> RESTfulResultListPagedOptions apiPmFlowItemOptionsPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let pagedCustomWhere: Array<PagedCustomWhere>; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempOptionsPost(
+const { status, data } = await apiInstance.apiPmFlowItemOptionsPost(
     pagedCustomWhere
 );
 ```
@@ -625,25 +625,25 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempPagelistPost**
-> RESTfulResultPagedListPmFlowTemp apiPmFlowTempPagelistPost()
+# **apiPmFlowItemPagelistPost**
+> RESTfulResultPagedListPmFlowItem apiPmFlowItemPagelistPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration,
     PagedPaginationListDto
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let pagedPaginationListDto: PagedPaginationListDto; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempPagelistPost(
+const { status, data } = await apiInstance.apiPmFlowItemPagelistPost(
     pagedPaginationListDto
 );
 ```
@@ -657,7 +657,7 @@ const { status, data } = await apiInstance.apiPmFlowTempPagelistPost(
 
 ### Return type
 
-**RESTfulResultPagedListPmFlowTemp**
+**RESTfulResultPagedListPmFlowItem**
 
 ### Authorization
 
@@ -676,24 +676,24 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempPageoptionGet**
-> RESTfulResultDictionaryStringListPagedOptions apiPmFlowTempPageoptionGet()
+# **apiPmFlowItemPageoptionGet**
+> RESTfulResultDictionaryStringListPagedOptions apiPmFlowItemPageoptionGet()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
 let where: Array<PagedCustomWhere>; // (optional) (default to undefined)
 
-const { status, data } = await apiInstance.apiPmFlowTempPageoptionGet(
+const { status, data } = await apiInstance.apiPmFlowItemPageoptionGet(
     where
 );
 ```
@@ -726,26 +726,26 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempToEntityPost**
-> RESTfulResultPmFlowTemp apiPmFlowTempToEntityPost()
+# **apiPmFlowItemToEntityPost**
+> RESTfulResultPmFlowItem apiPmFlowItemToEntityPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration,
-    PmFlowTempDto
+    PmFlowItemDto
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
-let pmFlowTempDto: PmFlowTempDto; // (optional)
+let pmFlowItemDto: PmFlowItemDto; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempToEntityPost(
-    pmFlowTempDto
+const { status, data } = await apiInstance.apiPmFlowItemToEntityPost(
+    pmFlowItemDto
 );
 ```
 
@@ -753,12 +753,12 @@ const { status, data } = await apiInstance.apiPmFlowTempToEntityPost(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **pmFlowTempDto** | **PmFlowTempDto**|  | |
+| **pmFlowItemDto** | **PmFlowItemDto**|  | |
 
 
 ### Return type
 
-**RESTfulResultPmFlowTemp**
+**RESTfulResultPmFlowItem**
 
 ### Authorization
 
@@ -777,25 +777,25 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempToListEntityPost**
-> RESTfulResultListPmFlowTemp apiPmFlowTempToListEntityPost()
+# **apiPmFlowItemToListEntityPost**
+> RESTfulResultListPmFlowItem apiPmFlowItemToListEntityPost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
-let pmFlowTempDto: Array<PmFlowTempDto>; // (optional)
+let pmFlowItemDto: Array<PmFlowItemDto>; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempToListEntityPost(
-    pmFlowTempDto
+const { status, data } = await apiInstance.apiPmFlowItemToListEntityPost(
+    pmFlowItemDto
 );
 ```
 
@@ -803,12 +803,12 @@ const { status, data } = await apiInstance.apiPmFlowTempToListEntityPost(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **pmFlowTempDto** | **Array<PmFlowTempDto>**|  | |
+| **pmFlowItemDto** | **Array<PmFlowItemDto>**|  | |
 
 
 ### Return type
 
-**RESTfulResultListPmFlowTemp**
+**RESTfulResultListPmFlowItem**
 
 ### Authorization
 
@@ -827,26 +827,26 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiPmFlowTempUpdatePost**
-> RESTfulResultPmFlowTemp apiPmFlowTempUpdatePost()
+# **apiPmFlowItemUpdatePost**
+> RESTfulResultPmFlowItem apiPmFlowItemUpdatePost()
 
 
 ### Example
 
 ```typescript
 import {
-    PmFlowTempApi,
+    PmFlowItemApi,
     Configuration,
-    PmFlowTempDto
+    PmFlowItemDto
 } from './api';
 
 const configuration = new Configuration();
-const apiInstance = new PmFlowTempApi(configuration);
+const apiInstance = new PmFlowItemApi(configuration);
 
-let pmFlowTempDto: PmFlowTempDto; // (optional)
+let pmFlowItemDto: PmFlowItemDto; // (optional)
 
-const { status, data } = await apiInstance.apiPmFlowTempUpdatePost(
-    pmFlowTempDto
+const { status, data } = await apiInstance.apiPmFlowItemUpdatePost(
+    pmFlowItemDto
 );
 ```
 
@@ -854,12 +854,12 @@ const { status, data } = await apiInstance.apiPmFlowTempUpdatePost(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **pmFlowTempDto** | **PmFlowTempDto**|  | |
+| **pmFlowItemDto** | **PmFlowItemDto**|  | |
 
 
 ### Return type
 
-**RESTfulResultPmFlowTemp**
+**RESTfulResultPmFlowItem**
 
 ### Authorization
 

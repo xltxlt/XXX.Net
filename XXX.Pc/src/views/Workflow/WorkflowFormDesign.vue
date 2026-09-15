@@ -41,7 +41,7 @@ import { getUniqueValue, handleSumbitResBox } from '@/utils/common'
 import { isArray, isEmptyVal } from '@/utils/is'
 import {  PageFormGroup, PageFormType } from '@/components/PageForm'
 import type { WorkflowNodeForm } from '@/api-services/generated'
-import { workflowNodeFormService } from '@/api/workflow'
+import { workflowNodeFormService } from '@/api/pm'
 const matterData = ref<ReleaseData>({
   form: [],
   attrData: {},

@@ -1,9 +1,14 @@
 
+
+
+
+
 <script setup lang='ts'>
+
 import PageForm from '@/components/PageForm/PageForm.vue';
-import { ref } from 'vue';
+import { onMounted,ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { pmFlowTempService } from "@/api/pm";
+import { pmFlowItemService } from "@/api/pm.ts";
 
 import {
     type TempEditPageData,
@@ -22,29 +27,40 @@ const emit = defineEmits([
 
 const tempForm = ref<TempEditPageData>({
     loading: false,
+    hideBtn:pars?.lock=='lock' ? true : false,
     form: [
-        {
-            formType: PageFormType.OneSelectSearch,
-            label: "租户",
-            fieldName: "tenantId"
-        },
         {
             formType: PageFormType.Input,
             label: "名称",
             fieldName: "name"
         },
         {
-            formType: PageFormType.Input,
-            label: "编码",
-            fieldName: "code"
+            formType: PageFormType.OneSelectSearch,
+            label: "流程模板",
+            fieldName: "pmFlowTempId"
         },
-        
+       
         {
-            formType: PageFormType.Radio,
-            label: "是否通用",
-            fieldName: "general"
+            formType: PageFormType.DateSelect,
+            label: "计划开始时间",
+            fieldName: "planStartTime"
         },
         {
+            formType: PageFormType.DateSelect,
+            label: "计划结束时间",
+            fieldName: "planEndTime"
+        },
+         {
+            formType: PageFormType.DateSelect,
+            label: "开始时间",
+            fieldName: "startTime"
+        },
+        {
+            formType: PageFormType.DateSelect,
+            label: "结束时间",
+            fieldName: "endTime"
+        },
+         {
             formType: PageFormType.Radio,
             label: "状态",
             fieldName: "enabled"
@@ -57,26 +73,26 @@ const tempForm = ref<TempEditPageData>({
     ],
 
     rules: {
-         tenantId: [{ required: true, message: '请选择租户', trigger: 'blur' },],
          name: [{ required: true, message: '请填写名称', trigger: 'blur' },],
+         enabled: [{ required: true, message: '请填写状态', trigger: 'blur' },],
+         pmFlowTempId: [{ required: true, message: '请选择流程模板', trigger: 'blur' },],
+         planStartTime: [{ required: true, message: '请选择计划开始时间', trigger: 'blur' },],
+         planEndTime: [{ required: true, message: '请选择计划结束时间', trigger: 'blur' },],
 
-          code: [{ required: true, message: '请填写编码', trigger: 'blur' },],
-          
     },
 
     formData: {
         id: pars?.id ?? null,
-        enabled:1,
-        general:1
     },
 
     options: {
     },
 });
 
+onMounted(async () => {
 
-pmFlowTempService.apiPmFlowTempDetailoptionGet(pars?.id)
-    .then((res) => {
+    var res=await pmFlowItemService.apiPmFlowItemDetailoptionGet(pars?.id);
+    
 
         tempForm.value.options =  Object.assign(
                 tempForm.value.options,
@@ -87,7 +103,8 @@ pmFlowTempService.apiPmFlowTempDetailoptionGet(pars?.id)
                 tempForm.value.formData,
                 res.data.data?.detail ?? {}
             );
-    });
+});
+ 
 
 
 const sumbit = () => {
@@ -96,21 +113,9 @@ const sumbit = () => {
         ...tempForm.value.formData
     };
 
-    if (
-        Array.isArray(formData.classList) &&
-        formData.classList.length > 0
-    ) {
-        formData.parentId =
-            formData.classList[
-                formData.classList.length - 1
-            ];
-    }
-
-    formData.classLayer =
-        formData.classList?.length ?? 0;
 
 
-    pmFlowTempService.apiPmFlowTempAddorupdatePost(formData)
+    pmFlowItemService.apiPmFlowItemAddorupdatePost(formData)
         .then((res) => {
 
             if (res.data.statusCode != 200) {
