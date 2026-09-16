@@ -1,18 +1,7 @@
 ﻿using Consul;
+using DotNetCore.CAP;
 using Furion;
 using Furion.HttpRemote;
-using XXX.Net.Core.Cache;
-using XXX.Net.Core.Converts;
-using XXX.Net.Core.CurrentUser;
-using XXX.Net.Core.EventBus;
-using XXX.Net.Core.IdGenerator;
-using XXX.Net.Core.Logging;
-using XXX.Net.Core.Services.Base;
-using XXX.Net.Core.Services.Dict;
-using XXX.Net.Core.Services.Document;
-using XXX.Net.Core.Services.Option;
-using XXX.Net.Core.Services.Option.Providers;
-using XXX.Net.Web.Core.Filters;
 using IdGen;
 using Medallion.Threading;
 using Medallion.Threading.Redis;
@@ -28,8 +17,21 @@ using StackExchange.Redis;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using XXX.Net.Plugins.Inventory.Extensions;
+using XXX.Net.Core.Cache;
+using XXX.Net.Core.Consumers;
+using XXX.Net.Core.Converts;
+using XXX.Net.Core.CurrentUser;
+using XXX.Net.Core.EventBus;
+using XXX.Net.Core.IdGenerator;
+using XXX.Net.Core.Logging;
+using XXX.Net.Core.Services.Base;
+using XXX.Net.Core.Services.Dict;
+using XXX.Net.Core.Services.Document;
+using XXX.Net.Core.Services.Option;
+using XXX.Net.Core.Services.Option.Providers;
 using XXX.Net.Core.Services.Org;
+using XXX.Net.Plugins.Inventory.Extensions;
+using XXX.Net.Web.Core.Filters;
 namespace XXX.Net.Web.Core;
 
 public class Startup : AppStartup
@@ -118,18 +120,37 @@ public class Startup : AppStartup
                 cap.AllowAnonymousExplicit = true;
             });
         });
-        services.AddScoped<IEventBus, CapRabbitMqEventBus>();
-        var capCoreType = typeof(XXX.Net.Core.Consumers.CapCoreMarker);
-        var consumerTypes = capCoreType.Assembly.GetTypes()
-            .Where(t => typeof(DotNetCore.CAP.ICapSubscribe).IsAssignableFrom(t)
-                    && !t.IsInterface
-                    && !t.IsAbstract)
-            .ToList();
-
-        foreach (var consumerType in consumerTypes)
+        var assemblies = new[]
         {
-            services.AddScoped(consumerType);
+            typeof(CapCoreMarker).Assembly,
+            typeof(Plugins.WorkFlow.Event.PmCapMarker).Assembly,
+        };
+
+        foreach (var assembly in assemblies.Distinct())
+        {
+            var consumerTypes = assembly.GetTypes()
+                .Where(t =>
+                    typeof(ICapSubscribe).IsAssignableFrom(t)
+                    && !t.IsInterface
+                    && !t.IsAbstract);
+
+            foreach (var type in consumerTypes)
+            {
+                services.AddScoped(type);
+            }
         }
+        //services.AddScoped<IEventBus, CapRabbitMqEventBus>();
+        //var capCoreType = typeof(XXX.Net.Core.Consumers.CapCoreMarker);
+        //var consumerTypes = capCoreType.Assembly.GetTypes()
+        //    .Where(t => typeof(DotNetCore.CAP.ICapSubscribe).IsAssignableFrom(t)
+        //            && !t.IsInterface
+        //            && !t.IsAbstract)
+        //    .ToList();
+
+        //foreach (var consumerType in consumerTypes)
+        //{
+        //    services.AddScoped(consumerType);
+        //}
         #endregion
 
 
