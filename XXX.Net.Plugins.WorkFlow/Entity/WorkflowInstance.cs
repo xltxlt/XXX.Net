@@ -17,6 +17,9 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         /// </summary>
         public string InstanceId { get; set; } = string.Empty;
 
+        /// <summary>关联的项目流程项 Id。</summary>
+        public long PmFlowItemId { get; set; }
+
         public string WorkflowId { get; set; } = string.Empty;
 
         /// <summary>
