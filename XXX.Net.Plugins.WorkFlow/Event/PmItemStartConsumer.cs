@@ -34,15 +34,18 @@ namespace XXX.Net.Plugins.WorkFlow.Event
                 throw new InvalidOperationException("流程启动事件数据为空");
 
             // CAP 可能因为重试重复消费，使用分布式锁 + PmFlowItemId 幂等。
-            await using var handle = await _distributedLockProvider.AcquireLockAsync(
+            var flowItemLock = _distributedLockProvider.CreateLock(
                 $"workflow:pm-flow-item:start:{item.Id}");
 
             try
             {
+                await using (await flowItemLock.AcquireAsync(TimeSpan.FromSeconds(30)))
+                {
                 var instanceId = await _workflowInstanceService.StartByPmFlowItem(item);
-                _logger.LogInformation(
-                    "项目流程启动成功：PmFlowItemId={PmFlowItemId}, WorkflowId={WorkflowId}, InstanceId={InstanceId}",
-                    item.Id, item.WorkflowId, instanceId);
+                    _logger.LogInformation(
+                        "项目流程启动成功：PmFlowItemId={PmFlowItemId}, WorkflowId={WorkflowId}, InstanceId={InstanceId}",
+                        item.Id, item.WorkflowId, instanceId);
+                }
             }
             catch (Exception ex)
             {
