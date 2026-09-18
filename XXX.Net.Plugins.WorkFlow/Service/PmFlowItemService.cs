@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using XXX.Net.Core.CurrentUser;
@@ -25,12 +26,14 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         private readonly ICurrentUser _currentUser;
         private readonly IMSRepository _msRepository;
         private readonly IWorkFlowRepository<WorkflowDefinition> _definitionRepo;
+        private readonly IWorkFlowRepository<WorkflowNodeForm> _nodeFormRepo;
         private readonly IEventBus _eventBus;
 
         public PmFlowItemService(
             IEventBus eventBus,
             IMSRepository msRepository,
             IWorkFlowRepository<WorkflowDefinition> definitionRepo,
+            IWorkFlowRepository<WorkflowNodeForm> nodeFormRepo,
             ICurrentUser currentUser,
             IHttpContextAccessor httpContextAccessor)
             : base(msRepository, currentUser)
@@ -39,6 +42,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             _currentUser = currentUser;
             _msRepository = msRepository;
             _definitionRepo = definitionRepo;
+            _nodeFormRepo = nodeFormRepo;
             _eventBus = eventBus;
         }
 
@@ -70,7 +74,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
         /// <summary>
         /// 新增项目流程项并发起流程。
-        /// 基础业务参数与开始节点表单必须一次提交；CAP 事件只负责可靠地异步启动 WorkflowCore。
+        /// 基础业务参数与开始节点表单一次提交；CAP 事件携带完整发起数据后异步启动 WorkflowCore。
         /// </summary>
         [ApiDescriptionSettings(Name = "Add", Order = 400), HttpPost]
         [DisplayName("新增")]
@@ -98,31 +102,130 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             var definition = await _definitionRepo.GetOneAsync(x => x.Id == flowTemp.WorkflowDefinitionId)
                 ?? throw new InvalidOperationException("流程定义不存在");
 
-            var startNode = definition.Nodes?.Find(x => x.Type == "start");
+            if (definition.TenantId != flowTemp.TenantId)
+                throw new InvalidOperationException("流程定义与流程模板不属于同一租户");
+
+            var startNode = definition.Nodes?.FirstOrDefault(x => x.Type == "start");
             if (startNode == null || string.IsNullOrWhiteSpace(startNode.Id))
                 throw new InvalidOperationException("流程定义缺少开始节点");
 
-            var startForm = (await _definitionRepo.GetListAsync(x => x.WorkflowId == definition.WorkflowId))
-                .Count; // 保留定义仓储访问，实际开始表单由节点表单仓储校验
+            var startForm = (await _nodeFormRepo.GetListAsync(x =>
+                    x.WorkflowDeginitionId == definition.Id && x.NodeId == startNode.Id))
+                .OrderByDescending(x => x.CreatedTime)
+                .FirstOrDefault();
 
-            var startFormRepo = (IWorkFlowRepository<WorkflowNodeForm>)null;
-            throw new InvalidOperationException("开始节点表单仓储未注入");
+            if (!IsFormDesigned(startForm))
+                throw new InvalidOperationException("开始节点尚未设计表单，无法发起流程");
+
+            ValidateRequiredFields(startForm.FormJson, dto.StartFormData);
+
+            var entity = await base.Add(dto);
+
+            await _msRepository.Master<PmFlowItem>().UpdateAsync(entity);
+
+            await _eventBus.PublishAsync(
+                PmEvents.PmItemStart,
+                new BaseEvent<PmItemStartEvent>(
+                    PmEvents.PmItemStart,
+                    new PmItemStartEvent
+                    {
+                        Item = entity,
+                        StartFormData = dto.StartFormData ?? new Dictionary<string, object>()
+                    }));
+
+            return entity;
         }
 
         /// <summary>
-        /// 更新
+        /// 更新。更新项目流程项不应再次创建一个新的流程实例。
         /// </summary>
         [ApiDescriptionSettings(Name = "Update", Order = 400), HttpPost]
-        [DisplayName("新增")]
+        [DisplayName("更新")]
         [UnitOfWork]
         public override async Task<PmFlowItem> Update(PmFlowItemDto dto)
         {
-            var entity = await base.Update(dto);
-            await _eventBus.PublishAsync(
-                PmEvents.PmItemStart,
-                new BaseEvent<PmFlowItem>(PmEvents.PmItemStart, entity));
-            return entity;
+            return await base.Update(dto);
         }
-        #endregion
+
+        private static bool IsFormDesigned(WorkflowNodeForm form)
+        {
+            if (form == null || string.IsNullOrWhiteSpace(form.FormJson))
+                return false;
+
+            try
+            {
+                using var doc = JsonDocument.Parse(form.FormJson);
+                return doc.RootElement.ValueKind == JsonValueKind.Array &&
+                       doc.RootElement.GetArrayLength() > 0;
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+        }
+
+        private static void ValidateRequiredFields(string formJson, Dictionary<string, object> values)
+        {
+            using var doc = JsonDocument.Parse(formJson);
+            var valueMap = values ?? new Dictionary<string, object>();
+
+            foreach (var field in EnumerateFields(doc.RootElement))
+            {
+                if (!field.TryGetProperty("must", out var must) || must.ValueKind != JsonValueKind.True)
+                    continue;
+
+                if (!field.TryGetProperty("fieldName", out var fieldNameElement))
+                    continue;
+
+                var fieldName = fieldNameElement.GetString();
+                if (string.IsNullOrWhiteSpace(fieldName))
+                    continue;
+
+                if (!valueMap.TryGetValue(fieldName, out var value) || IsEmptyValue(value))
+                    throw new InvalidOperationException($"开始节点表单字段“{fieldName}”不能为空");
+            }
+        }
+
+        private static IEnumerable<JsonElement> EnumerateFields(JsonElement element)
+        {
+            if (element.ValueKind != JsonValueKind.Array)
+                yield break;
+
+            foreach (var item in element.EnumerateArray())
+            {
+                if (item.ValueKind != JsonValueKind.Object)
+                    continue;
+
+                if (item.TryGetProperty("fieldName", out _) && item.TryGetProperty("formType", out _))
+                    yield return item;
+
+                if (item.TryGetProperty("child", out var children))
+                {
+                    foreach (var child in EnumerateFields(children))
+                        yield return child;
+                }
+            }
+        }
+
+        private static bool IsEmptyValue(object value)
+        {
+            if (value == null) return true;
+            if (value is JsonElement json)
+            {
+                if (json.ValueKind == JsonValueKind.Null || json.ValueKind == JsonValueKind.Undefined)
+                    return true;
+                if (json.ValueKind == JsonValueKind.String)
+                    return string.IsNullOrWhiteSpace(json.GetString());
+                if (json.ValueKind == JsonValueKind.Array)
+                    return json.GetArrayLength() == 0;
+                return false;
+            }
+
+            if (value is string text)
+                return string.IsNullOrWhiteSpace(text);
+            if (value is System.Collections.IEnumerable enumerable && !(value is string))
+                return !enumerable.GetEnumerator().MoveNext();
+            return false;
+        }
     }
 }
