@@ -7,7 +7,8 @@ using System.Text;
 using XXX.Net.Core.EventBus;
 using XXX.Net.Core.Logging;
 using XXX.Net.Core.Services.Auth.Dto;
-using XXX.Net.Plugins.WorkFlow.Entity;\nusing XXX.Net.Plugins.WorkFlow.Service;
+using XXX.Net.Plugins.WorkFlow.Entity;
+using XXX.Net.Plugins.WorkFlow.Service;
 
 namespace XXX.Net.Plugins.WorkFlow.Event
 {
@@ -41,7 +42,7 @@ namespace XXX.Net.Plugins.WorkFlow.Event
             {
                 await using (await flowItemLock.AcquireAsync(TimeSpan.FromSeconds(30)))
                 {
-                var instanceId = await _workflowInstanceService.StartByPmFlowItem(item);
+                    var instanceId = await _workflowInstanceService.StartByPmFlowItem(item);
                     _logger.LogInformation(
                         "项目流程启动成功：PmFlowItemId={PmFlowItemId}, WorkflowId={WorkflowId}, InstanceId={InstanceId}",
                         item.Id, item.WorkflowId, instanceId);
