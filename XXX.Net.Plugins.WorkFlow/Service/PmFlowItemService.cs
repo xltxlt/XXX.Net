@@ -99,8 +99,14 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 flowTemp.LastVersion <= 0)
                 throw new InvalidOperationException("流程模板尚未发布流程定义，请先发布流程");
 
-            var definition = await _definitionRepo.GetOneAsync(x => x.Id == flowTemp.WorkflowDefinitionId)
-                ?? throw new InvalidOperationException("流程定义不存在");
+            var definition = await _definitionRepo.GetOneAsync(x =>
+                    x.Id == flowTemp.WorkflowDefinitionId &&
+                    x.WorkflowId == flowTemp.WorkflowId &&
+                    x.Version == flowTemp.LastVersion)
+                ?? throw new InvalidOperationException("流程模板关联的流程定义不存在，请重新发布流程");
+
+            if (!string.Equals(definition.Status, "published", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("当前流程版本尚未发布，请重新发布流程");
 
             if (definition.TenantId != flowTemp.TenantId)
                 throw new InvalidOperationException("流程定义与流程模板不属于同一租户");
