@@ -124,6 +124,10 @@ const navigate = (path: string) => {
 }
 
 const openTodo = (item?: TodoItem) => {
+  if (item?.id) {
+    // 统一进入现有待办中心，具体处理页仍由 WorkflowTodo 负责。
+    navigate('/workflow/todo')
+    return
   }
   navigate('/workflow/todo')
 }
