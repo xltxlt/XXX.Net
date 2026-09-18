@@ -12,7 +12,7 @@ const router = useRouter()
 const route = useRoute()
 
 
-const editableTabsValue = ref('tab-1')
+const editableTabsValue = ref('/home')
 const editableTabs = ref([{
   title: '首页',
   name: '/home',
