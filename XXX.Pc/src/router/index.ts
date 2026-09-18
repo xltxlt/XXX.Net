@@ -23,6 +23,11 @@ const routes: Array<RouteRecordRaw> = [
 
         children: [
             {
+                path: '/home',
+                name: "SysHome",
+                component: () => import('@/views/Sys/Home/Home.vue'),
+            },
+            {
                 path: '/:pathMatch(.*)*',
                 name: 'NotFound',
                 component: () => import('@/views/404/404.vue')
