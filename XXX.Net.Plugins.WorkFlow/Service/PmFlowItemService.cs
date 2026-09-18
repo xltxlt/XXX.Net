@@ -81,6 +81,20 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
             return entity;
         }
+        /// <summary>
+        /// 新增 
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [ApiDescriptionSettings(Name = "Update", Order = 400), HttpPost]
+        [DisplayName("新增")]
+        [UnitOfWork]
+        public override async Task<PmFlowItem> Update(PmFlowItemDto dto)
+        {
+            var entity = await base.Update(dto);
+            await _eventBus.PublishAsync(PmEvents.PmItemStart, new BaseEvent<PmFlowItem>(PmEvents.PmItemStart, entity));
+            return entity;
+        }
         #endregion
     }
 }

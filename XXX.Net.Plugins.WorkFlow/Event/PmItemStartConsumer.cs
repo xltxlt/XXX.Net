@@ -27,6 +27,10 @@ namespace XXX.Net.Plugins.WorkFlow.Event
             _workflowInstanceService = workflowInstanceService;
             _logger = logger;
         }
+        /// <summary>
+        /// 启动对应工作流
+        /// </summary>
+        /// <param name="message"></param>
         [CapSubscribe(PmEvents.PmItemStart)]
         public async Task Handle(BaseEvent<PmFlowItem> message)
         {

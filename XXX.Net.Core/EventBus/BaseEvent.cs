@@ -18,14 +18,14 @@ namespace XXX.Net.Core.EventBus
         {
             EventId = Guid.NewGuid();
             EventName = eventName ?? throw new ArgumentNullException(nameof(eventName));
-            OccurredOn = DateTime.Now;
+            OccurredOn = DateTime.UtcNow;
             Data = data;
         }
         public BaseEvent(long tenantId,string eventName, T data)
         {
             EventId = Guid.NewGuid();
             EventName = eventName ?? throw new ArgumentNullException(nameof(eventName));
-            OccurredOn = DateTime.Now;
+            OccurredOn = DateTime.UtcNow;
             Data = data;
             TenantId = tenantId;
         }

@@ -16,8 +16,8 @@ public static class InventoryServiceCollectionExtensions
         services.AddScoped<InventoryWarehouseService>();
         services.AddScoped<InventoryLocationService>();
         services.AddScoped<InventoryDocumentService>();
-        services.AddScoped<InventoryStockChangedConsumer>();
-        services.AddScoped<InventoryDocumentCompletedConsumer>();
+        //services.AddScoped<InventoryStockChangedConsumer>();
+        //services.AddScoped<InventoryDocumentCompletedConsumer>();
         return services;
     }
 }
