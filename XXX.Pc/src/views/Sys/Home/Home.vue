@@ -121,11 +121,11 @@ const loadTodos = async () => {
 
 const navigate = (path: string) => {\n  window.location.hash = `#${path}`\n}\n\nconst openTodo = (item?: TodoItem) => {
   if (item?.id) {
-    // 统一进入待办中心，具体处理页仍由现有 WorkflowTodo 负责。
-    window.location.hash = '#/Home/workflow/todo'
+    // 统一进入现有待办中心，具体处理页仍由 WorkflowTodo 负责。
+    navigate('/workflow/todo')
     return
   }
-  window.location.hash = '#/Home/workflow/todo'
+  navigate('/workflow/todo')
 }
 
 const openNotices = () => {
