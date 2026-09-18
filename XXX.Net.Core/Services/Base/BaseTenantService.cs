@@ -25,7 +25,7 @@ namespace XXX.Net.Core.Services.Base
         /// <param name="dto"></param>
         /// <param name="oldEntity">原实体类型</param>
         /// <returns></returns>
-        public override async Task<TEntity> ToEntity(TDto dto, TEntity oldEntity = null)
+        public override  async Task<TEntity> ToEntity(TDto dto, TEntity oldEntity = null)
         {
             var tenantId = _currentUser.TenantId;
 

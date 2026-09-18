@@ -4,9 +4,10 @@ using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 using WorkflowCore.Interface;
 using XXX.Net.Core.MongoDb;
-using XXX.Net.Plugins.WorkFlow.Repository;
-using XXX.Net.Plugins.WorkFlow.Step;
 using XXX.Net.Plugins.WorkFlow.Notification;
+using XXX.Net.Plugins.WorkFlow.Repository;
+using XXX.Net.Plugins.WorkFlow.Service;
+using XXX.Net.Plugins.WorkFlow.Step;
 
 namespace XXX.Net.Plugins.WorkFlow
 {
@@ -26,6 +27,7 @@ namespace XXX.Net.Plugins.WorkFlow
             services.AddSingleton<IMongoClient>(_ => new MongoClient(mongoOptions.ConnectionString));
             services.AddSingleton<IMongoDbContext, MongoDbContext>();
             services.AddScoped(typeof(IWorkFlowRepository<>), typeof(WorkFlowRepository<>));
+            services.AddScoped<WorkflowInstanceService>();
 
             // ===== WorkflowCore =====
             services.AddWorkflow(cfg => cfg.UseMongoDB(mongoOptions.ConnectionString, mongoOptions.DatabaseName));
