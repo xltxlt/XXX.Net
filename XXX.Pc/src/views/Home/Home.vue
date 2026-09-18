@@ -217,6 +217,8 @@ onMounted(async () => {
 
 .home-content {
   height: calc(100% - 65px);
+  min-height: 0;
+  overflow: hidden;
 
   .left-menu {
     overflow: hidden;
@@ -249,5 +251,9 @@ onMounted(async () => {
 .el-main {
   background-color: #fff;
   padding: 0px;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>
