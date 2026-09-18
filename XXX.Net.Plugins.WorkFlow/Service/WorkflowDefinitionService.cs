@@ -121,6 +121,21 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
             entity.Status = "published";
             await _repo.UpdateAsync(entity.Id, entity);
+
+            // 发布后同步流程模板的“当前可发起版本”，避免模板仍然保留旧的发布信息。
+            var flowTemp = await _msRepository.Master<PmFlowTemp>()
+                .AsQueryable()
+                .Where(x => x.Id == entity.PmFlowTempId)
+                .FirstOrDefaultAsync();
+
+            if (flowTemp == null)
+                throw new InvalidOperationException("流程模板不存在");
+
+            flowTemp.WorkflowId = entity.WorkflowId;
+            flowTemp.WorkflowDefinitionId = entity.Id;
+            flowTemp.LastVersion = entity.Version;
+            await _msRepository.Master<PmFlowTemp>().UpdateAsync(flowTemp);
+
             return entity;
         }
 
