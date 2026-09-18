@@ -9,7 +9,7 @@
 import { ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import PageInfo from "@/components/ListPage/PageInfo.vue";
-import { pmFlowTempService } from "@/api/pm.ts";
+import { pmFlowTempService, workflowDefinitionService } from "@/api/pm.ts";
 import pmFlowTempEdit from "./pmFlowTempEdit.vue";
 import FlowDesign from "./Handle/FlowDesign.vue";
 import PmFlowStart from "./Handle/PmFlowStart.vue";
@@ -53,7 +53,7 @@ const pageConfig: TempListPageConfig = {
         }
       );
       try {
-        const res = await (await import('@/api/workflow-definition')).workflowDefinitionService
+        const res = await workflowDefinitionService
           .apiWorkflowDefinitionPublishWorkflowidPost(String(data.workflowId));
         if (res.data.statusCode != 200) {
           ElMessage.error('流程发布失败');
