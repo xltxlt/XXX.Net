@@ -92,11 +92,13 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 return exists.InstanceId;
 
             var def = (await _defRepo.GetListAsync(d =>
+                    d.Id == item.WorkflowDefinitionId &&
                     d.WorkflowId == item.WorkflowId &&
+                    d.Version == item.Version &&
                     d.Status == "published"))
-                .OrderByDescending(d => d.Version)
                 .FirstOrDefault()
-                ?? throw new InvalidOperationException($"流程定义不存在或未发布：{item.WorkflowId}");
+                ?? throw new InvalidOperationException(
+                    $"项目流程项绑定的流程定义不存在或未发布：{item.WorkflowId} v{item.Version}");
 
             if (def.TenantId != item.TenantId)
                 throw new InvalidOperationException("流程定义与项目流程项不属于同一租户");
