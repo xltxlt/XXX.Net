@@ -227,5 +227,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 return !enumerable.GetEnumerator().MoveNext();
             return false;
         }
+        #endregion
     }
 }
