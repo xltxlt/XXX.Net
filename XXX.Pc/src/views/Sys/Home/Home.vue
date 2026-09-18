@@ -96,7 +96,7 @@ const formatTime = (value?: string) => {
   if (!value) return '--'
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return value
-  return date.toLocaleString('zh-CN', { hour12: false }).replace(/\\//g, '-').slice(0, 16)
+  return date.toLocaleString('zh-CN', { hour12: false }).replace(/\//g, '-').slice(0, 16)
 }
 
 const todoTitle = (item: TodoItem) => item.nodeName || item.workflowId || '待处理事项'
@@ -119,11 +119,11 @@ const loadTodos = async () => {
   }
 }
 
-const navigate = (path: string) => {\n  window.location.hash = `#${path}`\n}\n\nconst openTodo = (item?: TodoItem) => {
-  if (item?.id) {
-    // 统一进入现有待办中心，具体处理页仍由 WorkflowTodo 负责。
-    navigate('/workflow/todo')
-    return
+const navigate = (path: string) => {
+  window.location.hash = `#${path}`
+}
+
+const openTodo = (item?: TodoItem) => {
   }
   navigate('/workflow/todo')
 }
