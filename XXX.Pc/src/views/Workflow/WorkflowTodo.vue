@@ -14,7 +14,7 @@
     <el-dialog v-model="formVisible" :title="`处理：${current?.nodeName ?? ''}`" width="80%" top="5vh"
       :close-on-click-modal="false">
       <WorkflowTodoForm v-if="formVisible && current" :task-id="current.id" :workflow-definition-id="current.workflowDefinitionId"
-        :node-id="current.nodeId" />
+        :node-id="current.nodeId" @completed="handleCompleted" />
     </el-dialog>
   </div>
 </template>
@@ -45,6 +45,12 @@ const loadList = async () => {
 const openForm = (row: any) => {
   current.value = row
   formVisible.value = true
+}
+
+const handleCompleted = async () => {
+  formVisible.value = false
+  current.value = null
+  await loadList()
 }
 
 onMounted(loadList)
