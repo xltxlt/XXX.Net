@@ -38,6 +38,34 @@ const pageConfig: TempListPageConfig = {
         },
       };
     },
+    publish: async (data: any) => {
+      if (!data?.workflowId) {
+        ElMessage.warning('请先完成流程设计');
+        return;
+      }
+      await ElMessageBox.confirm(
+        '发布后，当前流程版本将可用于发起项目流程项，是否继续？',
+        '发布流程',
+        {
+          confirmButtonText: '确认发布',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      );
+      try {
+        const res = await (await import('@/api/workflow-definition')).workflowDefinitionService
+          .apiWorkflowDefinitionPublishWorkflowidPost(String(data.workflowId));
+        if (res.data.statusCode != 200) {
+          ElMessage.error('流程发布失败');
+          return;
+        }
+        ElMessage.success('流程发布成功');
+        pageInfoRef.value?.onRefresh();
+      } catch (error: any) {
+        ElMessage.error(error?.message ?? '流程发布失败');
+      }
+    },
+
     setFlow: (data: any) => {
       return {
         title: "流程设计",
