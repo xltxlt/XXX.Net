@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { ArrowRight, Bell, Calendar, Check, Clock, DocumentChecked, Files, Refresh, TrendCharts } from '@element-plus/icons-vue'
+import { ArrowRight, Bell, Calendar, Check, Clock, DocumentChecked, Files, TrendCharts } from '@element-plus/icons-vue'
 import { workflowTaskService } from '@/api/pm.ts'
 
 interface TodoItem {
@@ -119,7 +119,7 @@ const loadTodos = async () => {
   }
 }
 
-const openTodo = (item?: TodoItem) => {
+const navigate = (path: string) => {\n  window.location.hash = `#${path}`\n}\n\nconst openTodo = (item?: TodoItem) => {
   if (item?.id) {
     // 统一进入待办中心，具体处理页仍由现有 WorkflowTodo 负责。
     window.location.hash = '#/Home/workflow/todo'
@@ -297,17 +297,17 @@ onMounted(loadTodos)
         </div>
       </div>
       <div class="quick-links">
-        <button @click="window.location.hash = '#/Home/workflow/todo'">
+        <button @click="navigate('/workflow/todo')">
           <Files />
           <span>待办中心</span>
           <small>查看并处理待办</small>
         </button>
-        <button @click="window.location.hash = '#/Home/workflow'">
+        <button @click="navigate('/workflow/todo')">
           <DocumentChecked />
           <span>流程管理</span>
           <small>查看流程与实例</small>
         </button>
-        <button @click="window.location.hash = '#/Home/Sys/Menu'">
+        <button @click="navigate('/sys/menu')">
           <TrendCharts />
           <span>系统设置</span>
           <small>管理系统基础配置</small>
