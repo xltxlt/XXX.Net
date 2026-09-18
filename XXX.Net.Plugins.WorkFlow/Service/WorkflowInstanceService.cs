@@ -78,7 +78,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         /// 根据项目流程项启动工作流。
         /// PmFlowItem 创建成功后由 CAP 消费者调用，真正启动 WorkflowCore。
         /// </summary>
-        public async Task<string> StartByPmFlowItem(PmFlowItem item)
+        public async Task<string> StartByPmFlowItem(PmFlowItem item, Dictionary<string, object> startFormData)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (!item.Enabled) throw new InvalidOperationException("项目流程项已禁用");
@@ -104,6 +104,11 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             var wcDef = WorkflowDefinitionConverter.Convert(def);
             _host.Registry.RegisterWorkflow(wcDef);
 
+            var startNode = def.Nodes?.FirstOrDefault(x => x.Type == "start");
+            if (startNode == null || string.IsNullOrWhiteSpace(startNode.Id))
+                throw new InvalidOperationException("流程定义缺少开始节点");
+
+            var startForm = startFormData ?? new Dictionary<string, object>();
             var variables = new Dictionary<string, object>
             {
                 ["PmFlowItemId"] = item.Id,
@@ -114,6 +119,10 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 ["Description"] = item.Description,
                 ["PlanStartTime"] = item.PlanStartTime,
                 ["PlanEndTime"] = item.PlanEndTime,
+                ["StartNodeId"] = startNode.Id,
+                ["StartFormData"] = startForm,
+                // 与任务节点表单保持相同的数据组织方式：按节点 Id 保存。
+                [startNode.Id] = startForm,
             };
 
             var flowData = new FlowData
