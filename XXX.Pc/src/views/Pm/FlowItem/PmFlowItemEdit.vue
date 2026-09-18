@@ -20,7 +20,9 @@ const emit = defineEmits([
 ]);
 
 const isCreate = !pars?.id;
+const businessFormRef = ref<any>();
 const startFormRef = ref<matterExpose>();
+const currentStep = ref(0);
 const startFormLoading = ref(false);
 const startFormData = ref<ReleaseData>({ form: [], attrData: {} });
 const startNodeId = ref('');
@@ -29,7 +31,7 @@ let loadedStartTemplateId = '';
 
 const tempForm = ref<TempEditPageData>({
     loading: false,
-    hideBtn: pars?.lock == 'lock',
+    hideBtn: true,
     form: [
         {
             formType: PageFormType.Input,
@@ -182,6 +184,34 @@ onMounted(async () => {
     }
 });
 
+const validateBusinessForm = async () => {
+    try {
+        await businessFormRef.value?.ruleFormRef?.validate();
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+const validateStartForm = () => {
+    if (!startFormReady.value || !startNodeId.value) {
+        ElMessage.error('当前流程没有可用的 Start 节点表单');
+        return false;
+    }
+    const result = startFormRef.value?.verify?.();
+    if (result === false) {
+        ElMessage.error('请完善 Start 节点表单必填项');
+        return false;
+    }
+    return true;
+};
+
+const goNext = async () => {
+    if (await validateBusinessForm()) currentStep.value = 1;
+};
+
+const goPrev = () => { currentStep.value = 0; };
+
 const getStartFormValues = () => {
     const data = startFormRef.value?.getData() ?? startFormData.value;
     const values: Record<string, unknown> = {};
@@ -197,43 +227,24 @@ const getStartFormValues = () => {
 
 const sumbit = async () => {
     if (isCreate) {
-        if (!startFormReady.value || !startNodeId.value) {
-            ElMessage.error('请先配置开始节点表单');
-            return;
-        }
         if (startFormLoading.value) {
-            ElMessage.warning('开始节点表单正在加载，请稍候');
+            ElMessage.warning('Start 节点表单正在加载，请稍候');
             return;
         }
+        if (!validateStartForm()) return;
     }
 
-    const formData: any = {
-        ...tempForm.value.formData,
-    };
-
-    if (isCreate) {
-        formData.startFormData = getStartFormValues();
-    }
+    const formData: any = { ...tempForm.value.formData };
+    if (isCreate) formData.startFormData = getStartFormValues();
 
     tempForm.value.loading = true;
     try {
         const res = await pmFlowItemService.apiPmFlowItemAddorupdatePost(formData);
-
         if (res.data.statusCode != 200) {
-            ElMessage({
-                message: '操作失败',
-                type: 'error',
-                plain: true,
-            });
+            ElMessage({ message: '操作失败', type: 'error', plain: true });
             return;
         }
-
-        ElMessage({
-            message: isCreate ? '流程发起成功' : '操作成功',
-            type: 'success',
-            plain: true,
-        });
-
+        ElMessage({ message: isCreate ? '流程发起成功' : '操作成功', type: 'success', plain: true });
         emit('closeDialog');
         emit('refreshList');
     } catch (error: any) {
@@ -246,12 +257,18 @@ const sumbit = async () => {
 
 <template>
     <div class="edit-page">
-        <page-form
-            :temp-form="tempForm"
-            @on-submit="sumbit"
-        />
+        <div v-if="isCreate" class="step-header">
+            <el-steps :active="currentStep" align-center>
+                <el-step title="填写业务基础参数" description="项目名称、时间、流程模板等" />
+                <el-step title="填写 Start 节点表单" description="完成流程发起所需业务信息" />
+            </el-steps>
+        </div>
 
-        <div v-if="isCreate" class="start-form-section" v-loading="startFormLoading">
+        <div v-show="!isCreate || currentStep === 0" class="business-form-section">
+            <page-form ref="businessFormRef" :temp-form="tempForm" />
+        </div>
+
+        <div v-if="isCreate && currentStep === 1" class="start-form-section" v-loading="startFormLoading">
             <div class="start-form-section__header">
                 <div>
                     <div class="start-form-section__title">发起表单</div>
@@ -271,10 +288,16 @@ const sumbit = async () => {
                 />
             </div>
 
-            <el-empty
-                v-else
-                description="当前流程模板没有可用的开始节点表单"
-            />
+            <el-empty v-else description="当前流程模板没有可用的开始节点表单" />
+        </div>
+
+        <div v-if="isCreate" class="step-footer">
+            <el-button v-if="currentStep === 1" @click="goPrev">上一步</el-button>
+            <el-button v-if="currentStep === 0" type="primary" @click="goNext">下一步：填写 Start 节点表单</el-button>
+            <el-button v-if="currentStep === 1" type="primary" :loading="tempForm.loading" @click="sumbit">保存并发起流程</el-button>
+        </div>
+        <div v-else class="step-footer">
+            <el-button type="primary" :loading="tempForm.loading" @click="sumbit">保存</el-button>
         </div>
     </div>
 </template>
@@ -284,6 +307,28 @@ const sumbit = async () => {
     height: 100%;
     overflow-y: auto;
     padding-bottom: 40px;
+}
+
+.step-header {
+    padding: 20px 25px 10px 10px;
+    background: #fff;
+    border-bottom: 1px solid #edf1f7;
+}
+
+.business-form-section {
+    min-height: calc(100% - 100px);
+}
+
+.step-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 25px 12px 10px;
+    background: #fff;
+    border-top: 1px solid #e5eaf3;
 }
 
 .start-form-section {
