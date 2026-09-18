@@ -8,7 +8,7 @@ using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
 using WorkflowCore.Interface;
 using XXX.Net.Plugins.WorkFlow.Repository;
-using XXX.Net.Plugins.WorkFlow.Entity;
+using XXX.Net.Plugins.WorkFlow.Entity;\nusing XXX.Net.Plugins.WorkFlow.Service.Dto;
 using XXX.Net.Plugins.WorkFlow.Models;
 using XXX.Net.Plugins.WorkFlow.Step;
 
@@ -70,6 +70,71 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 Status = "running",
                 DataJson = JsonSerializer.Serialize(data ?? new Dictionary<string, object>()),
             });
+            return instanceId;
+        }
+
+        /// <summary>
+        /// 根据项目流程项启动工作流。
+        /// PmFlowItem 创建成功后由 CAP 消费者调用，真正启动 WorkflowCore。
+        /// </summary>
+        public async Task<string> StartByPmFlowItem(PmFlowItem item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (!item.Enabled) throw new InvalidOperationException("项目流程项已禁用");
+            if (item.Id <= 0) throw new InvalidOperationException("项目流程项 Id 无效");
+            if (string.IsNullOrWhiteSpace(item.WorkflowId))
+                throw new InvalidOperationException("项目流程项未绑定 WorkflowId");
+
+            var exists = (await _instanceRepo.GetListAsync(x => x.PmFlowItemId == item.Id))
+                .FirstOrDefault();
+            if (exists != null)
+                return exists.InstanceId;
+
+            var def = (await _defRepo.GetListAsync(d =>
+                    d.WorkflowId == item.WorkflowId &&
+                    d.Status == "published"))
+                .OrderByDescending(d => d.Version)
+                .FirstOrDefault()
+                ?? throw new InvalidOperationException($"流程定义不存在或未发布：{item.WorkflowId}");
+
+            if (def.TenantId != item.TenantId)
+                throw new InvalidOperationException("流程定义与项目流程项不属于同一租户");
+
+            var wcDef = WorkflowDefinitionConverter.Convert(def);
+            _host.Registry.RegisterWorkflow(wcDef);
+
+            var variables = new Dictionary<string, object>
+            {
+                ["PmFlowItemId"] = item.Id,
+                ["PmFlowTempId"] = item.PmFlowTempId,
+                ["taskName"] = string.IsNullOrWhiteSpace(item.Name)
+                    ? $"项目流程-{item.Id}"
+                    : item.Name,
+                ["Description"] = item.Description,
+                ["PlanStartTime"] = item.PlanStartTime,
+                ["PlanEndTime"] = item.PlanEndTime,
+            };
+
+            var flowData = new FlowData
+            {
+                WorkflowId = item.WorkflowId,
+                Variables = variables,
+            };
+
+            var instanceId = await _host.StartWorkflow(item.WorkflowId, def.Version, flowData);
+
+            await _instanceRepo.InsertAsync(new WorkflowInstance
+            {
+                TenantId = item.TenantId,
+                PmFlowItemId = item.Id,
+                InstanceId = instanceId,
+                WorkflowId = item.WorkflowId,
+                TaskName = variables["taskName"]?.ToString() ?? string.Empty,
+                Version = def.Version,
+                Status = "running",
+                DataJson = JsonSerializer.Serialize(variables),
+            });
+
             return instanceId;
         }
 
