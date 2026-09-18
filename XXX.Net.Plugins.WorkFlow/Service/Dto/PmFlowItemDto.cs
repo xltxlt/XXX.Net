@@ -8,7 +8,7 @@ using XXX.Net.Plugins.WorkFlow.Entity;
 
 namespace XXX.Net.Plugins.WorkFlow.Service.Dto
 {
-    public class PmFlowItemDto:BaseUpdate
+    public class PmFlowItemDto : BaseUpdate
     {
         [OptionEntity(typeof(PmFlowTemp))]
         public long PmFlowTempId { get; set; }
@@ -17,14 +17,19 @@ namespace XXX.Net.Plugins.WorkFlow.Service.Dto
         public DateTime? EndTime { get; set; }
 
         /// <summary>
-        ///   计划开始时间
+        /// 计划开始时间
         /// </summary>
         public DateTime PlanStartTime { get; set; }
 
         /// <summary>
-        ///   计划结束时间
+        /// 计划结束时间
         /// </summary>
         public DateTime PlanEndTime { get; set; }
+
+        /// <summary>
+        /// 开始节点表单数据。创建项目流程项时与基础参数一起提交。
+        /// </summary>
+        public Dictionary<string, object> StartFormData { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// 说明
