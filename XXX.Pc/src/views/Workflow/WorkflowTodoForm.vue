@@ -5,9 +5,9 @@
         :component-group-list="[]" />
     </div>
     <div class="todo-form-tools">
-      <el-button @click="submit('save')">保存</el-button>
-      <el-button type="primary" @click="submit('complete')">完成</el-button>
-      <el-button type="warning" @click="submit('skip')">跳过</el-button>
+      <el-button :loading="submitting" @click="submit('save')">保存</el-button>
+      <el-button type="primary" :loading="submitting" @click="submit('complete')">完成</el-button>
+      <el-button type="warning" :loading="submitting" @click="submit('skip')">跳过</el-button>
     </div>
   </div>
 </template>
@@ -19,6 +19,8 @@ import type { ReleaseData, matterExpose } from '@/components/common/YzCustomForm
 import { workflowTaskService, workflowNodeFormService } from '@/api/pm'
 import { ElMessage } from 'element-plus'
 
+const emit = defineEmits<{ completed: [] }>()
+
 const { taskId, workflowDefinitionId, nodeId } = defineProps<{
   taskId: string
   workflowDefinitionId: string
@@ -27,6 +29,7 @@ const { taskId, workflowDefinitionId, nodeId } = defineProps<{
 
 const yzCustomFormRef = ref<matterExpose>()
 const formData = ref<ReleaseData>({ form: [], attrData: {} })
+const submitting = ref(false)
 
 const submit = async (action: 'save' | 'complete' | 'skip') => {
   const data = yzCustomFormRef.value?.getData() ?? formData.value
@@ -38,16 +41,20 @@ const submit = async (action: 'save' | 'complete' | 'skip') => {
     })
   })
 
+  submitting.value = true
   try {
-    const res = await workflowTaskService.apiWorkflowTaskPost({
+    await workflowTaskService.apiWorkflowTaskPost({
       taskId,
       action,
       formData: formDataPayload,
       comment: '',
     })
     ElMessage.success(action === 'save' ? '已保存' : action === 'complete' ? '已完成' : '已跳过')
+    if (action === 'complete' || action === 'skip') emit('completed')
   } catch (e: any) {
     ElMessage.error(e?.message ?? '操作失败')
+  } finally {
+    submitting.value = false
   }
 }
 
