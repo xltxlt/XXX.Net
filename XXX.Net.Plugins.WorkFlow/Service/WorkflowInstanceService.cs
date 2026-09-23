@@ -127,6 +127,21 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             if (startNode == null || string.IsNullOrWhiteSpace(startNode.Id))
                 throw new InvalidOperationException("流程定义缺少开始节点");
 
+            // Start 节点只负责流程发起和填写开始节点表单，启动后即视为完成。
+            // 因此 WorkflowInstance.CurrentNodeId 应记录 Start 的下一节点，
+            // 而不是记录 Start 节点本身。
+            var nextEdge = def.Edges?
+                .FirstOrDefault(x => x.Source == startNode.Id);
+
+            if (nextEdge == null || string.IsNullOrWhiteSpace(nextEdge.Target))
+                throw new InvalidOperationException("开始节点没有后续节点");
+
+            var currentNode = def.Nodes?
+                .FirstOrDefault(x => x.Id == nextEdge.Target);
+
+            if (currentNode == null || string.IsNullOrWhiteSpace(currentNode.Id))
+                throw new InvalidOperationException("开始节点的后续节点不存在");
+
             var startForm = startFormData ?? new Dictionary<string, object>();
             var variables = new Dictionary<string, object>
             {
@@ -162,6 +177,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 TaskName = variables["taskName"]?.ToString() ?? string.Empty,
                 Version = def.Version,
                 Status = "running",
+                CurrentNodeId = currentNode.Id,
                 DataJson = JsonSerializer.Serialize(variables),
             });
 
