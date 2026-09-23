@@ -96,7 +96,7 @@ namespace XXX.Net.Plugins.WorkFlow.Step
                 // no-op steps makes a definition produced by the designer runnable.
                 "parallel" => typeof(StartStep),
                 "parent" => typeof(StartStep),
-                "end" => typeof(StartStep),
+                "end" => typeof(EndStep),
                 _ => throw new InvalidOperationException($"不支持的节点类型：{type}"),
             };
         }
