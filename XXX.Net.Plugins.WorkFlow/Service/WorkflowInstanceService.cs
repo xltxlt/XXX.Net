@@ -132,9 +132,10 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             {
                 ["PmFlowItemId"] = item.Id,
                 ["PmFlowTempId"] = item.PmFlowTempId,
-                ["taskName"] = string.IsNullOrWhiteSpace(item.Description)
+                ["taskName"] = string.IsNullOrWhiteSpace(item.Name)
                     ? $"项目流程-{item.Id}"
-                    : item.Description,
+                    : item.Name,
+                ["Name"] = item.Name,
                 ["Description"] = item.Description,
                 ["PlanStartTime"] = item.PlanStartTime,
                 ["PlanEndTime"] = item.PlanEndTime,
