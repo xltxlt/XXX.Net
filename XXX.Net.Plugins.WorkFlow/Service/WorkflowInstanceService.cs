@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +28,21 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         private readonly IWorkFlowRepository<WorkflowDefinition> _defRepo;
         private readonly IWorkflowHost _host;
 
+        /// <summary>
+        /// 当前应用进程已经注册到 WorkflowCore 的流程定义。
+        /// Key = WorkflowId:Version。
+        /// 注意：这里记录的是“流程定义是否注册”，不是“流程实例是否启动”。
+        /// 一个定义可以被多个 PmFlowItem 启动多次。
+        /// </summary>
+        private static readonly ConcurrentDictionary<string, byte> _registeredDefinitions =
+            new ConcurrentDictionary<string, byte>();
+
+        /// <summary>
+        /// 防止多个 PmFlowItem 第一次使用同一个流程定义时并发 RegisterWorkflow。
+        /// </summary>
+        private static readonly ConcurrentDictionary<string, SemaphoreSlim> _registerLocks =
+            new ConcurrentDictionary<string, SemaphoreSlim>();
+
         public WorkflowInstanceService(
             IWorkFlowRepository<WorkflowInstance> instanceRepo,
             IWorkFlowRepository<WorkflowDefinition> defRepo,
@@ -46,8 +63,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 .OrderByDescending(d => d.Version).FirstOrDefault()
                 ?? throw new InvalidOperationException("流程定义不存在");
 
-            var wcDef = WorkflowDefinitionConverter.Convert(def);
-            _host.Registry.RegisterWorkflow(wcDef);
+            EnsureWorkflowRegistered(def);
 
             var variables = data ?? new Dictionary<string, object>();
             var taskName = variables.TryGetValue("taskName", out var value) ? value?.ToString() : null;
@@ -103,8 +119,9 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             if (def.TenantId != item.TenantId)
                 throw new InvalidOperationException("流程定义与项目流程项不属于同一租户");
 
-            var wcDef = WorkflowDefinitionConverter.Convert(def);
-            _host.Registry.RegisterWorkflow(wcDef);
+            // 注册的是 WorkflowDefinition，而不是 PmFlowItem。
+            // 同一个 WorkflowId + Version 可以被多个 PmFlowItem 共用。
+            EnsureWorkflowRegistered(def);
 
             var startNode = def.Nodes?.FirstOrDefault(x => x.Type == "start");
             if (startNode == null || string.IsNullOrWhiteSpace(startNode.Id))
@@ -115,9 +132,9 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             {
                 ["PmFlowItemId"] = item.Id,
                 ["PmFlowTempId"] = item.PmFlowTempId,
-                ["taskName"] = string.IsNullOrWhiteSpace(item.Name)
+                ["taskName"] = string.IsNullOrWhiteSpace(item.Description)
                     ? $"项目流程-{item.Id}"
-                    : item.Name,
+                    : item.Description,
                 ["Description"] = item.Description,
                 ["PlanStartTime"] = item.PlanStartTime,
                 ["PlanEndTime"] = item.PlanEndTime,
@@ -148,6 +165,51 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             });
 
             return instanceId;
+        }
+
+        /// <summary>
+        /// 确保指定版本的流程定义已经注册到 WorkflowCore。
+        ///
+        /// 注册粒度：WorkflowId + Version
+        /// 启动限制：PmFlowItemId
+        /// 两者不能混为一谈。
+        /// </summary>
+        private void EnsureWorkflowRegistered(WorkflowDefinition def)
+        {
+            if (def == null)
+                throw new ArgumentNullException(nameof(def));
+
+            if (string.IsNullOrWhiteSpace(def.WorkflowId))
+                throw new InvalidOperationException("流程定义 WorkflowId 不能为空");
+
+            if (def.Version <= 0)
+                throw new InvalidOperationException("流程定义 Version 无效");
+
+            var key = $"{def.WorkflowId}:{def.Version}";
+
+            if (_registeredDefinitions.ContainsKey(key))
+                return;
+
+            var semaphore = _registerLocks.GetOrAdd(
+                key,
+                _ => new SemaphoreSlim(1, 1));
+
+            semaphore.Wait();
+            try
+            {
+                // Double Check，避免并发线程重复注册。
+                if (_registeredDefinitions.ContainsKey(key))
+                    return;
+
+                var wcDef = WorkflowDefinitionConverter.Convert(def);
+                _host.Registry.RegisterWorkflow(wcDef);
+
+                _registeredDefinitions.TryAdd(key, 0);
+            }
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
         [HttpGet]
