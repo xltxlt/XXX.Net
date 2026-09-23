@@ -39,6 +39,7 @@ namespace XXX.Net.Plugins.WorkFlow
 
             // StepBody 注册到 DI，支持构造函数注入
             services.AddTransient<StartStep>();
+            services.AddTransient<EndStep>();
             services.AddTransient<TaskStep>();
             services.AddTransient<DelayStep>();
             services.AddTransient<ConditionStep>();
@@ -47,6 +48,7 @@ namespace XXX.Net.Plugins.WorkFlow
 
             // 启动 WorkflowHost（后台运行流程）
             services.AddHostedService(sp => sp.GetRequiredService<IWorkflowHost>());
+            services.AddHostedService<WorkflowDefinitionRegistry>();
             services.AddHostedService<WorkflowTaskReminderService>();
         }
     }
