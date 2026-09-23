@@ -107,35 +107,77 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         }
 
         /// <summary>
-        /// 发布流程：转换为 WorkflowCore 定义并注册
+        /// 发布流程：
+        /// 1. 转换并校验 WorkflowCore 定义
+        /// 2. 注册 WorkflowCore，只有注册成功才继续
+        /// 3. 提交 MongoDB 发布状态
+        /// 4. 同步流程模板当前可发起版本
+        ///
+        /// 注意：
+        /// MongoDB 与 WorkflowCore Registry 不属于同一个事务。
+        /// 因此故意把“转换/注册”放在 Mongo 状态提交之前，
+        /// 避免出现“Mongo 已 published，但 WorkflowCore 无法运行”的假发布状态。
         /// </summary>
         [HttpPost]
         public async Task<WorkflowDefinition> Publish(string workflowId)
         {
+            if (string.IsNullOrWhiteSpace(workflowId))
+                throw Oops.Oh("流程 WorkflowId 不能为空");
+
             var entity = (await _repo.GetListAsync(d => d.WorkflowId == workflowId))
                 .OrderByDescending(d => d.Version)
                 .FirstOrDefault()
-                ?? throw new InvalidOperationException("流程定义不存在");
+                ?? throw Oops.Oh("流程定义不存在");
 
-           
-            // 先转换并注册，确保 WorkflowCore 可以真正运行，再更新 Mongo 发布状态。
-            // 如果转换/注册失败，数据库仍保持 draft，避免出现“已发布但运行时未注册”的假发布状态。
-            var wcDef = WorkflowDefinitionConverter.Convert(entity);
-            _host.Registry.RegisterWorkflow(wcDef);
+            // ============================================================
+            // 第一步：转换校验
+            // ============================================================
+            // Convert 内部会校验节点、边以及 WorkflowCore Step 类型。
+            // 这里只做转换，不修改 Mongo 数据。
+            WorkflowCore.Models.WorkflowDefinition wcDef;
 
+            try
+            {
+                wcDef = WorkflowDefinitionConverter.Convert(entity);
+            }
+            catch (Exception ex)
+            {
+                throw Oops.Oh($"流程定义校验失败，无法发布：{ex.Message}");
+            }
+
+            // ============================================================
+            // 第二步：注册成功
+            // ============================================================
+            // 注册失败时直接终止 Publish，此时 Mongo 仍然保持 draft。
+            try
+            {
+                _host.Registry.RegisterWorkflow(wcDef);
+            }
+            catch (Exception ex)
+            {
+                throw Oops.Oh($"WorkflowCore 注册失败，无法发布：{ex.Message}");
+            }
+
+            // ============================================================
+            // 第三步：MongoDB 发布状态提交
+            // ============================================================
             entity.Status = "published";
-            var change = await _repo.UpdateAsync(entity.Id, entity);
-            if (!change)
-                throw Oops.Bah("更新状态失败,发布失败");
 
-            // 发布后同步流程模板的“当前可发起版本”。
+            var change = await _repo.UpdateAsync(entity.Id, entity);
+
+            if (!change)
+                throw Oops.Bah("更新流程发布状态失败，发布未完成");
+
+            // ============================================================
+            // 第四步：同步流程模板当前可发起版本
+            // ============================================================
             var flowTemp = await _msRepository.Master<PmFlowTemp>()
                 .AsQueryable()
                 .Where(x => x.Id == entity.PmFlowTempId)
                 .FirstOrDefaultAsync();
 
             if (flowTemp == null)
-                throw new InvalidOperationException("流程模板不存在");
+                throw Oops.Bah("流程模板不存在，发布未完成");
 
             flowTemp.WorkflowId = entity.WorkflowId;
             flowTemp.WorkflowDefinitionId = entity.Id;
