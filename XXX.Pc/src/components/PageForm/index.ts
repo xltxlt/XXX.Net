@@ -1,7 +1,7 @@
 import type { Component, Ref, ComputedRef } from 'vue';
 import type { FormItemRule, FormRules } from 'element-plus'
-import type { componentAttr, componentForm } from '../common/YzCustomForm';
 import type { PagedOptions } from '@/api-services/generated';
+import type { componentAttr } from './enhancedIndex';
 /**
  * form 表单
  * submit 表单提交事件

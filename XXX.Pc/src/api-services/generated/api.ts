@@ -35,6 +35,7 @@ export * from './api/sys-file-api';
 export * from './api/sys-menu-api';
 export * from './api/sys-menu-button-api';
 export * from './api/sys-menu-field-api';
+export * from './api/sys-option-api';
 export * from './api/sys-position-api';
 export * from './api/sys-role-api';
 export * from './api/sys-tenant-api';

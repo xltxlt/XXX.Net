@@ -6,6 +6,7 @@ All URIs are relative to *http://localhost*
 |------------- | ------------- | -------------|
 |[**apiWorkflowInstanceDetailInstanceidGet**](#apiworkflowinstancedetailinstanceidget) | **GET** /api/workflow-instance/detail/{instanceid} | |
 |[**apiWorkflowInstanceListGet**](#apiworkflowinstancelistget) | **GET** /api/workflow-instance/list | |
+|[**apiWorkflowInstanceStartByPmFlowItemPost**](#apiworkflowinstancestartbypmflowitempost) | **POST** /api/workflow-instance/start-by-pm-flow-item | |
 |[**apiWorkflowInstanceStartWorkflowidPost**](#apiworkflowinstancestartworkflowidpost) | **POST** /api/workflow-instance/start/{workflowid} | |
 
 # **apiWorkflowInstanceDetailInstanceidGet**
@@ -91,6 +92,57 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **apiWorkflowInstanceStartByPmFlowItemPost**
+> RESTfulResultString apiWorkflowInstanceStartByPmFlowItemPost()
+
+
+### Example
+
+```typescript
+import {
+    WorkflowInstanceApi,
+    Configuration,
+    PmFlowItem
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new WorkflowInstanceApi(configuration);
+
+let pmFlowItem: PmFlowItem; // (optional)
+
+const { status, data } = await apiInstance.apiWorkflowInstanceStartByPmFlowItemPost(
+    pmFlowItem
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **pmFlowItem** | **PmFlowItem**|  | |
+
+
+### Return type
+
+**RESTfulResultString**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json, text/json, application/*+json, text/plain
  - **Accept**: text/plain, application/json, text/json
 
 

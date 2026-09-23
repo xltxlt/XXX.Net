@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **createdTime** | **string** |  | [optional] [default to undefined]
 **tenantId** | **string** |  | [optional] [default to undefined]
 **instanceId** | **string** |  | [optional] [default to undefined]
+**pmFlowItemId** | **string** |  | [optional] [default to undefined]
 **workflowId** | **string** |  | [optional] [default to undefined]
 **taskName** | **string** |  | [optional] [default to undefined]
 **version** | **number** |  | [optional] [default to undefined]
@@ -26,6 +27,7 @@ const instance: WorkflowInstance = {
     createdTime,
     tenantId,
     instanceId,
+    pmFlowItemId,
     workflowId,
     taskName,
     version,

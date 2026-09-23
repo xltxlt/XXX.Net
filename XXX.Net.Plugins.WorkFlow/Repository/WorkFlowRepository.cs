@@ -1,9 +1,10 @@
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using MongoDB.Driver;
 using XXX.Net.Core.MongoDb;
 using XXX.Net.Plugins.WorkFlow.Entity;
 
@@ -51,16 +52,31 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
             await _collection.InsertManyAsync(entitys);
 
         }
+      
         public async Task<bool> UpdateAsync(string id, T entity)
         {
-            var result = await _collection.ReplaceOneAsync(Builders<T>.Filter.Eq("_id", id), entity);
+            if (!ObjectId.TryParse(id, out var objectId))
+                return false;
+
+            var filter = Builders<T>.Filter.Eq("_id", objectId);
+
+            var result = await _collection.ReplaceOneAsync(filter, entity);
+
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
-
         public async Task<bool> DeleteAsync(string id)
         {
-            var result = await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", id));
-            return result.DeletedCount > 0;
+            if (string.IsNullOrWhiteSpace(id))
+                return false;
+
+            if (!ObjectId.TryParse(id, out var objectId))
+                return false;
+
+            var filter = Builders<T>.Filter.Eq("_id", objectId);
+
+            var result = await _collection.DeleteOneAsync(filter);
+
+            return result.IsAcknowledged && result.DeletedCount > 0;
         }
     }
 }

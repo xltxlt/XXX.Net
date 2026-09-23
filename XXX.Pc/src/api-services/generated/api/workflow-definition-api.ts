@@ -24,6 +24,8 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 // @ts-ignore
 import type { RESTfulResultListWorkflowDefinition } from '../models';
 // @ts-ignore
+import type { RESTfulResultTempPublishStatusOutput } from '../models';
+// @ts-ignore
 import type { RESTfulResultWorkflowDefinition } from '../models';
 // @ts-ignore
 import type { WorkflowDefinitionDto } from '../models';
@@ -159,6 +161,39 @@ export const WorkflowDefinitionApiAxiosParamCreator = function (configuration?: 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} templateid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiWorkflowDefinitionTempPublishStatusTemplateidGet: async (templateid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'templateid' is not null or undefined
+            assertParamExists('apiWorkflowDefinitionTempPublishStatusTemplateidGet', 'templateid', templateid)
+            const localVarPath = `/api/workflow-definition/temp-publish-status/{templateid}`
+                .replace('{templateid}', encodeURIComponent(String(templateid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -215,6 +250,18 @@ export const WorkflowDefinitionApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['WorkflowDefinitionApi.apiWorkflowDefinitionSavePost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} templateid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiWorkflowDefinitionTempPublishStatusTemplateidGet(templateid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultTempPublishStatusOutput>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiWorkflowDefinitionTempPublishStatusTemplateidGet(templateid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkflowDefinitionApi.apiWorkflowDefinitionTempPublishStatusTemplateidGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -258,6 +305,15 @@ export const WorkflowDefinitionApiFactory = function (configuration?: Configurat
          */
         apiWorkflowDefinitionSavePost(workflowDefinitionDto?: WorkflowDefinitionDto, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultWorkflowDefinition> {
             return localVarFp.apiWorkflowDefinitionSavePost(workflowDefinitionDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} templateid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiWorkflowDefinitionTempPublishStatusTemplateidGet(templateid: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultTempPublishStatusOutput> {
+            return localVarFp.apiWorkflowDefinitionTempPublishStatusTemplateidGet(templateid, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -303,6 +359,16 @@ export class WorkflowDefinitionApi extends BaseAPI {
      */
     public apiWorkflowDefinitionSavePost(workflowDefinitionDto?: WorkflowDefinitionDto, options?: RawAxiosRequestConfig) {
         return WorkflowDefinitionApiFp(this.configuration).apiWorkflowDefinitionSavePost(workflowDefinitionDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} templateid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiWorkflowDefinitionTempPublishStatusTemplateidGet(templateid: string, options?: RawAxiosRequestConfig) {
+        return WorkflowDefinitionApiFp(this.configuration).apiWorkflowDefinitionTempPublishStatusTemplateidGet(templateid, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

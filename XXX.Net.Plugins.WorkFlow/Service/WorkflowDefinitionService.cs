@@ -89,6 +89,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
             foreach (var nodeFormTemp in mlAddNodeFormTemp)
             {
+                nodeFormTemp.Id = string.Empty;
                 nodeFormTemp.WorkflowDeginitionId = entity.Id;
                 nodeFormTemp.WorkflowId = entity.WorkflowId;
                 nodeFormTemp.Version = entity.Version;
@@ -116,11 +117,10 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 .FirstOrDefault()
                 ?? throw new InvalidOperationException("流程定义不存在");
 
-            var wcDef = WorkflowDefinitionConverter.Convert(entity);
-            _host.Registry.RegisterWorkflow(wcDef);
-
+           
             entity.Status = "published";
-            await _repo.UpdateAsync(entity.Id, entity);
+            var change= await _repo.UpdateAsync(entity.Id, entity);
+            if(!change) throw  Oops.Bah("更新状态失败,发布失败");
 
             // 发布后同步流程模板的“当前可发起版本”，避免模板仍然保留旧的发布信息。
             var flowTemp = await _msRepository.Master<PmFlowTemp>()
@@ -136,9 +136,28 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             flowTemp.LastVersion = entity.Version;
             await _msRepository.Master<PmFlowTemp>().UpdateAsync(flowTemp);
 
+            var wcDef = WorkflowDefinitionConverter.Convert(entity);
+            _host.Registry.RegisterWorkflow(wcDef);
+
             return entity;
         }
+        /// <summary>
+        /// 发布流程：转换为 WorkflowCore 定义并注册
+        /// </summary>
+        [HttpGet]
+        public async Task<TempPublishStatusOutput> TempPublishStatus(long templateId)
+        {
+            var entity = (await _repo.GetListAsync(d => d.PmFlowTempId == templateId && d.Status== "published"))
+                .OrderByDescending(d => d.Version)
+                .FirstOrDefault()
+                ?? throw new InvalidOperationException("流程定义不存在或未发布");
 
+            return new TempPublishStatusOutput() {
+                WorkflowId = entity.WorkflowId,
+                WorkflowDefinitionId = entity.Id,
+                Version=entity.Version
+            };
+        }
         /// <summary>
         /// 流程定义列表
         /// </summary>

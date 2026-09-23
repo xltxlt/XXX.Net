@@ -309,62 +309,6 @@
         }
       }
     },
-    "/api/pm-flow-item/update": {
-      "post": {
-        "tags": [
-          "pm-flow-item"
-        ],
-        "summary": "更新",
-        "operationId": "api-pm-flow-item-update-Post",
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PmFlowItemDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PmFlowItemDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PmFlowItemDto"
-              }
-            },
-            "text/plain": {
-              "schema": {
-                "$ref": "#/components/schemas/PmFlowItemDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/pm-flow-temp/update": {
       "post": {
         "tags": [
@@ -693,15 +637,14 @@
         }
       }
     },
-    "/api/pm-flow-item/addorupdate": {
+    "/api/pm-flow-item/add": {
       "post": {
         "tags": [
           "pm-flow-item"
         ],
         "summary": "新增",
-        "operationId": "api-pm-flow-item-addorupdate-Post",
+        "operationId": "api-pm-flow-item-add-Post",
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -749,13 +692,68 @@
         }
       }
     },
-    "/api/pm-flow-item/add": {
+    "/api/pm-flow-item/update": {
+      "post": {
+        "tags": [
+          "pm-flow-item"
+        ],
+        "summary": "更新",
+        "operationId": "api-pm-flow-item-update-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_PmFlowItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pm-flow-item/addorupdate": {
       "post": {
         "tags": [
           "pm-flow-item"
         ],
         "summary": "新增",
-        "operationId": "api-pm-flow-item-add-Post",
+        "operationId": "api-pm-flow-item-addorupdate-Post",
         "requestBody": {
           "description": "",
           "content": {
@@ -1530,10 +1528,8 @@
         "tags": [
           "pm-flow-item"
         ],
-        "summary": "模型到实体的转换",
         "operationId": "api-pm-flow-item-to-entity-Post",
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -1867,6 +1863,46 @@
         }
       }
     },
+    "/api/workflow-definition/temp-publish-status/{templateid}": {
+      "get": {
+        "tags": [
+          "workflow-definition"
+        ],
+        "operationId": "api-workflow-definition-temp-publish-status-templateid-Get",
+        "parameters": [
+          {
+            "name": "templateid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_TempPublishStatusOutput"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_TempPublishStatusOutput"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_TempPublishStatusOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/workflow-definition/list": {
       "get": {
         "tags": [
@@ -1985,6 +2021,60 @@
                 "additionalProperties": {
                   "additionalProperties": false
                 }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_String"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_String"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_String"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workflow-instance/start-by-pm-flow-item": {
+      "post": {
+        "tags": [
+          "workflow-instance"
+        ],
+        "operationId": "api-workflow-instance-start-by-pm-flow-item-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItem"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/PmFlowItem"
               }
             }
           }
@@ -2664,6 +2754,13 @@
             "type": "string",
             "format": "date-time"
           },
+          "startFormData": {
+            "type": "object",
+            "additionalProperties": {
+              "additionalProperties": false
+            },
+            "nullable": true
+          },
           "description": {
             "type": "string",
             "nullable": true
@@ -3232,6 +3329,34 @@
         },
         "additionalProperties": false
       },
+      "RESTfulResult_TempPublishStatusOutput": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/TempPublishStatusOutput"
+          },
+          "succeeded": {
+            "type": "boolean"
+          },
+          "errors": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "extras": {
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "RESTfulResult_WorkflowDefinition": {
         "type": "object",
         "properties": {
@@ -3408,6 +3533,24 @@
             "nullable": true
           },
           "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TempPublishStatusOutput": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "workflowId": {
+            "type": "string",
+            "nullable": true
+          },
+          "workflowDefinitionId": {
             "type": "string",
             "nullable": true
           }
@@ -3630,6 +3773,9 @@
           "instanceId": {
             "type": "string",
             "nullable": true
+          },
+          "pmFlowItemId": {
+            "type": "string"
           },
           "workflowId": {
             "type": "string",

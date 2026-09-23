@@ -515,7 +515,6 @@ export const PmFlowItemApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * 
-         * @summary 模型到实体的转换
          * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -805,7 +804,6 @@ export const PmFlowItemApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 模型到实体的转换
          * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -993,7 +991,6 @@ export const PmFlowItemApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * 
-         * @summary 模型到实体的转换
          * @param {PmFlowItemDto} [pmFlowItemDto] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1184,7 +1181,6 @@ export class PmFlowItemApi extends BaseAPI {
 
     /**
      * 
-     * @summary 模型到实体的转换
      * @param {PmFlowItemDto} [pmFlowItemDto] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

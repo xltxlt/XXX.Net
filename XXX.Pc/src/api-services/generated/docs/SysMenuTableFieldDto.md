@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **fieldName** | **string** |  | [optional] [default to undefined]
 **dataSourceType** | **number** | 数据源类型 | [optional] [default to undefined]
-**dataSourceValue** | **string** | 数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址） | [optional] [default to undefined]
+**dataSourceValue** | **string** | 数据源配置值（1字典类型编码/ 2枚举 / 3数据表  ） | [optional] [default to undefined]
 **httpType** | **number** |  | [optional] [default to undefined]
 **dataSourcePars** | **string** | 数据源参数（JSON格式） | [optional] [default to undefined]
 **dataSourceHeaders** | **string** | headers | [optional] [default to undefined]

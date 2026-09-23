@@ -21,7 +21,7 @@ export interface SysMenuTableFieldDto {
      */
     'dataSourceType'?: number;
     /**
-     * 数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）
+     * 数据源配置值（1字典类型编码/ 2枚举 / 3数据表  ）
      */
     'dataSourceValue'?: string | null;
     /**

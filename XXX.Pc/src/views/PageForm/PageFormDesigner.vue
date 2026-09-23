@@ -17,11 +17,6 @@
       <aside class="designer-panel component-panel">
         <h3>组件库</h3>
         <p class="panel-tip">可拖拽控件到画布；选中分组后点击控件会添加到该分组。</p>
-        <el-divider content-position="left">基础字段</el-divider>
-        <el-button v-for="item in fieldPalette" :key="item.formType" class="palette-button" draggable="true"
-          @dragstart="startPaletteDrag($event, item)" @click="addField(item)">
-          {{ item.label }}
-        </el-button>
         <el-divider content-position="left">布局</el-divider>
         <el-button class="palette-button" draggable="true" @dragstart="startPaletteDrag($event, groupPaletteItem)"
           @click="addGroup">分组</el-button>
@@ -29,6 +24,12 @@
           @click="addTable">表格分组</el-button>
         <el-button class="palette-button" draggable="true" @dragstart="startPaletteDrag($event, listPaletteItem)"
           @click="addList">列表分组</el-button>
+        <el-divider content-position="left">基础字段</el-divider>
+        <el-button v-for="item in fieldPalette" :key="item.formType" class="palette-button" draggable="true"
+          @dragstart="startPaletteDrag($event, item)" @click="addField(item)">
+          {{ item.label }}
+        </el-button>
+
       </aside>
 
       <section class="canvas-panel" @click.self="selectedId = ''" @dragover.prevent @drop="dropOnRoot">
@@ -37,7 +38,6 @@
           <el-radio-group v-model="form.cols" size="small">
             <el-radio-button :value="1">1 列</el-radio-button>
             <el-radio-button :value="2">2 列</el-radio-button>
-            <el-radio-button :value="3">3 列</el-radio-button>
           </el-radio-group>
         </div>
         <div v-if="form.form.length === 0" class="empty-canvas">请从左侧添加字段或布局组件。</div>
@@ -72,14 +72,51 @@
               <el-input v-model="selectedItem.fieldName" placeholder="例如 name" />
             </el-form-item>
             <el-form-item v-if="!isContainer(selectedItem)" label="占位提示">
-              <el-input v-model="selectedItem.placeholder" placeholder="为空时自动生成" />
+              <el-input v-model="attrData[selectedItem.ident].placeholder" placeholder="为空时自动生成" />
             </el-form-item>
-            <el-form-item v-if="!isContainer(selectedItem)" label="必填"><el-switch v-model="selectedItem.must" /></el-form-item>
-            <el-form-item v-if="isChoice(selectedItem)" label="选项（每行：标签,值）">
+            <el-form-item v-if="!isContainer(selectedItem)" label="必填"><el-switch
+                v-model="attrData[selectedItem.ident].must" /></el-form-item>
+            <!-- <el-form-item v-if="isChoice(selectedItem)" label="选项（每行：标签,值）">
               <el-input v-model="selectedItem.optionText" type="textarea" :rows="5" placeholder="启用,1&#10;停用,0"
                 @change="syncOptions(selectedItem)" />
-            </el-form-item>
-            <el-form-item v-if="!isContainer(selectedItem)" label="自定义属性">
+            </el-form-item> -->
+            <el-divider content-position="left">其他属性</el-divider>
+
+            <template
+              v-if="selectedItem.formType == PageFormType.TreeSelectLast || selectedItem.formType == PageFormType.TreeSelect || selectedItem.formType == PageFormType.OneSelect || selectedItem.formType == PageFormType.MultSelect || selectedItem.formType == PageFormType.OneSelectSearch || selectedItem.formType == PageFormType.MultSelect">
+              <el-form-item v-if="!isContainer(selectedItem)" label="来源类型">
+                <el-select v-model="attrData[selectedItem.ident].dataSourceType" placeholder="请选择数据来源">
+                  <el-option :key="option.value" :label="option.label" :value="option.value"
+                    v-for="option in dataSourceOptions" />
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-if="!isContainer(selectedItem) && (attrData[selectedItem.ident].dataSourceType == 1 || attrData[selectedItem.ident].dataSourceType == 2)"
+                label="数据来源">
+                <el-select v-model="attrData[selectedItem.ident].dataSourceValue" placeholder="请选择数据来源">
+                  <el-option :key="option.value" :label="option.label" :value="option.value"
+                    v-for="option in dataSourceValueOptions" />
+                </el-select>
+              </el-form-item>
+              <el-form-item v-if="!isContainer(selectedItem) && attrData[selectedItem.ident].dataSourceType == 4"
+                label="接口地址">
+                <el-input v-model="attrData[selectedItem.ident].dataSourceApi" placeholder="" />
+              </el-form-item>
+              <el-form-item v-if="!isContainer(selectedItem) && attrData[selectedItem.ident].dataSourceType == 4"
+                label="接口参数">
+                <el-input v-model="attrData[selectedItem.ident].dataSourcePars" />
+              </el-form-item>
+              <el-form-item v-if="!isContainer(selectedItem) && attrData[selectedItem.ident].dataSourceType == 4"
+                label="接口请求头">
+                <el-input v-model="attrData[selectedItem.ident].dataSourceHeaders" />
+              </el-form-item>
+              <el-form-item v-if="isChoice(selectedItem) && attrData[selectedItem.ident].dataSourceType == 99"
+                label="自定义选项">
+                <el-input v-model="attrData[selectedItem.ident].customOptions" type="textarea" :rows="5" placeholder=""
+                  @change="syncOptions(selectedItem)" />
+              </el-form-item>
+            </template>
+            <!-- <el-form-item v-if="!isContainer(selectedItem)" label="自定义属性">
               <el-input
                 :model-value="customAttrText"
                 type="textarea"
@@ -88,7 +125,7 @@
                 @change="updateCustomAttr"
               />
               <div class="attr-tip">属性独立保存到 AttrDataJson，键为控件 ident，不混入表单结构。</div>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
           <div class="property-actions">
             <el-button :disabled="!canMove(-1)" @click="moveSelected(-1)">上移</el-button>
@@ -116,6 +153,9 @@ import type { FormItemRule } from 'element-plus'
 import PageForm from '@/components/PageForm/PageForm.vue'
 import { PageFormGroup, PageFormType, type TempEditForm, type TempEditPageData } from '@/components/PageForm'
 import { workflowNodeFormService } from '@/api/pm'
+import type { PagedOptions } from '@/api-services/generated'
+import { optionService } from '@/api'
+import { isNullOrUnDef } from '@/utils/is'
 
 // const { nodeId, workflowDeginitionId } = defineProps<{  }>()
 
@@ -129,20 +169,87 @@ type PaletteItem = { label: string; formType: number; choice?: boolean }
 type AttrData = Record<string, Record<string, any>>
 export type ReleaseData = {
   form: DesignerItem[]
-  cols:number
+  cols: number
   attrData: AttrData
 }
-
-const props= defineProps<{
-  designerData?: ReleaseData|null|undefined
+const dataSourceOptions = [
+  { label: '默认', value: '0' },
+  { label: '枚举', value: '1' },
+  { label: '字典', value: '2' },
+  { label: '实体类', value: '3' },
+  { label: '接口', value: '4' },
+  { label: '自定义', value: '99' },
+] as const
+const attrDataCustom = ref<Record<string, any>>({})
+const enumDicOptions = ref<{ [key: string]: PagedOptions[] | null }>()
+const dataSourceValueOptions = computed(() => {
+  var type = attrData.value[selectedItem.value?.ident ?? ''].dataSourceType;
+  attrData.value[selectedItem.value?.ident ?? ''].dataSourceValue = null;
+  if (isNullOrUnDef(type) || (type != 1 && type != 2)) return [] as PagedOptions[];
+  var typeStr = type == 2 ? 'Sys_DictData' : (type == 1 ? 'Sys_EnumData' : '');
+  return enumDicOptions.value?.[typeStr] || [];
+});
+const props = defineProps<{
+  designerData?: ReleaseData | null | undefined
 }>()
 const emits = defineEmits<{ (e: 'release', data: ReleaseData): void }>()
 const fieldPalette: PaletteItem[] = [
-  { label: '单行文本', formType: PageFormType.Input }, { label: '多行文本', formType: PageFormType.TextAreaInput },
-  { label: '数字', formType: PageFormType.Number }, { label: '开关', formType: PageFormType.Switch },
-  { label: '日期', formType: PageFormType.DateSelect }, { label: '日期时间', formType: PageFormType.DateTimeSelect },
-  { label: '下拉选择', formType: PageFormType.OneSelectSearch, choice: true }, { label: '单选', formType: PageFormType.Radio, choice: true },
+  // { label: '单行文本', formType: PageFormType.Input },
+  // { label: '多行文本', formType: PageFormType.TextAreaInput },
+  // { label: '数字', formType: PageFormType.Number },
+  // { label: '开关', formType: PageFormType.Switch },
+  // { label: '日期', formType: PageFormType.DateSelect },
+  // { label: '日期时间', formType: PageFormType.DateTimeSelect },
+  // { label: '下拉选择', formType: PageFormType.OneSelectSearch, choice: true },
+  // { label: '单选', formType: PageFormType.Radio, choice: true },
+  // { label: '多选', formType: PageFormType.MultSelect, choice: true },
+  { label: '文本', formType: PageFormType.Input },
+  { label: '数字', formType: PageFormType.Number },
+  // { label: '选择框', formType: PageFormType.Checkbox },
+  { label: 'radio选择', formType: PageFormType.Radio, choice: true },
+  { label: '多行文本', formType: PageFormType.TextAreaInput },
+  { label: '步进器', formType: PageFormType.Stepper },
+  { label: '比率', formType: PageFormType.Rate },
+  { label: '开关', formType: PageFormType.Switch },
+  { label: '手机号', formType: PageFormType.Phone },
+  { label: '整数', formType: PageFormType.NumberInput },
+  { label: '小数', formType: PageFormType.DecimalInput },
+  { label: '金额', formType: PageFormType.Amount },
+  { label: '颜色选择', formType: PageFormType.Color },
+  { label: '滑块', formType: PageFormType.Slider },
+  { label: '图标选择', formType: PageFormType.Icon },
+  { label: '单选', formType: PageFormType.OneSelect, choice: true },
+  { label: '单选带搜索', formType: PageFormType.OneSelectSearch, choice: true },
   { label: '多选', formType: PageFormType.MultSelect, choice: true },
+  { label: '树形', formType: PageFormType.TreeSelect, choice: true },
+  { label: '树形多选', formType: PageFormType.MultTreeSelect, choice: true },
+  // { label: '当前树形多选', formType: PageFormType.MultSelfTreeSelect, choice: true },
+  // { label: '当前树形', formType: PageFormType.SelfTreeSelect, choice: true },
+  { label: '懒加载树形', formType: PageFormType.LazyTreeSelect, choice: true },
+  { label: '级联', formType: PageFormType.CascaderSelect, choice: true },
+  // { label: '自定义选项', formType: PageFormType.CustomOptions },
+  { label: '树形', formType: PageFormType.TreeSelectLast, choice: true },
+  { label: '日期', formType: PageFormType.DateSelect },
+  { label: '日期时间', formType: PageFormType.DateTimeSelect },
+  { label: '时间', formType: PageFormType.TimeSelect },
+  { label: '日期范围', formType: PageFormType.DateRangeSelect },
+  { label: '年份选择', formType: PageFormType.YaerSelect },
+  { label: '年份多选', formType: PageFormType.MultYaerSelect },
+  { label: '月份选择', formType: PageFormType.MonthSelect },
+  { label: '月份范围', formType: PageFormType.MonthRangeSelect },
+  { label: '月份多选', formType: PageFormType.MultMonthSelect },
+  { label: '日期多选', formType: PageFormType.MultDateSelect },
+  { label: '年份范围', formType: PageFormType.YaerRangeSelect },
+  { label: '区县', formType: PageFormType.AreaSelect },
+  { label: '城市', formType: PageFormType.CitySelect },
+  { label: '省份', formType: PageFormType.ProvinceSelect },
+  { label: '文件详情', formType: PageFormType.FileDetail },
+  { label: '单图片上传', formType: PageFormType.UploadOneImg },
+  { label: '多图片上传', formType: PageFormType.UploadMultImg },
+  { label: '单文件上传', formType: PageFormType.UploadOneFile },
+  { label: '多文件上传', formType: PageFormType.UploadMultFile },
+  { label: '地图选点', formType: PageFormType.MapSelect },
+  { label: '地址选择', formType: PageFormType.LocationSelect },
 ]
 const groupPaletteItem: PaletteItem = { label: '基础信息', formType: PageFormGroup.Group }
 const tablePaletteItem: PaletteItem = { label: '明细信息', formType: PageFormGroup.Table }
@@ -152,9 +259,11 @@ const FieldCard = defineComponent({
   props: { item: { type: Object as PropType<DesignerItem>, required: true }, selected: Boolean },
   emits: ['select', 'drag-start'],
   setup(props, { emit }) {
-    return () => h('div', { class: ['field-card', { selected: props.selected }], draggable: true,
+    return () => h('div', {
+      class: ['field-card', { selected: props.selected }], draggable: true,
       onDragstart: (event: DragEvent) => emit('drag-start', event, props.item),
-      onClick: (event: Event) => { event.stopPropagation(); emit('select', props.item) } }, [
+      onClick: (event: Event) => { event.stopPropagation(); emit('select', props.item) }
+    }, [
       h('strong', props.item.label || '未命名字段'), h('span', props.item.fieldName || '请配置字段名'),
     ])
   },
@@ -303,9 +412,11 @@ onMounted(async () => {
   if (!props.designerData) return
   try {
 
-    form.cols = props.designerData.cols||2;
+    form.cols = props.designerData.cols || 2;
     form.form = parseFormJson(props.designerData.form)
     attrData.value = parseJsonObject(props.designerData.attrData)
+    var res = await optionService.apiSysOptionOptionAllPost();
+    enumDicOptions.value = res.data?.data ?? {};
   } catch {
     // 新节点或历史版本不存在表单时保持空设计器。
   }
@@ -313,23 +424,264 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="less">
-.page-form-designer { min-height: 720px; overflow: hidden; background: #f3f6fc; }
-.designer-header { display:flex; align-items:center; justify-content:space-between; padding:20px 28px; color:#fff; background:linear-gradient(120deg,#1c64f2,#4f46e5); box-shadow:0 3px 16px rgb(30 64 175 / 20%); h2{margin:0 0 6px;font-size:22px;letter-spacing:.5px} p{margin:0;color:rgb(255 255 255 / 80%);font-size:13px} code{padding:1px 4px;border-radius:3px;background:rgb(255 255 255 / 16%)} .designer-actions :deep(.el-button){border-color:rgb(255 255 255 / 45%)} .designer-actions :deep(.el-button:not(.el-button--danger)){color:#1d4ed8} }
-.designer-actions,.property-actions{display:flex;gap:8px}
-.designer-body{display:grid;grid-template-columns:220px minmax(460px,1fr) 300px;min-height:650px}
-.designer-panel{padding:20px;background:#fff;border-right:1px solid #e5eaf3;h3{margin:0 0 8px;color:#172554;font-size:16px}}
-.property-panel{border-right:0;border-left:1px solid #e5eaf3}
-.panel-tip{margin:0;color:#7b879b;font-size:12px;line-height:1.6}
-.palette-button{width:100%;margin:0 0 9px !important;color:#3b4b68;text-align:left;border-color:#dbe5f4;transition:transform .15s,box-shadow .15s;cursor:grab;&:hover{color:#1d4ed8;border-color:#93c5fd;background:#eff6ff;box-shadow:0 4px 10px rgb(59 130 246 / 12%);transform:translateX(3px)}&:active{cursor:grabbing}}
-.canvas-panel{padding:24px;overflow:auto;background-image:radial-gradient(#d9e3f2 1px,transparent 1px);background-size:18px 18px}
-.canvas-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:12px 16px;color:#1e3a5f;background:rgb(255 255 255 / 90%);border:1px solid #e3ebf7;border-radius:10px;box-shadow:0 2px 8px rgb(55 85 130 / 7%)}
-.empty-canvas,.empty-group{display:block;padding:42px 16px;color:#7b879b;text-align:center;border:2px dashed #b9c9df;border-radius:10px;background:rgb(255 255 255 / 75%)}
-.canvas-items{display:grid;gap:14px}
-.canvas-group{padding:18px;border:1px solid #dce6f2;border-radius:10px;background:#fff;box-shadow:0 3px 12px rgb(56 88 130 / 8%);cursor:pointer;transition:border-color .15s,box-shadow .15s}.canvas-group.selected,.field-card.selected{border-color:#3b82f6;box-shadow:0 0 0 3px rgb(59 130 246 / 15%)}
-.canvas-group-title{display:flex;justify-content:space-between;padding-bottom:12px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #edf2f8;small{color:#7b879b;font-weight:normal}}
-.canvas-group-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:12px}
-.field-card{padding:13px;border:1px solid #e1eaf5;border-radius:8px;background:#fff;cursor:grab;transition:border-color .15s,box-shadow .15s,transform .15s;&:hover{border-color:#93c5fd;box-shadow:0 4px 10px rgb(59 130 246 / 10%);transform:translateY(-1px)}&:active{cursor:grabbing}strong,span{display:block}strong{color:#334155}span{margin-top:5px;color:#7b879b;font-size:12px}}
-.attr-tip{margin-top:4px;color:#94a3b8;font-size:12px;line-height:1.5}
-.property-actions{padding-top:10px;flex-wrap:wrap}
-@media (max-width:1050px){.designer-body{grid-template-columns:190px minmax(360px,1fr)}.property-panel{grid-column:1 / -1;border-top:1px solid #e5eaf3;border-left:0}.designer-header{align-items:flex-start;gap:12px;flex-direction:column}}
+.page-form-designer {
+  height: 100%;
+  min-height: 720px;
+  overflow: hidden;
+  background: #f3f6fc;
+}
+
+
+
+.designer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  color: #fff;
+  background: linear-gradient(120deg, #1c64f2, #4f46e5);
+  box-shadow: 0 3px 16px rgb(30 64 175 / 20%);
+
+  h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    letter-spacing: .5px
+  }
+
+  p {
+    margin: 0;
+    color: rgb(255 255 255 / 80%);
+    font-size: 13px
+  }
+
+  code {
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: rgb(255 255 255 / 16%)
+  }
+
+  .designer-actions :deep(.el-button) {
+    border-color: rgb(255 255 255 / 45%)
+  }
+
+  .designer-actions :deep(.el-button:not(.el-button--danger)) {
+    color: #1d4ed8
+  }
+}
+
+.component-panel {
+  width: 260px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-bottom: 50px !important;
+}
+
+.designer-actions,
+.property-actions {
+  display: flex;
+  gap: 8px
+}
+
+.designer-body {
+  height: calc(100% - 100px);
+  display: grid;
+  grid-template-columns: 300px minmax(460px, 1fr) 300px;
+  min-height: 650px
+}
+
+.designer-panel {
+  padding: 20px;
+  background: #fff;
+  border-right: 1px solid #e5eaf3;
+  overflow-y: auto;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+
+  /* IE / Edge */
+  h3 {
+    margin: 0 0 8px;
+    color: #172554;
+    font-size: 16px
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+    /* Chrome / Safari */
+  }
+}
+
+.property-panel {
+  border-right: 0;
+  border-left: 1px solid #e5eaf3
+}
+
+.panel-tip {
+  margin: 0;
+  color: #7b879b;
+  font-size: 12px;
+  line-height: 1.6
+}
+
+.palette-button {
+  width: 46%;
+  margin: 0 0 9px !important;
+  color: #3b4b68;
+  text-align: left;
+  border-color: #dbe5f4;
+  transition: transform .15s, box-shadow .15s;
+  cursor: grab;
+
+  &:hover {
+    color: #1d4ed8;
+    border-color: #93c5fd;
+    background: #eff6ff;
+    box-shadow: 0 4px 10px rgb(59 130 246 / 12%);
+    transform: translateX(3px)
+  }
+
+  &:active {
+    cursor: grabbing
+  }
+}
+
+.canvas-panel {
+  padding: 24px;
+  overflow: auto;
+  background-image: radial-gradient(#d9e3f2 1px, transparent 1px);
+  background-size: 18px 18px
+}
+
+.canvas-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  color: #1e3a5f;
+  background: rgb(255 255 255 / 90%);
+  border: 1px solid #e3ebf7;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgb(55 85 130 / 7%)
+}
+
+.empty-canvas,
+.empty-group {
+  display: block;
+  padding: 42px 16px;
+  color: #7b879b;
+  text-align: center;
+  border: 2px dashed #b9c9df;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 75%)
+}
+
+.canvas-items {
+  display: grid;
+  gap: 14px
+}
+
+.canvas-group {
+  padding: 18px;
+  border: 1px solid #dce6f2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgb(56 88 130 / 8%);
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s
+}
+
+.canvas-group.selected,
+.field-card.selected {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 15%)
+}
+
+.canvas-group-title {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  color: #1e3a5f;
+  font-weight: 600;
+  border-bottom: 1px solid #edf2f8;
+
+  small {
+    color: #7b879b;
+    font-weight: normal
+  }
+}
+
+.canvas-group-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding-top: 12px
+}
+
+.field-card {
+  padding: 13px;
+  border: 1px solid #e1eaf5;
+  border-radius: 8px;
+  background: #fff;
+  cursor: grab;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+
+  &:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 4px 10px rgb(59 130 246 / 10%);
+    transform: translateY(-1px)
+  }
+
+  &:active {
+    cursor: grabbing
+  }
+
+  strong,
+  span {
+    display: block
+  }
+
+  strong {
+    color: #334155
+  }
+
+  span {
+    margin-top: 5px;
+    color: #7b879b;
+    font-size: 12px
+  }
+}
+
+.attr-tip {
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.5
+}
+
+.property-actions {
+  padding-top: 10px;
+  flex-wrap: wrap
+}
+
+@media (max-width:1050px) {
+  .designer-body {
+    grid-template-columns: 300px minmax(360px, 1fr)
+  }
+
+  .property-panel {
+    grid-column: 1 / -1;
+    border-top: 1px solid #e5eaf3;
+    border-left: 0
+  }
+
+  .designer-header {
+    align-items: flex-start;
+    gap: 12px;
+    flex-direction: column
+  }
+}
 </style>

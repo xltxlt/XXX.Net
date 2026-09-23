@@ -842,7 +842,7 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #31485d;
-  font-size: 13px;
+  font-size: 0.9rem;
   font-weight: 550;
 }
 
@@ -852,7 +852,7 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #9aaaba;
-  font-size: 11px;
+  font-size: 0.8rem;
 }
 
 .notice-meta {
@@ -861,7 +861,7 @@ button {
   justify-content: flex-end;
   gap: 8px;
   color: #9eacb9;
-  font-size: 10px;
+  font-size: 0.7rem;
   white-space: nowrap;
 }
 
@@ -870,7 +870,7 @@ button {
   border-radius: 4px;
   color: #fff;
   background: #f45d67;
-  font-size: 9px;
+  font-size: 0.6rem;
   font-style: normal;
 }
 

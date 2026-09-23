@@ -6,12 +6,8 @@
       </el-form-item>
     </el-form>
 
-    <YzCustomForm
-      ref="customFormRef"
-      :form="formData.form"
-      :attr-data="formData.attrData"
-      :component-group-list="[]"
-    />
+    <PageFormEnhanced ref="customFormRef" :cols="2" :hide-btn="true" :form="formData.form"
+      :attr-data="formData.attrData" :component-group-list="[]" />
 
     <div class="flow-start-page__actions">
       <el-button @click="emit('closeDialog')">取消</el-button>
@@ -23,14 +19,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import YzCustomForm from '@/components/common/YzCustomForm/index.vue'
-import type { matterExpose, ReleaseData } from '@/components/common/YzCustomForm/index'
 import { workflowDefinitionService, workflowInstanceService, workflowNodeFormService } from '@/api/pm'
+import type { PageFormEnhancedExpose } from '@/components/PageForm/PageFormEnhanced.vue';
+import type { ReleaseData } from '@/components/PageForm/enhancedIndex';
+import PageFormEnhanced from '@/components/PageForm/PageFormEnhanced.vue';
 
 const { pars } = defineProps<{ pars: { workflowId?: string; workflowDefinitionId?: string } }>()
 const emit = defineEmits(['closeDialog', 'refreshList'])
 
-const customFormRef = ref<matterExpose>()
+const customFormRef = ref<PageFormEnhancedExpose>()
 const formData = ref<ReleaseData>({ form: [], attrData: {} })
 const taskName = ref('')
 const loading = ref(false)
@@ -92,7 +89,7 @@ const startFlow = async () => {
   try {
     await workflowInstanceService.apiWorkflowInstanceStartWorkflowidPost(pars.workflowId, {
       ...getFormValues(),
-      taskName: taskName.value,
+      // taskName: taskName.value,
     } as Record<string, object>)
     ElMessage.success('流程发起成功')
     emit('refreshList')

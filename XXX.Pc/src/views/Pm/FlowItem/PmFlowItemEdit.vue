@@ -2,13 +2,14 @@
 import { onMounted, ref, watch } from 'vue';
 import { ElMessage } from 'element-plus';
 import PageForm from '@/components/PageForm/PageForm.vue';
-import YzCustomForm from '@/components/common/YzCustomForm/index.vue';
-import type { matterExpose, ReleaseData } from '@/components/common/YzCustomForm/index';
+import type { ReleaseData } from '@/components/PageForm/enhancedIndex';
+import type { PageFormEnhancedExpose } from '@/components/PageForm/PageFormEnhanced.vue';
 import { pmFlowItemService, pmFlowTempService, workflowDefinitionService, workflowNodeFormService } from "@/api/pm.ts";
 import {
     type TempEditPageData,
     PageFormType
 } from '@/components/PageForm';
+import PageFormEnhanced from '@/components/PageForm/PageFormEnhanced.vue';
 
 const { pars } = defineProps<{
     pars?: Record<string, any>
@@ -21,7 +22,7 @@ const emit = defineEmits([
 
 const isCreate = !pars?.id;
 const businessFormRef = ref<any>();
-const startFormRef = ref<matterExpose>();
+const startFormRef = ref<PageFormEnhancedExpose>();
 const currentStep = ref(0);
 const startFormLoading = ref(false);
 const startFormData = ref<ReleaseData>({ form: [], attrData: {} });
@@ -107,8 +108,8 @@ const loadStartForm = async (templateId: string | number | undefined) => {
     startFormReady.value = false;
 
     try {
-        const tempRes = await pmFlowTempService.apiPmFlowTempDetailoptionGet(String(templateId));
-        const temp = tempRes.data?.data?.detail;
+        const tempRes = await workflowDefinitionService.apiWorkflowDefinitionTempPublishStatusTemplateidGet(String(templateId));
+        const temp = tempRes.data?.data || {};
         const workflowId = temp?.workflowId;
         const workflowDefinitionId = temp?.workflowDefinitionId;
 
@@ -193,14 +194,14 @@ const validateBusinessForm = async () => {
     }
 };
 
-const validateStartForm = () => {
+const validateStartForm = async () => {
     if (!startFormReady.value || !startNodeId.value) {
         ElMessage.error('当前流程没有可用的 Start 节点表单');
         return false;
     }
-    const result = startFormRef.value?.verify?.();
+    const result = await startFormRef.value?.validate?.();
     if (result === false) {
-        ElMessage.error('请完善 Start 节点表单必填项');
+        // ElMessage.error('请完善 Start 节点表单必填项');
         return false;
     }
     return true;
@@ -214,15 +215,7 @@ const goPrev = () => { currentStep.value = 0; };
 
 const getStartFormValues = () => {
     const data = startFormRef.value?.getData() ?? startFormData.value;
-    const values: Record<string, unknown> = {};
-
-    Object.values(data.attrData ?? {}).forEach((attributes: any) => {
-        attributes.forEach((attribute: any) => {
-            if (attribute.name) values[attribute.name] = attribute.value;
-        });
-    });
-
-    return values;
+    return data;
 };
 
 const sumbit = async () => {
@@ -231,12 +224,12 @@ const sumbit = async () => {
             ElMessage.warning('Start 节点表单正在加载，请稍候');
             return;
         }
-        if (!validateStartForm()) return;
+        var validateResult = await validateStartForm();
+        if (!validateResult) return;
     }
 
     const formData: any = { ...tempForm.value.formData };
     if (isCreate) formData.startFormData = getStartFormValues();
-
     tempForm.value.loading = true;
     try {
         const res = await pmFlowItemService.apiPmFlowItemAddorupdatePost(formData);
@@ -256,11 +249,11 @@ const sumbit = async () => {
 </script>
 
 <template>
-    <div class="edit-page">
+    <div class="edit-page flow-item-page">
         <div v-if="isCreate" class="step-header">
             <el-steps :active="currentStep" align-center>
-                <el-step title="填写业务基础参数" description="项目名称、时间、流程模板等" />
-                <el-step title="填写 Start 节点表单" description="完成流程发起所需业务信息" />
+                <el-step title="填写基础参数" description="项目名称、时间、流程模板等" />
+                <el-step title="填写项目表单" description="完成流程发起所需业务信息" />
             </el-steps>
         </div>
 
@@ -269,23 +262,10 @@ const sumbit = async () => {
         </div>
 
         <div v-if="isCreate && currentStep === 1" class="start-form-section" v-loading="startFormLoading">
-            <div class="start-form-section__header">
-                <div>
-                    <div class="start-form-section__title">发起表单</div>
-                    <div class="start-form-section__desc">
-                        请填写开始节点表单，提交流程时与上面的流程参数一起保存并发起。
-                    </div>
-                </div>
-                <el-tag v-if="startFormReady" type="success">开始节点</el-tag>
-            </div>
 
             <div v-if="startFormReady" class="start-form-section__body">
-                <YzCustomForm
-                    ref="startFormRef"
-                    :form="startFormData.form"
-                    :attr-data="startFormData.attrData"
-                    :component-group-list="[]"
-                />
+                <PageFormEnhanced :hide-btn="true" ref="startFormRef" :cols="2" :form="startFormData.form"
+                    :attr-data="startFormData.attrData"></PageFormEnhanced>
             </div>
 
             <el-empty v-else description="当前流程模板没有可用的开始节点表单" />
@@ -294,7 +274,8 @@ const sumbit = async () => {
         <div v-if="isCreate" class="step-footer">
             <el-button v-if="currentStep === 1" @click="goPrev">上一步</el-button>
             <el-button v-if="currentStep === 0" type="primary" @click="goNext">下一步：填写 Start 节点表单</el-button>
-            <el-button v-if="currentStep === 1" type="primary" :loading="tempForm.loading" @click="sumbit">保存并发起流程</el-button>
+            <el-button v-if="currentStep === 1" type="primary" :loading="tempForm.loading"
+                @click="sumbit">保存并发起流程</el-button>
         </div>
         <div v-else class="step-footer">
             <el-button type="primary" :loading="tempForm.loading" @click="sumbit">保存</el-button>
@@ -328,7 +309,6 @@ const sumbit = async () => {
     gap: 10px;
     padding: 12px 25px 12px 10px;
     background: #fff;
-    border-top: 1px solid #e5eaf3;
 }
 
 .start-form-section {
@@ -362,5 +342,10 @@ const sumbit = async () => {
     &__body {
         padding: 10px 10px 20px;
     }
+}
+</style>
+<style lang="less">
+.flow-item-page.edit-page {
+    overflow: hidden !important;
 }
 </style>

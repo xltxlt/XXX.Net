@@ -19,6 +19,7 @@ export interface WorkflowInstance {
     'createdTime'?: string;
     'tenantId'?: string;
     'instanceId'?: string | null;
+    'pmFlowItemId'?: string;
     'workflowId'?: string | null;
     'taskName'?: string | null;
     'version'?: number;

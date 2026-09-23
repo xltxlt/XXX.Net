@@ -13,7 +13,7 @@ namespace XXX.Net.Core.BaseEntitys
         public int DataSourceType { get; set; } = 0;
 
 
-        /// <summary>数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）</summary>
+        /// <summary>数据源配置值（1字典类型编码/ 2枚举 / 3数据表  ）</summary>
         public string DataSourceValue { get; set; } = string.Empty;
         /// <summary>
         /// 

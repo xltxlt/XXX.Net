@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **endTime** | **string** |  | [optional] [default to undefined]
 **planStartTime** | **string** |  | [optional] [default to undefined]
 **planEndTime** | **string** |  | [optional] [default to undefined]
+**startFormData** | **{ [key: string]: object; }** |  | [optional] [default to undefined]
 **description** | **string** |  | [optional] [default to undefined]
 **enabled** | **boolean** |  | [optional] [default to undefined]
 
@@ -28,6 +29,7 @@ const instance: PmFlowItemDto = {
     endTime,
     planStartTime,
     planEndTime,
+    startFormData,
     description,
     enabled,
 };

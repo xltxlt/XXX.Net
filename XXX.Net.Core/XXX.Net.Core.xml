@@ -113,7 +113,7 @@
             <summary>数据源类型</summary>
         </member>
         <member name="P:XXX.Net.Core.BaseEntitys.BaseDataSource.DataSourceValue">
-            <summary>数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）</summary>
+            <summary>数据源配置值（1字典类型编码/ 2枚举 / 3数据表  ）</summary>
         </member>
         <member name="P:XXX.Net.Core.BaseEntitys.BaseDataSource.HttpType">
             <summary>
@@ -2988,6 +2988,18 @@
             <summary>
             TODO 待提升效率从缓存中读
             </summary>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.SysOptionService.GetOptions(System.Collections.Generic.List{XXX.Net.Core.BaseEntitys.BaseDataSource})">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XXX.Net.Core.Services.Option.SysOptionService.OptionAll">
+            <summary>
+            获取所有可选的数据源
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:XXX.Net.Core.Services.Position.Dto.SysPositionDto.Code">
             <summary>编码</summary>

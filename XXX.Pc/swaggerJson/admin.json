@@ -10644,6 +10644,104 @@
         }
       }
     },
+    "/api/sys-option/options": {
+      "post": {
+        "tags": [
+          "sys-option"
+        ],
+        "summary": "",
+        "operationId": "api-sys-option-options-Post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseDataSource"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseDataSource"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseDataSource"
+                }
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseDataSource"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sys-option/option-all": {
+      "post": {
+        "tags": [
+          "sys-option"
+        ],
+        "summary": "获取所有可选的数据源",
+        "operationId": "api-sys-option-option-all-Post",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RESTfulResult_Dictionary_StringList_PagedOptions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sys-menu-button/to-entity": {
       "post": {
         "tags": [
@@ -11944,6 +12042,41 @@
   },
   "components": {
     "schemas": {
+      "BaseDataSource": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSourceType": {
+            "type": "integer",
+            "description": "数据源类型",
+            "format": "int32"
+          },
+          "dataSourceValue": {
+            "type": "string",
+            "description": "数据源配置值（1字典类型编码/ 2枚举 / 3数据表  ）",
+            "nullable": true
+          },
+          "httpType": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          },
+          "dataSourcePars": {
+            "type": "string",
+            "description": "数据源参数（JSON格式）",
+            "nullable": true
+          },
+          "dataSourceHeaders": {
+            "type": "string",
+            "description": "headers",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DepUserSummaryOutput": {
         "type": "object",
         "properties": {
@@ -16854,7 +16987,7 @@
           },
           "dataSourceValue": {
             "type": "string",
-            "description": "数据源配置值（字典类型编码 / 数据表 / 枚举 / API地址）",
+            "description": "数据源配置值（1字典类型编码/ 2枚举 / 3数据表  ）",
             "nullable": true
           },
           "httpType": {
@@ -17724,6 +17857,9 @@
     },
     {
       "name": "sys-menu-field"
+    },
+    {
+      "name": "sys-option"
     },
     {
       "name": "sys-position"

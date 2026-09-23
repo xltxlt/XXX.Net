@@ -1,5 +1,5 @@
 import { getAPI } from "@/api-services";
-import {DocumentApi,SysUserDepRoleApi, SysTenantApi,  SysUserApi,SysAuthApi,SysMenuApi,SysDictTypeApi,SysFileApi,SysMenuButtonApi,SysMenuFieldApi,GenerateApi,SysRoleApi ,SysConfigApi,SysPositionApi,SysDepApi} from "@/api-services/generated";
+import {DocumentApi,SysOptionApi,SysUserDepRoleApi, SysTenantApi,  SysUserApi,SysAuthApi,SysMenuApi,SysDictTypeApi,SysFileApi,SysMenuButtonApi,SysMenuFieldApi,GenerateApi,SysRoleApi ,SysConfigApi,SysPositionApi,SysDepApi} from "@/api-services/generated";
 export const tenantService = getAPI(SysTenantApi);
 export const userService = getAPI(SysUserApi);
 export const authService = getAPI(SysAuthApi);
@@ -17,6 +17,7 @@ export const positionService=getAPI(SysPositionApi);
 export const depService=getAPI(SysDepApi);
 export const documentService=getAPI(DocumentApi);
 export const userDepRoleService=getAPI(SysUserDepRoleApi);
+export const optionService=getAPI(SysOptionApi);
 
 
 

@@ -10,7 +10,8 @@
                     <template v-if="(m?.hide ?? false) !== true">
 
                         <slot :item="m"></slot>
-                        <template v-if="(tempForm.design&&(m.formType == PageFormGroup.Table||m.formType == PageFormGroup.List)) || m.formType == PageFormGroup.Group">
+                        <template
+                            v-if="(tempForm.design && (m.formType == PageFormGroup.Table || m.formType == PageFormGroup.List)) || m.formType == PageFormGroup.Group">
                             <div class="temp-page-form-group" v-bind="m?.comProps ?? {}" v-on="m?.comOn ?? {}">
                                 <div class="temp-page-form-group-title">
                                     <slot name="groupTitle" :item="m">
@@ -65,7 +66,7 @@
                                                 <!-- 删除 -->
                                                 <div class="temp-page-form-group-right">
 
-                                                   
+
                                                     <el-button type="danger"
                                                         @click.stop="pageFun.delGroupItem(m, Number(sonIndex))">
                                                         删除项
@@ -191,7 +192,7 @@
                                     <el-row :gutter="0">
                                         <page-table-form-core :cols="cols" :items="(m?.child ?? [])[0].child ?? []"
                                             @del-item="(index: number) => pageFun.delGroupItem(m, index)"
-                                            @copy-item="(index:number)=>pageFun.copyGroupItem(m,index)"
+                                            @copy-item="(index: number) => pageFun.copyGroupItem(m, index)"
                                             :temp-form="tempForm" :field-name="m.fieldName"
                                             :temp-form-data="tempForm.formData[m.fieldName]"></page-table-form-core>
                                     </el-row>
@@ -249,8 +250,6 @@ const onSubmit = async () => {
 
     } catch (fields) {
 
-        console.log('表单验证失败：', fields);
-
         const errorFields = fields as Record<string, any[]>;
 
         const names = Object.keys(errorFields);
@@ -268,6 +267,54 @@ const onSubmit = async () => {
         }
     }
 };
+const validate = async () => {
+
+    if (!ruleFormRef.value) {
+        return false;
+    }
+
+    try {
+
+        await ruleFormRef.value.validate();
+        // 验证通过
+
+    } catch (fields) {
+
+        const errorFields = fields as Record<string, any[]>;
+        console.log(errorFields)
+        const names = Object.keys(errorFields);
+
+        if (names.length > 0) {
+
+            const firstName = names[0];
+
+            const firstError = errorFields[firstName]?.[0];
+
+            ElMessage({
+                message: `${getTitleByName(firstName) ?? firstName}：${firstError?.message ?? '不能为空或格式不正确'}`,
+                type: 'error'
+            });
+        }
+        return false;
+    }
+    return true;
+};
+const getFormItem = (forms: TempEditForm[], fieldName: string): TempEditForm | undefined => {
+    for (const form of forms) {
+        if (form.fieldName === fieldName) {
+            return form;
+        }
+
+        const result = form.child?.length
+            ? getFormItem(form.child, fieldName)
+            : undefined;
+
+        if (result) {
+            return result;
+        }
+    }
+    return undefined;
+}
 // const onSubmit = (formEl?: FormInstance | undefined) => {
 //     ruleFormRef.value?.validate((valid, fields) => {
 //         if (valid) {
@@ -393,9 +440,10 @@ function getTitleByName(name: string): string | undefined {
         }
     }
 
-    // 普通字段
-    const item = props.tempForm.form.find(
-        item => item.fieldName === name
+    // 普通字段，支持递归查找 child
+    const item = getFormItem(
+        props.tempForm.form,
+        name
     );
 
     return item?.title ?? item?.label;
@@ -430,7 +478,7 @@ const pageFun = {
         const newItem = JSON.parse(
             JSON.stringify(list[index])
         );
-        if(!isNullOrUnDef(newItem?.id))newItem.id=null;
+        if (!isNullOrUnDef(newItem?.id)) newItem.id = null;
         list.splice(Number(index) + 1, 0, newItem);
     },
     delGroupItem: async (item: any, index: number) => {
@@ -462,6 +510,9 @@ const pageFun = {
 defineExpose({
     ruleFormRef: ruleFormRef,
     onSubmit: onSubmit,
+    validate: async () => {
+        return await validate()
+    }
 })
 
 </script>

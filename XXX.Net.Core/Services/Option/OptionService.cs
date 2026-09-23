@@ -15,7 +15,8 @@ using XXX.Net.Core.Services.Option.Providers;
 using System.Runtime.InteropServices;
 namespace XXX.Net.Core.Services.Option
 {
-    public class OptionService
+
+    public class OptionService 
     {
         private readonly IEnumerable<IOptionProvider> _providers;
         private readonly IHttpRemoteService _httpRemoteService;
