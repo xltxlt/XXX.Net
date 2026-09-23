@@ -118,11 +118,17 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 ?? throw new InvalidOperationException("流程定义不存在");
 
            
-            entity.Status = "published";
-            var change= await _repo.UpdateAsync(entity.Id, entity);
-            if(!change) throw  Oops.Bah("更新状态失败,发布失败");
+            // 先转换并注册，确保 WorkflowCore 可以真正运行，再更新 Mongo 发布状态。
+            // 如果转换/注册失败，数据库仍保持 draft，避免出现“已发布但运行时未注册”的假发布状态。
+            var wcDef = WorkflowDefinitionConverter.Convert(entity);
+            _host.Registry.RegisterWorkflow(wcDef);
 
-            // 发布后同步流程模板的“当前可发起版本”，避免模板仍然保留旧的发布信息。
+            entity.Status = "published";
+            var change = await _repo.UpdateAsync(entity.Id, entity);
+            if (!change)
+                throw Oops.Bah("更新状态失败,发布失败");
+
+            // 发布后同步流程模板的“当前可发起版本”。
             var flowTemp = await _msRepository.Master<PmFlowTemp>()
                 .AsQueryable()
                 .Where(x => x.Id == entity.PmFlowTempId)
@@ -134,10 +140,8 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             flowTemp.WorkflowId = entity.WorkflowId;
             flowTemp.WorkflowDefinitionId = entity.Id;
             flowTemp.LastVersion = entity.Version;
-            await _msRepository.Master<PmFlowTemp>().UpdateAsync(flowTemp);
 
-            var wcDef = WorkflowDefinitionConverter.Convert(entity);
-            _host.Registry.RegisterWorkflow(wcDef);
+            await _msRepository.Master<PmFlowTemp>().UpdateAsync(flowTemp);
 
             return entity;
         }
