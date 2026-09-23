@@ -30,7 +30,12 @@ namespace XXX.Net.Plugins.WorkFlow
             services.AddScoped<WorkflowInstanceService>();
 
             // ===== WorkflowCore =====
-            services.AddWorkflow(cfg => cfg.UseMongoDB(mongoOptions.ConnectionString, mongoOptions.DatabaseName));
+            services.AddWorkflow(cfg => cfg.UseMongoDB(
+                mongoOptions.ConnectionString,
+                mongoOptions.DatabaseName,
+                serializerTypeFilter: type =>
+                    MongoDB.Bson.Serialization.Serializers.ObjectSerializer.DefaultAllowedTypes(type) ||
+                    (type.FullName?.StartsWith("XXX.Net.Plugins.WorkFlow.", StringComparison.Ordinal) ?? false)));
 
             // StepBody 注册到 DI，支持构造函数注入
             services.AddTransient<StartStep>();
