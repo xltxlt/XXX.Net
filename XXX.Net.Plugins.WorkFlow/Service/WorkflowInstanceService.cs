@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Collections.Concurrent;
-using System.Threading;
 using System.Threading.Tasks;
 using Furion.DynamicApiController;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +24,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         private readonly IWorkFlowRepository<WorkflowInstance> _instanceRepo;
         private readonly IWorkFlowRepository<WorkflowDefinition> _defRepo;
         private readonly IWorkflowHost _host;
-
-        private static readonly ConcurrentDictionary<string, byte> _registeredDefinitions =
-            new ConcurrentDictionary<string, byte>();
-
-        private static readonly ConcurrentDictionary<string, SemaphoreSlim> _registerLocks =
-            new ConcurrentDictionary<string, SemaphoreSlim>();
 
         public WorkflowInstanceService(
             IWorkFlowRepository<WorkflowInstance> instanceRepo,
@@ -55,8 +47,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             var def = (await _defRepo.GetListAsync(d => d.WorkflowId == workflowId && d.Status == "published"))
                 .OrderByDescending(d => d.Version).FirstOrDefault()
                 ?? throw new InvalidOperationException("流程定义不存在");
-
-            EnsureWorkflowRegistered(def);
 
             var variables = NormalizeDictionary(data);
             var taskName = variables.TryGetValue("taskName", out var value) ? value?.ToString() : null;
@@ -115,8 +105,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
             if (def.TenantId != item.TenantId)
                 throw new InvalidOperationException("流程定义与项目流程项不属于同一租户");
-
-            EnsureWorkflowRegistered(def);
 
             var startNode = def.Nodes?.FirstOrDefault(x => x.Type == "start");
             if (startNode == null || string.IsNullOrWhiteSpace(startNode.Id))
@@ -215,8 +203,28 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             if (value is IDictionary<string, object> dictionary)
                 return NormalizeDictionary(dictionary);
 
-            if (value is IEnumerable<object> enumerable)
-                return enumerable.Select(NormalizeValue).ToList();
+            if (value is System.Collections.IDictionary dictionary2)
+            {
+                var result = new Dictionary<string, object>();
+
+                foreach (System.Collections.DictionaryEntry item in dictionary2)
+                {
+                    var key = item.Key?.ToString();
+                    if (!string.IsNullOrWhiteSpace(key))
+                        result[key] = NormalizeValue(item.Value);
+                }
+
+                return result;
+            }
+
+            if (value is System.Collections.IEnumerable enumerable && value is not string)
+            {
+                var list = new List<object>();
+                foreach (var item in enumerable)
+                    list.Add(NormalizeValue(item));
+
+                return list;
+            }
 
             return value;
         }
@@ -268,42 +276,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             }
         }
 
-        private void EnsureWorkflowRegistered(WorkflowDefinition def)
-        {
-            if (def == null)
-                throw new ArgumentNullException(nameof(def));
-
-            if (string.IsNullOrWhiteSpace(def.WorkflowId))
-                throw new InvalidOperationException("流程定义 WorkflowId 不能为空");
-
-            if (def.Version <= 0)
-                throw new InvalidOperationException("流程定义 Version 无效");
-
-            var key = $"{def.WorkflowId}:{def.Version}";
-
-            if (_registeredDefinitions.ContainsKey(key))
-                return;
-
-            var semaphore = _registerLocks.GetOrAdd(
-                key,
-                _ => new SemaphoreSlim(1, 1));
-
-            semaphore.Wait();
-            try
-            {
-                if (_registeredDefinitions.ContainsKey(key))
-                    return;
-
-                var wcDef = WorkflowDefinitionConverter.Convert(def);
-                _host.Registry.RegisterWorkflow(wcDef);
-
-                _registeredDefinitions.TryAdd(key, 0);
-            }
-            finally
-            {
-                semaphore.Release();
-            }
-        }
 
         [HttpGet]
         public async Task<List<WorkflowInstance>> List()
