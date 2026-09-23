@@ -64,25 +64,31 @@ namespace XXX.Net.Plugins.WorkFlow.Step
             var instanceId = context.Workflow.Id;
 
             // 事件已唤醒：用户提交了表单（保存/完成/跳过）
-            if (context.ExecutionPointer.EventPublished || context.ExecutionPointer.EventData != null)
+            if (context.ExecutionPointer.EventData is TaskSubmitEvent submit)
             {
-                if (context.ExecutionPointer.EventData is TaskSubmitEvent submit)
+                await MergeFormDataAsync(instanceId, nodeId, submit);
+                await _historyRepo.InsertAsync(new WorkflowHistory
                 {
-                    await MergeFormDataAsync(instanceId, nodeId, submit);
-                    await _historyRepo.InsertAsync(new WorkflowHistory
-                    {
-                        InstanceId = instanceId,
-                        NodeId = nodeId,
-                        NodeName = context.Step.Name ?? nodeId,
-                        OperatorId = submit.OperatorId,
-                        OperatorName = submit.OperatorName,
-                        Action = submit.Action,
-                        Comment = submit.Comment,
-                        OperatedTime = DateTime.Now,
-                    });
-                }
+                    InstanceId = instanceId,
+                    NodeId = nodeId,
+                    NodeName = context.Step.Name ?? nodeId,
+                    OperatorId = submit.OperatorId,
+                    OperatorName = submit.OperatorName,
+                    Action = submit.Action,
+                    Comment = submit.Comment,
+                    OperatedTime = DateTime.Now,
+                });
+
                 return ExecutionResult.Next();
             }
+
+            // 只有真正收到 TaskSubmitEvent 才允许继续流转。
+            // 其它 EventPublished 情况不能误判为任务已完成。
+            if (context.ExecutionPointer.EventPublished)
+                return ExecutionResult.WaitForEvent(
+                    EventName,
+                    context.ExecutionPointer.EventKey,
+                    DateTime.UtcNow);
 
             // 第一次执行：解析处理人并创建待办
             var definition = await FindDefinitionAsync(flowData.WorkflowId, context.Workflow.Version);
