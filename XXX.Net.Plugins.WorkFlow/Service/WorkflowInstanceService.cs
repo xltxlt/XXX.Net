@@ -21,25 +21,15 @@ namespace XXX.Net.Plugins.WorkFlow.Service
     /// 流程实例服务：启动流程、查询实例
     /// </summary>
     [ApiDescriptionSettings("Workflow")]
-
     public class WorkflowInstanceService : IDynamicApiController
     {
         private readonly IWorkFlowRepository<WorkflowInstance> _instanceRepo;
         private readonly IWorkFlowRepository<WorkflowDefinition> _defRepo;
         private readonly IWorkflowHost _host;
 
-        /// <summary>
-        /// 当前应用进程已经注册到 WorkflowCore 的流程定义。
-        /// Key = WorkflowId:Version。
-        /// 注意：这里记录的是“流程定义是否注册”，不是“流程实例是否启动”。
-        /// 一个定义可以被多个 PmFlowItem 启动多次。
-        /// </summary>
         private static readonly ConcurrentDictionary<string, byte> _registeredDefinitions =
             new ConcurrentDictionary<string, byte>();
 
-        /// <summary>
-        /// 防止多个 PmFlowItem 第一次使用同一个流程定义时并发 RegisterWorkflow。
-        /// </summary>
         private static readonly ConcurrentDictionary<string, SemaphoreSlim> _registerLocks =
             new ConcurrentDictionary<string, SemaphoreSlim>();
 
@@ -54,7 +44,10 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         }
 
         /// <summary>
-        /// 启动流程实例，返回实例 Id
+        /// 启动流程实例，返回实例 Id。
+        /// 注意：Dictionary<string, object> 从 ASP.NET JSON 反序列化后，
+        /// 动态值通常是 JsonElement。WorkflowCore + MongoDB 不适合直接持久化 JsonElement，
+        /// 所以进入 WorkflowCore 前统一转换为 BSON 可处理的 CLR 基础类型。
         /// </summary>
         [HttpPost]
         public async Task<string> Start(string workflowId, Dictionary<string, object>? data)
@@ -65,7 +58,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
             EnsureWorkflowRegistered(def);
 
-            var variables = data ?? new Dictionary<string, object>();
+            var variables = NormalizeDictionary(data);
             var taskName = variables.TryGetValue("taskName", out var value) ? value?.ToString() : null;
             if (string.IsNullOrWhiteSpace(taskName))
                 throw new ArgumentException("任务名称不能为空");
@@ -75,6 +68,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 WorkflowId = workflowId,
                 Variables = variables,
             };
+
             var instanceId = await _host.StartWorkflow(workflowId, def.Version, flowData);
 
             await _instanceRepo.InsertAsync(new WorkflowInstance
@@ -85,8 +79,9 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 TaskName = taskName,
                 Version = def.Version,
                 Status = "running",
-                DataJson = JsonSerializer.Serialize(data ?? new Dictionary<string, object>()),
+                DataJson = JsonSerializer.Serialize(variables),
             });
+
             return instanceId;
         }
 
@@ -94,7 +89,9 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         /// 根据项目流程项启动工作流。
         /// PmFlowItem 创建成功后由 CAP 消费者调用，真正启动 WorkflowCore。
         /// </summary>
-        public async Task<string> StartByPmFlowItem(PmFlowItem item, Dictionary<string, object> startFormData)
+        public async Task<string> StartByPmFlowItem(
+            PmFlowItem item,
+            Dictionary<string, object> startFormData)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (!item.Enabled) throw new InvalidOperationException("项目流程项已禁用");
@@ -119,17 +116,12 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             if (def.TenantId != item.TenantId)
                 throw new InvalidOperationException("流程定义与项目流程项不属于同一租户");
 
-            // 注册的是 WorkflowDefinition，而不是 PmFlowItem。
-            // 同一个 WorkflowId + Version 可以被多个 PmFlowItem 共用。
             EnsureWorkflowRegistered(def);
 
             var startNode = def.Nodes?.FirstOrDefault(x => x.Type == "start");
             if (startNode == null || string.IsNullOrWhiteSpace(startNode.Id))
                 throw new InvalidOperationException("流程定义缺少开始节点");
 
-            // Start 节点只负责流程发起和填写开始节点表单，启动后即视为完成。
-            // 因此 WorkflowInstance.CurrentNodeId 应记录 Start 的下一节点，
-            // 而不是记录 Start 节点本身。
             var nextEdge = def.Edges?
                 .FirstOrDefault(x => x.Source == startNode.Id);
 
@@ -142,7 +134,11 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             if (currentNode == null || string.IsNullOrWhiteSpace(currentNode.Id))
                 throw new InvalidOperationException("开始节点的后续节点不存在");
 
-            var startForm = startFormData ?? new Dictionary<string, object>();
+            // 关键：HTTP JSON 进入 Dictionary<string, object> 后，
+            // 表单字段里的对象/数组会变成 JsonElement。
+            // 这里递归转换，避免 JsonElement 进入 WorkflowCore 的 FlowData.Variables。
+            var startForm = NormalizeDictionary(startFormData);
+
             var variables = new Dictionary<string, object>
             {
                 ["PmFlowItemId"] = item.Id,
@@ -156,7 +152,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 ["PlanEndTime"] = item.PlanEndTime,
                 ["StartNodeId"] = startNode.Id,
                 ["StartFormData"] = startForm,
-                // 与任务节点表单保持相同的数据组织方式：按节点 Id 保存。
                 [startNode.Id] = startForm,
             };
 
@@ -185,12 +180,94 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         }
 
         /// <summary>
-        /// 确保指定版本的流程定义已经注册到 WorkflowCore。
+        /// 将 ASP.NET JSON 反序列化产生的 JsonElement 递归转换成
+        /// MongoDB ObjectSerializer 可以直接处理的 CLR 类型。
         ///
-        /// 注册粒度：WorkflowId + Version
-        /// 启动限制：PmFlowItemId
-        /// 两者不能混为一谈。
+        /// object:
+        ///   JsonObject -> Dictionary<string, object>
+        ///   JsonArray  -> List<object>
+        ///   string/number/bool/null -> CLR 基础类型
         /// </summary>
+        private static Dictionary<string, object> NormalizeDictionary(
+            IDictionary<string, object>? source)
+        {
+            var result = new Dictionary<string, object>();
+
+            if (source == null)
+                return result;
+
+            foreach (var item in source)
+            {
+                result[item.Key] = NormalizeValue(item.Value);
+            }
+
+            return result;
+        }
+
+        private static object NormalizeValue(object? value)
+        {
+            if (value == null)
+                return null!;
+
+            if (value is JsonElement jsonElement)
+                return NormalizeJsonElement(jsonElement);
+
+            if (value is IDictionary<string, object> dictionary)
+                return NormalizeDictionary(dictionary);
+
+            if (value is IEnumerable<object> enumerable)
+                return enumerable.Select(NormalizeValue).ToList();
+
+            return value;
+        }
+
+        private static object NormalizeJsonElement(JsonElement element)
+        {
+            switch (element.ValueKind)
+            {
+                case JsonValueKind.Null:
+                case JsonValueKind.Undefined:
+                    return null!;
+
+                case JsonValueKind.Object:
+                    var dictionary = new Dictionary<string, object>();
+                    foreach (var property in element.EnumerateObject())
+                    {
+                        dictionary[property.Name] = NormalizeJsonElement(property.Value);
+                    }
+                    return dictionary;
+
+                case JsonValueKind.Array:
+                    return element.EnumerateArray()
+                        .Select(NormalizeJsonElement)
+                        .ToList();
+
+                case JsonValueKind.String:
+                    if (element.TryGetDateTime(out var dateTime))
+                        return dateTime;
+
+                    return element.GetString() ?? string.Empty;
+
+                case JsonValueKind.Number:
+                    if (element.TryGetInt64(out var longValue))
+                        return longValue;
+
+                    if (element.TryGetDecimal(out var decimalValue))
+                        return decimalValue;
+
+                    return element.GetDouble();
+
+                case JsonValueKind.True:
+                    return true;
+
+                case JsonValueKind.False:
+                    return false;
+
+                default:
+                    return element.ToString();
+            }
+        }
+
         private void EnsureWorkflowRegistered(WorkflowDefinition def)
         {
             if (def == null)
@@ -214,7 +291,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             semaphore.Wait();
             try
             {
-                // Double Check，避免并发线程重复注册。
                 if (_registeredDefinitions.ContainsKey(key))
                     return;
 
@@ -232,13 +308,16 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         [HttpGet]
         public async Task<List<WorkflowInstance>> List()
         {
-            return (await _instanceRepo.GetListAsync(_ => true)).OrderByDescending(x => x.CreatedTime).ToList();
+            return (await _instanceRepo.GetListAsync(_ => true))
+                .OrderByDescending(x => x.CreatedTime)
+                .ToList();
         }
 
         [HttpGet]
         public async Task<WorkflowInstance> Detail(string instanceId)
         {
-            return (await _instanceRepo.GetListAsync(i => i.InstanceId == instanceId)).FirstOrDefault()
+            return (await _instanceRepo.GetListAsync(i => i.InstanceId == instanceId))
+                .FirstOrDefault()
                 ?? throw new InvalidOperationException("流程实例不存在");
         }
     }
