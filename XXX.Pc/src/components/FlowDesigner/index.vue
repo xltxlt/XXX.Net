@@ -106,17 +106,30 @@
                 </el-form-item>
               </template>
 
-              <!-- 条件节点：条件属于出口连线，由连线上的可视化条件设计器配置 -->
+              <!-- 条件节点：条件直接配置在节点上，左侧出口=真，右侧出口=假 -->
               <template v-if="selectedNode.type === 'condition'">
+                <el-form-item label="流转条件">
+                  <el-button type="primary" plain @click="openNodeConditionDesigner">
+                    {{ selectedNode.data.condition ? '编辑条件' : '设置条件' }}
+                  </el-button>
+                  <el-button
+                    v-if="selectedNode.data.condition"
+                    link
+                    type="danger"
+                    @click="clearNodeCondition"
+                  >
+                    清空
+                  </el-button>
+                </el-form-item>
                 <el-alert
-                  title="请选中条件节点的出口连线设置流转条件"
+                  title="左侧出口：条件为真（TRUE）；右侧出口：条件为假（FALSE）"
                   type="info"
                   :closable="false"
                   show-icon
                 />
-                <div style="margin-top: 8px; color: #909399; font-size: 12px; line-height: 1.6;">
-                  支持 AND / OR、跨节点字段、明细 ANY / ALL / NONE、SUM、COUNT 等条件。
-                </div>
+                <el-form-item v-if="selectedNode.data.condition" label="DSL">
+                  <el-input :model-value="selectedNode.data.condition" type="textarea" :rows="5" readonly />
+                </el-form-item>
               </template>
 
               <!-- 任务节点额外属性 -->
@@ -213,15 +226,12 @@
               <el-input :model-value="selectedEdge.target" disabled />
             </el-form-item>
             <el-form-item label="流转条件">
-              <el-button type="primary" plain @click="openConditionDesigner">
-                {{ selectedEdge.data?.condition ? '编辑可视化条件' : '设置可视化条件' }}
-              </el-button>
-              <el-button v-if="selectedEdge.data?.condition" link type="danger" @click="clearEdgeCondition">
-                清空
-              </el-button>
-            </el-form-item>
-            <el-form-item v-if="selectedEdge.data?.condition" label="DSL">
-              <el-input :model-value="selectedEdge.data.condition" type="textarea" :rows="4" readonly />
+              <el-alert
+                title="条件节点的流转条件请在条件节点上设置"
+                type="info"
+                :closable="false"
+                show-icon
+              />
             </el-form-item>
           </el-form>
         </template>
@@ -238,7 +248,7 @@
     </div>
     <ConditionDesigner
       ref="conditionDesignerRef"
-      :model-value="selectedEdge?.data?.condition ?? ''"
+      :model-value="conditionDesignerModel"
       :fields="props.conditionFields ?? []"
       @update:model-value="onConditionChange"
     />
@@ -367,6 +377,11 @@ const selectedNode = computed<Node | null>(
 const selectedEdge = computed<Edge | null>(
   () => edges.value.find((e) => e.id === selectedEdgeId.value) ?? null
 )
+const conditionDesignerModel = computed(() =>
+  selectedNode.value?.type === 'condition'
+    ? (selectedNode.value.data?.condition ?? '')
+    : ''
+)
 
 type HistorySnapshot = { nodes: Node[]; edges: Edge[] }
 const history = ref<HistorySnapshot[]>([])
@@ -492,22 +507,47 @@ function onNodeDragStop() {
   emitChange()
 }
 
-// 条件设计器
-function openConditionDesigner() {
+// 条件设计器：条件直接保存在条件节点 data.condition。
+// 左侧 sourceHandle=left 为 TRUE，右侧 sourceHandle=right 为 FALSE。
+function openNodeConditionDesigner() {
+  if (selectedNode.value?.type !== 'condition') return
   conditionDesignerRef.value?.open()
 }
 
 function onConditionChange(value: string) {
-  const e = selectedEdge.value
-  if (!e) return
-  e.data = e.data ?? {}
-  e.data.condition = value || undefined
-  e.label = value ? '已设置条件' : undefined
+  const node = selectedNode.value
+  if (!node || node.type !== 'condition') return
+
+  node.data = node.data ?? {}
+  node.data.condition = value || undefined
+
+  // 同步到两条出口：左侧 TRUE 带条件，右侧 FALSE 作为默认出口不带条件。
+  edges.value
+    .filter(e => e.source === node.id)
+    .forEach(e => {
+      e.data = e.data ?? {}
+      if (e.sourceHandle === 'left') {
+        e.data.condition = value || undefined
+        e.label = value ? '真' : undefined
+      } else if (e.sourceHandle === 'right') {
+        e.data.condition = undefined
+        e.label = '假'
+      }
+    })
+
   emitChange()
 }
 
-function clearEdgeCondition() {
+function clearNodeCondition() {
   onConditionChange('')
+}
+
+function openConditionDesigner() {
+  openNodeConditionDesigner()
+}
+
+function clearEdgeCondition() {
+  clearNodeCondition()
 }
 
 // 删除选中（节点或边）
