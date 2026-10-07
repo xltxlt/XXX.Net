@@ -25,7 +25,7 @@
         @change="emitChange"
       />
 
-      <div v-else-if="item.type === 'condition'" class="condition-row">
+      <div v-else-if="item.type === 'condition' && (item.left as any).type !== 'aggregate'" class="condition-row">
         <el-select v-model="(item.left as any).nodeId" filterable placeholder="节点" @change="leftNodeChanged(item)">
           <el-option v-for="node in nodes" :key="node.nodeId" :label="node.nodeName" :value="node.nodeId" />
         </el-select>
