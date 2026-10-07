@@ -1,4 +1,5 @@
 import type { Node, Edge } from '@vue-flow/core'
+import type { ConditionField } from './condition'
 
 /**
  * 节点面板项
@@ -44,6 +45,8 @@ export interface FlowDesignerProps {
   showPropsPanel?: boolean
   nodePanelItems?: NodePanelItem[]
   defaultEdgeOptions?: Record<string, any>
+  /** 条件设计器可引用的节点表单字段 */
+  conditionFields?: ConditionField[]
 }
 
 /**
