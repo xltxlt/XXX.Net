@@ -255,7 +255,9 @@ namespace XXX.Net.Core.Services.Base
         public virtual async Task<TEntity> Update(TDto dto) 
         {
             var now = DateTime.Now;
-            var entity = await ToEntity(dto);
+            var oldModel = await _msRepository.Master<TEntity>().FindOrDefaultAsync(dto.Id);
+            if (oldModel == null) throw Oops.Oh("未发现对应数据");
+            var entity = await ToEntity(dto,oldModel);
             entity.UpdatedBy = _currentUser.UserId;
             entity.UpdatedTime = now;
             entity.UpdatedByName = _currentUser.UserName;

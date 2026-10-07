@@ -763,69 +763,16 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
         #region Condition
 
-        private async Task EnterConditionNodeAsync(
-            WorkflowInstance instance,
-            WorkflowDefinition definition,
-            VfWorkflowNode node)
+        /// <summary>
+        /// 条件节点统一使用 JSON DSL 执行；同时兼容旧版字符串表达式。
+        /// </summary>
+        private static bool EvaluateCondition(
+            string expression,
+            Dictionary<string, object> variables)
         {
-            instance.CurrentNodeId = node.Id;
-
-            await _instanceRepo.UpdateAsync(
-                instance.Id,
-                instance);
-
-            var edges = GetOutgoingEdges(
-                definition,
-                node.Id);
-
-            if (edges.Count == 0)
-                throw new InvalidOperationException(
-                    $"条件节点没有后续节点：{node.Id}");
-
-            var variables = ReadVariables(instance);
-
-            // 优先匹配有条件的 Edge
-            foreach (var edge in edges)
-            {
-                if (string.IsNullOrWhiteSpace(edge.Condition))
-                    continue;
-
-                if (EvaluateCondition(
-                    edge.Condition!,
-                    variables))
-                {
-                    await AddHistoryAsync(
-                        instance.InstanceId,
-                        node.Id,
-                        node.Name,
-                        0,
-                        string.Empty,
-                        "condition",
-                        $"条件：{edge.Condition}");
-
-                    await ExecuteFromNodeCoreAsync(
-                        instance,
-                        definition,
-                        edge.Target);
-
-                    return;
-                }
-            }
-
-            // 没有任何条件匹配时：
-            // 使用没有 Condition 的默认边。
-            var defaultEdge = edges
-                .FirstOrDefault(x =>
-                    string.IsNullOrWhiteSpace(x.Condition));
-
-            if (defaultEdge == null)
-                throw new InvalidOperationException(
-                    $"条件节点没有任何分支满足条件：{node.Name}");
-
-            await ExecuteFromNodeCoreAsync(
-                instance,
-                definition,
-                defaultEdge.Target);
+            return WorkflowConditionEvaluator.Evaluate(
+                expression,
+                variables);
         }
 
         #endregion
