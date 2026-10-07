@@ -861,6 +861,108 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
         #endregion
 
+        #region Condition
+
+        /// <summary>
+        /// 条件节点：
+        /// 根据当前流程实例已经保存的各节点表单数据，
+        /// 逐条判断当前节点的出口条件。
+        ///
+        /// 注意：
+        /// 这里不要再定义 EvaluateCondition。
+        /// 条件统一交给 WorkflowConditionEvaluator，
+        /// 避免条件解析逻辑重复。
+        /// </summary>
+        private async Task EnterConditionNodeAsync(
+            WorkflowInstance instance,
+            WorkflowDefinition definition,
+            VfWorkflowNode node)
+        {
+            instance.CurrentNodeId = node.Id;
+
+            await _instanceRepo.UpdateAsync(
+                instance.Id,
+                instance);
+
+            var variables = ReadVariables(instance);
+
+            var edges = GetOutgoingEdges(
+                definition,
+                node.Id);
+
+            if (edges.Count == 0)
+            {
+                throw new InvalidOperationException(
+                    $"条件节点「{node.Name}」没有后续连线");
+            }
+
+            VfWorkflowEdge? matchedEdge = null;
+
+            foreach (var edge in edges)
+            {
+                // 没有条件 = 默认出口。
+                // 但只有在所有有条件出口都没有命中时，
+                // 才允许使用默认出口。
+                if (string.IsNullOrWhiteSpace(edge.Condition))
+                {
+                    if (matchedEdge == null)
+                        matchedEdge = edge;
+
+                    continue;
+                }
+
+                if (WorkflowConditionEvaluator.Evaluate(
+                    edge.Condition,
+                    variables))
+                {
+                    matchedEdge = edge;
+                    break;
+                }
+            }
+
+            if (matchedEdge == null ||
+                string.IsNullOrWhiteSpace(matchedEdge.Target))
+            {
+                await AddHistoryAsync(
+                    instance.InstanceId,
+                    node.Id,
+                    node.Name,
+                    0,
+                    string.Empty,
+                    "condition",
+                    "没有任何条件出口满足");
+
+                throw new InvalidOperationException(
+                    $"条件节点「{node.Name}」没有满足条件的出口");
+            }
+
+            var nextNode = definition.Nodes
+                .FirstOrDefault(x =>
+                    x.Id == matchedEdge.Target);
+
+            if (nextNode == null)
+            {
+                throw new InvalidOperationException(
+                    $"条件节点后续节点不存在：{matchedEdge.Target}");
+            }
+
+            await AddHistoryAsync(
+                instance.InstanceId,
+                node.Id,
+                node.Name,
+                0,
+                string.Empty,
+                "condition",
+                $"命中出口：{matchedEdge.Target}");
+
+            await ExecuteFromNodeCoreAsync(
+                instance,
+                definition,
+                nextNode.Id);
+        }
+
+        #endregion
+
         #region Delay
 
         private async Task EnterDelayNodeAsync(
