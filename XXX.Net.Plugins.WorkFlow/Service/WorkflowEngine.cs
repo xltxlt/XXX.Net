@@ -761,21 +761,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
         #endregion
 
-        #region Condition
 
-        /// <summary>
-        /// 条件节点统一使用 JSON DSL 执行；同时兼容旧版字符串表达式。
-        /// </summary>
-        private static bool EvaluateCondition(
-            string expression,
-            Dictionary<string, object> variables)
-        {
-            return WorkflowConditionEvaluator.Evaluate(
-                expression,
-                variables);
-        }
-
-        #endregion
 
         #region Notification
 
