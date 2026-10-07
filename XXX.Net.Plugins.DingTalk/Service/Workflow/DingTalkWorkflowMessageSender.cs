@@ -19,8 +19,9 @@ public class DingTalkWorkflowMessageSender : IWorkflowMessageSender, IScoped
 
     public Task SendAsync(WorkflowMessage message)
     {
-        if (message.TenantId <= 0 || message.RecipientUserIds.Count == 0) return Task.CompletedTask;
-        return _dingTalkTenantService.SendTextMessage(message.TenantId, message.RecipientUserIds,
-            $"{message.Title}\n{message.Content}");
+        //if (message.TenantId <= 0 || message.RecipientUserIds.Count == 0) return Task.CompletedTask;
+        //return _dingTalkTenantService.SendTextMessage(message.TenantId, message.RecipientUserIds,
+        //    $"{message.Title}\n{message.Content}");
+        return Task.CompletedTask;
     }
 }

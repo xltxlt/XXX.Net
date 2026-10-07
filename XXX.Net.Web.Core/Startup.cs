@@ -227,7 +227,7 @@ public class Startup : AppStartup
         app.UseRouting();
 
         app.UseCorsAccessor();
-
+        app.UseScheduleUI();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseStaticFiles();
