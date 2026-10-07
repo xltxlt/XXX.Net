@@ -885,10 +885,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 instance);
 
             var variables = ReadVariables(instance);
-
-            var edges = GetOutgoingEdges(
-                definition,
-                node.Id);
+            var edges = GetOutgoingEdges(definition, node.Id);
 
             if (edges.Count == 0)
             {
@@ -896,46 +893,69 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                     $"条件节点「{node.Name}」没有后续连线");
             }
 
-            VfWorkflowEdge? matchedEdge = null;
+            // 条件现在配置在“条件节点”本身：
+            //
+            //     左出口 left  = TRUE
+            //     右出口 right = FALSE
+            //
+            // 后端不再通过 Edge.Condition 判断“哪条边先命中”。
+            // 这样可以彻底避免 false 出口排在 true 出口前面时，
+            // 空条件边被提前选中的问题。
+            var condition = ReadNodeCondition(node);
 
-            foreach (var edge in edges)
+            if (string.IsNullOrWhiteSpace(condition))
             {
-                // 没有条件 = 默认出口。
-                // 但只有在所有有条件出口都没有命中时，
-                // 才允许使用默认出口。
-                if (string.IsNullOrWhiteSpace(edge.Condition))
-                {
-                    if (matchedEdge == null)
-                        matchedEdge = edge;
-
-                    continue;
-                }
-
-                if (WorkflowConditionEvaluator.Evaluate(
-                    edge.Condition,
-                    variables))
-                {
-                    matchedEdge = edge;
-                    break;
-                }
+                throw new InvalidOperationException(
+                    $"条件节点「{node.Name}」尚未设置条件");
             }
 
+            var trueEdge = edges.FirstOrDefault(
+                x => string.Equals(
+                    GetEdgeSourceHandle(x),
+                    "left",
+                    StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(
+                    GetEdgeSourceHandle(x),
+                    "true",
+                    StringComparison.OrdinalIgnoreCase));
 
+            var falseEdge = edges.FirstOrDefault(
+                x => string.Equals(
+                    GetEdgeSourceHandle(x),
+                    "right",
+                    StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(
+                    GetEdgeSourceHandle(x),
+                    "false",
+                    StringComparison.OrdinalIgnoreCase));
 
-            if (matchedEdge == null ||
-                string.IsNullOrWhiteSpace(matchedEdge.Target))
+            if (trueEdge == null)
             {
-                await AddHistoryAsync(
-                    instance.InstanceId,
-                    node.Id,
-                    node.Name,
-                    0,
-                    string.Empty,
-                    "condition",
-                    "没有任何条件出口满足");
-
                 throw new InvalidOperationException(
-                    $"条件节点「{node.Name}」没有满足条件的出口");
+                    $"条件节点「{node.Name}」缺少“真”出口");
+            }
+
+            if (falseEdge == null)
+            {
+                throw new InvalidOperationException(
+                    $"条件节点「{node.Name}」缺少“假”出口");
+            }
+
+            var result = WorkflowConditionEvaluator.Evaluate(
+                condition,
+                variables);
+
+            // 真 → 左边
+            // 假 → 右边
+            var matchedEdge = result
+                ? trueEdge
+                : falseEdge;
+
+            if (string.IsNullOrWhiteSpace(matchedEdge.Target))
+            {
+                throw new InvalidOperationException(
+                    $"条件节点「{node.Name}」的" +
+                    $"{(result ? "真" : "假")}出口没有目标节点");
             }
 
             var nextNode = definition.Nodes
@@ -955,14 +975,15 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 0,
                 string.Empty,
                 "condition",
-                $"命中出口：{matchedEdge.Target}");
+                result
+                    ? $"条件为真，命中左侧“真”出口：{matchedEdge.Target}"
+                    : $"条件为假，命中右侧“假”出口：{matchedEdge.Target}");
 
             await ExecuteFromNodeCoreAsync(
                 instance,
                 definition,
                 nextNode.Id);
         }
-
         #endregion
 
         #region Delay
@@ -1196,6 +1217,97 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             return (definition.Edges ?? new List<VfWorkflowEdge>())
                 .Where(x => x.Source == nodeId)
                 .ToList();
+        }
+
+        /// <summary>
+        /// 读取条件节点自身保存的 DSL。
+        /// 前端 FlowDesigner 会把 condition 保存在节点 Config 中。
+        /// </summary>
+        private static string ReadNodeCondition(
+            VfWorkflowNode node)
+        {
+            if (string.IsNullOrWhiteSpace(node.Config))
+                return string.Empty;
+
+            try
+            {
+                using var doc =
+                    JsonDocument.Parse(node.Config);
+
+                var root = doc.RootElement;
+
+                if (root.ValueKind != JsonValueKind.Object)
+                    return string.Empty;
+
+                if (!root.TryGetProperty(
+                        "condition",
+                        out var condition))
+                {
+                    // 兼容 PascalCase 配置。
+                    if (!root.TryGetProperty(
+                            "Condition",
+                            out condition))
+                    {
+                        return string.Empty;
+                    }
+                }
+
+                return condition.ValueKind == JsonValueKind.String
+                    ? condition.GetString() ?? string.Empty
+                    : condition.GetRawText();
+            }
+            catch (JsonException)
+            {
+                throw new InvalidOperationException(
+                    $"条件节点「{node.Name}」的 Config 不是合法 JSON");
+            }
+        }
+
+        /// <summary>
+        /// 从 EdgeJson 读取 Vue Flow 的 sourceHandle。
+        ///
+        /// 条件节点约定：
+        /// left  / true  -> 真
+        /// right / false -> 假
+        /// </summary>
+        private static string GetEdgeSourceHandle(
+            VfWorkflowEdge edge)
+        {
+            if (string.IsNullOrWhiteSpace(edge.EdgeJson))
+                return string.Empty;
+
+            try
+            {
+                using var doc =
+                    JsonDocument.Parse(edge.EdgeJson);
+
+                var root = doc.RootElement;
+
+                if (root.ValueKind != JsonValueKind.Object)
+                    return string.Empty;
+
+                if (root.TryGetProperty(
+                        "sourceHandle",
+                        out var handle))
+                {
+                    return handle.GetString() ?? string.Empty;
+                }
+
+                // 兼容 PascalCase EdgeJson。
+                if (root.TryGetProperty(
+                        "SourceHandle",
+                        out handle))
+                {
+                    return handle.GetString() ?? string.Empty;
+                }
+            }
+            catch (JsonException)
+            {
+                // EdgeJson 只是辅助数据。
+                // 无法解析时交给上层报“缺少真/假出口”。
+            }
+
+            return string.Empty;
         }
 
         #endregion
