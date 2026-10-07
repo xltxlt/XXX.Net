@@ -215,12 +215,24 @@ export function validate(nodes: Node[], edges: Edge[]): { valid: boolean; errors
       errors.push(`条件节点「${node.data?.label || node.id}」缺少出口连线`)
       continue
     }
-    // for (const e of outEdges) {
-    //   const cond = (e.data as any)?.condition ?? e.label
-    //   if (!cond) {
-    //     errors.push(`条件节点「${node.data?.label || node.id}」的出口连线缺少条件表达式`)
-    //   }
-    // }
+
+    if (!String((node.data as any)?.condition ?? '').trim()) {
+      errors.push(`条件节点「${node.data?.label || node.id}」尚未设置流转条件`)
+    }
+
+    const trueEdge = outEdges.find(
+      (e) => e.sourceHandle === 'left' || e.sourceHandle === 'true'
+    )
+    const falseEdge = outEdges.find(
+      (e) => e.sourceHandle === 'right' || e.sourceHandle === 'false'
+    )
+
+    if (!trueEdge) {
+      errors.push(`条件节点「${node.data?.label || node.id}」缺少“真”出口`)
+    }
+    if (!falseEdge) {
+      errors.push(`条件节点「${node.data?.label || node.id}」缺少“假”出口`)
+    }
   }
 
   // 非结束节点应有出边（排除父流程容器：其出边非必须）
