@@ -78,7 +78,7 @@ function normalizeOptions(item: PageFormDesignerItem) {
   // 不再从字段名、formType 等信息推测选项。
   if (typeof item.optionText === 'string') {
     return item.optionText
-      .split('\\n')
+      .split('\n')
       .map(line => line.trim())
       .filter(Boolean)
       .map(line => {
