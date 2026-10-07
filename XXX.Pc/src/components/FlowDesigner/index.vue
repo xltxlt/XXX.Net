@@ -207,9 +207,16 @@
             <el-form-item label="终点">
               <el-input :model-value="selectedEdge.target" disabled />
             </el-form-item>
-            <el-form-item label="条件表达式">
-              <el-input v-model="selectedEdge.data.condition" placeholder="如: amount > 1000"
-                @input="onEdgeDataChange" />
+            <el-form-item label="流转条件">
+              <el-button type="primary" plain @click="openConditionDesigner">
+                {{ selectedEdge.data?.condition ? '编辑可视化条件' : '设置可视化条件' }}
+              </el-button>
+              <el-button v-if="selectedEdge.data?.condition" link type="danger" @click="clearEdgeCondition">
+                清空
+              </el-button>
+            </el-form-item>
+            <el-form-item v-if="selectedEdge.data?.condition" label="DSL">
+              <el-input :model-value="selectedEdge.data.condition" type="textarea" :rows="4" readonly />
             </el-form-item>
           </el-form>
         </template>
@@ -224,6 +231,12 @@
         </div>
       </div>
     </div>
+    <ConditionDesigner
+      ref="conditionDesignerRef"
+      :model-value="selectedEdge?.data?.condition ?? ''"
+      :fields="props.conditionFields ?? []"
+      @update:model-value="onConditionChange"
+    />
     <SelectUser v-if="selectUserShow" :checked-items="selectUserItems" :pars={} v-model:show="selectUserShow"
       @sure="(items) => { pageFun['setResponsibleUserIds'](items) }">
     </SelectUser>
@@ -268,6 +281,7 @@ import EndNode from './nodes/EndNode.vue'
 import { defaultConfig, FLOW_ID } from './config'
 import { toWorkflowDefinition, fromWorkflowDefinition, validate } from './serialize'
 import type { FlowDesignerProps, FlowDesignerEmits } from './types'
+import ConditionDesigner from './ConditionDesigner.vue'
 import {
   Plus,
   Delete,
@@ -340,6 +354,7 @@ const pageFun: Record<string, Function> = {
 // 选中状态（用 id 而非对象快照，实时解析）
 const selectedNodeId = ref<string | null>(null)
 const selectedEdgeId = ref<string | null>(null)
+const conditionDesignerRef = ref()
 
 const selectedNode = computed<Node | null>(
   () => nodes.value.find((n) => n.id === selectedNodeId.value) ?? null
@@ -470,12 +485,22 @@ function onNodeDragStop() {
   emitChange()
 }
 
-// 边条件编辑：同步 label 显示在画布上
-function onEdgeDataChange() {
+// 条件设计器
+function openConditionDesigner() {
+  conditionDesignerRef.value?.open()
+}
+
+function onConditionChange(value: string) {
   const e = selectedEdge.value
   if (!e) return
-  e.label = (e.data as any)?.condition || undefined
+  e.data = e.data ?? {}
+  e.data.condition = value || undefined
+  e.label = value ? '已设置条件' : undefined
   emitChange()
+}
+
+function clearEdgeCondition() {
+  onConditionChange('')
 }
 
 // 删除选中（节点或边）
