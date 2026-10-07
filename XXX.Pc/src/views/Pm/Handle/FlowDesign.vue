@@ -29,11 +29,17 @@ const designNodeType = ref('')
 const nodeForms = ref<Record<string, WorkflowNodeForm>>({})
 
 const formTypeName = (value: any): string => {
+  const text = String(value ?? '').toLowerCase()
+  if (text.includes('number') || text.includes('amount') || text.includes('decimal') || text.includes('slider') || text.includes('rate')) return 'number'
+  if (text.includes('switch') || text.includes('boolean')) return 'boolean'
+  if (text.includes('date') || text.includes('time') || text.includes('year') || text.includes('month')) return 'date'
+  if (text.includes('select') || text.includes('radio') || text.includes('checkbox') || text.includes('tree') || text.includes('cascader')) return 'select'
+
   const n = Number(value)
   if ([101, 110, 111, 112, 114].includes(n)) return 'number'
   if ([108].includes(n)) return 'boolean'
   if ([301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311].includes(n)) return 'date'
-  if ([200, 201, 202, 203, 204, 205, 206, 207, 208, 401, 402, 403].includes(n)) return 'select'
+  if ([102, 103, 200, 201, 202, 203, 204, 205, 206, 207, 208, 401, 402, 403].includes(n)) return 'select'
   return 'string'
 }
 
@@ -49,6 +55,12 @@ const buildConditionFields = (nodeId: string, nodeName: string, form: any[]): Co
       const children = Array.isArray(item.child)
         ? buildConditionFields(nodeId, nodeName, item.child)
         : []
+      const options = Array.isArray(item.option)
+        ? item.option.map((op: any) => ({
+            label: String(op.label || op.title || op.name || op.value),
+            value: op.value
+          }))
+        : []
       const field: ConditionField = {
         nodeId,
         nodeName,
@@ -56,7 +68,8 @@ const buildConditionFields = (nodeId: string, nodeName: string, form: any[]): Co
         label: String(item.title || item.label || item.fieldName || item.code || fieldId),
         type: formTypeName(item.formType),
         collection: children.length > 0,
-        children
+        children,
+        options
       }
       result.push(field)
     })
