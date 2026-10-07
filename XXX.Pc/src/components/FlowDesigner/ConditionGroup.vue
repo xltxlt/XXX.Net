@@ -7,6 +7,8 @@
       </el-select>
       <el-button link type="primary" size="small" @click="addCondition">+ 条件</el-button>
       <el-button link type="primary" size="small" @click="addCollection">+ 明细条件</el-button>
+      <el-button link type="primary" size="small" @click="addAggregate('sum')">+ SUM</el-button>
+      <el-button link type="primary" size="small" @click="addAggregate('count')">+ COUNT</el-button>
       <el-button link type="primary" size="small" @click="addGroup">+ 条件组</el-button>
       <el-button v-if="removable" link type="danger" size="small" @click="$emit('remove')">删除组</el-button>
     </div>
@@ -37,6 +39,24 @@
           <el-option v-for="op in currentField(item)?.options || []" :key="String(op.value)" :label="op.label" :value="op.value" />
         </el-select>
         <el-input v-else v-model="(item.right as any).value" placeholder="值" @input="emitChange" />
+        <el-button link type="danger" @click="remove(index)">删除</el-button>
+      </div>
+
+      <div v-else-if="item.type === 'condition' && (item.left as any).type === 'aggregate'" class="condition-row collection-row">
+        <span class="aggregate-title">{{ (item.left as any).function.toUpperCase() }}</span>
+        <el-select v-model="(item.left as any).source.nodeId" filterable placeholder="节点" @change="aggregateNodeChanged(item)">
+          <el-option v-for="node in nodes" :key="node.nodeId" :label="node.nodeName" :value="node.nodeId" />
+        </el-select>
+        <el-select v-model="(item.left as any).source.fieldId" filterable placeholder="明细表" @change="aggregateSourceChanged(item)">
+          <el-option v-for="field in collectionFields((item.left as any).source.nodeId)" :key="field.fieldId" :label="field.label" :value="field.fieldId" />
+        </el-select>
+        <el-select v-if="(item.left as any).function === 'sum'" v-model="(item.left as any).childFieldId" placeholder="求和字段" @change="aggregateChildChanged(item)">
+          <el-option v-for="field in aggregateChildren(item)" :key="field.fieldId" :label="field.label" :value="field.fieldId" />
+        </el-select>
+        <el-select v-model="item.operator" style="width:125px" @change="emitChange">
+          <el-option v-for="op in getOperators({ type: 'number' } as any)" :key="op.value" :label="op.label" :value="op.value" />
+        </el-select>
+        <el-input-number v-model="(item.right as any).value" :controls="false" placeholder="数值" @change="emitChange" />
         <el-button link type="danger" @click="remove(index)">删除</el-button>
       </div>
 
@@ -102,6 +122,39 @@ function collectionChildren(item: CollectionCondition) {
   const source = props.fields.find(f => f.nodeId === item.source.nodeId && f.fieldId === item.source.fieldId)
   return source?.children ?? []
 }
+function aggregateChildren(item: ConditionItem) {
+  const left = item.left as any
+  const source = props.fields.find(f => f.nodeId === left.source.nodeId && f.fieldId === left.source.fieldId)
+  return source?.children ?? []
+}
+function aggregateNodeChanged(item: ConditionItem) {
+  const left = item.left as any
+  const source = collectionFields(left.source.nodeId)[0]
+  if (source) {
+    left.source.fieldId = source.fieldId
+    left.source.fieldLabel = source.label
+    const child = source.children?.[0]
+    left.childFieldId = left.function === 'sum' ? child?.fieldId : undefined
+    left.childFieldLabel = left.function === 'sum' ? child?.label : undefined
+  }
+  emitChange()
+}
+function aggregateSourceChanged(item: ConditionItem) {
+  const left = item.left as any
+  const source = props.fields.find(f => f.nodeId === left.source.nodeId && f.fieldId === left.source.fieldId)
+  left.source.fieldLabel = source?.label
+  const child = source?.children?.[0]
+  left.childFieldId = left.function === 'sum' ? child?.fieldId : undefined
+  left.childFieldLabel = left.function === 'sum' ? child?.label : undefined
+  emitChange()
+}
+function aggregateChildChanged(item: ConditionItem) {
+  const left = item.left as any
+  const child = aggregateChildren(item).find(f => f.fieldId === left.childFieldId)
+  left.childFieldLabel = child?.label
+  emitChange()
+}
+
 function collectionChild(item: CollectionCondition) {
   return collectionChildren(item).find(f => f.fieldId === item.childFieldId)
 }
@@ -121,6 +174,26 @@ function emitChange() {
 function addCondition() {
   const field = props.fields.find(f => !f.collection)
   group.value.children.push(emptyCondition(field))
+  emitChange()
+}
+
+function addAggregate(functionName: 'sum' | 'count') {
+  const collection = props.fields.find(f => f.collection)
+  if (!collection) return
+  const child = collection.children?.find(f => f.type.includes('number') || f.type.includes('amount')) ?? collection.children?.[0]
+  const item: ConditionItem = {
+    type: 'condition',
+    left: {
+      type: 'aggregate',
+      function: functionName,
+      source: { type: 'field', source: 'node', nodeId: collection.nodeId, fieldId: collection.fieldId, fieldLabel: collection.label },
+      childFieldId: functionName === 'sum' ? child?.fieldId : undefined,
+      childFieldLabel: functionName === 'sum' ? child?.label : undefined
+    } as any,
+    operator: functionName === 'sum' ? 'gt' : 'gte',
+    right: { type: 'value', value: 0 }
+  }
+  group.value.children.push(item)
   emitChange()
 }
 
