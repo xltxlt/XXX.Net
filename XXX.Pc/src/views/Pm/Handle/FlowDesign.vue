@@ -17,6 +17,7 @@ import type { WorkflowNodeForm } from '@/api-services/generated'
 import type { ReleaseData } from '@/views/PageForm/PageFormDesigner.vue'
 import { isEmptyVal, isNullOrUnDef } from '@/utils/is'
 import type { ConditionField } from '@/components/FlowDesigner/condition'
+import { buildConditionFields } from '@/components/FlowDesigner/conditionSchema'
 
 const emit = defineEmits(['closeDialog', 'refreshList'])
 const { pars } = defineProps<{ pars?: Record<string, any> }>()
@@ -27,8 +28,6 @@ const designNodeId = ref('')
 const designNodeName = ref('')
 const designNodeType = ref('')
 const nodeForms = ref<Record<string, WorkflowNodeForm>>({})
-
-import { buildConditionFields } from '@/components/FlowDesigner/conditionSchema'
 
 const conditionFields = computed<ConditionField[]>(() => {
   const result: ConditionField[] = []
