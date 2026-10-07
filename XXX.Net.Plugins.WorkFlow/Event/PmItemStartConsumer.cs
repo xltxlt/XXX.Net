@@ -40,13 +40,13 @@ namespace XXX.Net.Plugins.WorkFlow.Event
             {
                 await using (await flowItemLock.AcquireAsync(TimeSpan.FromSeconds(30)))
                 {
-                    var instanceId = await _workflowInstanceService.StartByPmFlowItem(
+                     await _workflowInstanceService.StartByPmFlowItem(
                         item,
                         data.StartFormData);
 
                     _logger.LogInformation(
-                        "项目流程启动成功：PmFlowItemId={PmFlowItemId}, WorkflowId={WorkflowId}, InstanceId={InstanceId}",
-                        item.Id, item.WorkflowId, instanceId);
+                        "项目流程启动成功：PmFlowItemId={PmFlowItemId}, WorkflowId={WorkflowId}",
+                        item.Id, item.WorkflowId);
                 }
             }
             catch (Exception ex)

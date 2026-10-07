@@ -17,7 +17,25 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
         Task InsertAsync(T entity);
         Task InsertManyAsync(List<T> entitys);
         Task<bool> UpdateAsync(string id, T entity);
+        Task<bool> UpdateAsync(
+            string id,
+            T entity,
+            Expression<Func<T, bool>> condition);
+
         Task<bool> DeleteAsync(string id);
+        /// <summary>
+        /// 幂等插入：
+        ///
+        /// 1. 尝试插入
+        /// 2. 如果因为唯一索引发生 DuplicateKey
+        /// 3. 自动查询已经存在的数据并返回
+        ///
+        /// 用于解决：
+        /// Get -> Insert 的并发竞争问题。
+        /// </summary>
+        Task<T> InsertOrGetAsync(
+            Expression<Func<T, bool>> filter,
+            T entity);
     }
 
     /// <summary>
@@ -64,6 +82,50 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
 
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
+        /// <summary>
+        /// CAS 更新。
+        ///
+        /// Mongo：
+        ///
+        /// _id = id
+        /// AND condition
+        ///
+        /// 同时满足才更新。
+        /// </summary>
+        public async Task<bool> UpdateAsync(
+            string id,
+            T entity,
+            Expression<Func<T, bool>> condition)
+        {
+            if (!ObjectId.TryParse(
+                    id,
+                    out var objectId))
+            {
+                return false;
+            }
+
+            var idFilter =
+                Builders<T>.Filter.Eq(
+                    "_id",
+                    objectId);
+
+            var conditionFilter =
+                Builders<T>.Filter.Where(
+                    condition);
+
+            var filter =
+                Builders<T>.Filter.And(
+                    idFilter,
+                    conditionFilter);
+
+            var result =
+                await _collection.ReplaceOneAsync(
+                    filter,
+                    entity);
+
+            return result.IsAcknowledged &&
+                   result.MatchedCount > 0;
+        }
         public async Task<bool> DeleteAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -77,6 +139,42 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
             var result = await _collection.DeleteOneAsync(filter);
 
             return result.IsAcknowledged && result.DeletedCount > 0;
+        }
+        /// <summary>
+        /// 幂等插入。
+        ///
+        /// 注意：
+        /// 这个方法必须配合 MongoDB 唯一索引使用。
+        /// </summary>
+        public async Task<T> InsertOrGetAsync(
+            Expression<Func<T, bool>> filter,
+            T entity)
+        {
+            try
+            {
+                await _collection.InsertOneAsync(entity);
+
+                return entity;
+            }
+            catch (MongoWriteException ex)
+                when (ex.WriteError?.Code == 11000)
+            {
+                var existing =
+                    await _collection
+                        .Find(filter)
+                        .FirstOrDefaultAsync();
+
+                if (existing != null)
+                {
+                    return existing;
+                }
+
+                // 极端情况下：
+                // 唯一索引冲突，但是按照业务 filter 查询不到。
+                //
+                // 不吞异常，交给 WorkflowCore 处理。
+                throw;
+            }
         }
     }
 }

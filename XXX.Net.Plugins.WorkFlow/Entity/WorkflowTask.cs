@@ -23,6 +23,8 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
 
         public string NodeName { get; set; } = string.Empty;
 
+        public string TaskKey { get; set; } = string.Empty;
+        public bool MessageSent { get; set; }
         /// <summary>
         /// 处理人用户 Id（SysUser.Id）
         /// </summary>

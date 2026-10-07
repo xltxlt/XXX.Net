@@ -8,11 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WorkflowCore.Interface;
 using XXX.Net.Plugins.WorkFlow.Entity;
 using XXX.Net.Plugins.WorkFlow.Repository;
 using XXX.Net.Plugins.WorkFlow.Service.Dto;
-using XXX.Net.Plugins.WorkFlow.Step;
 
 namespace XXX.Net.Plugins.WorkFlow.Service
 {
@@ -24,13 +22,11 @@ namespace XXX.Net.Plugins.WorkFlow.Service
     {
         private readonly IWorkFlowRepository<WorkflowDefinition> _repo;
         private readonly IWorkFlowRepository<WorkflowNodeForm> _nodeFormRepo;
-        private readonly IWorkflowHost _host;
         private readonly IMSRepository _msRepository;
 
-        public WorkflowDefinitionService(IWorkFlowRepository<WorkflowDefinition> repo, IWorkFlowRepository<WorkflowNodeForm> nodeFormRepo, IWorkflowHost host, IMSRepository msRepository)
+        public WorkflowDefinitionService(IWorkFlowRepository<WorkflowDefinition> repo, IWorkFlowRepository<WorkflowNodeForm> nodeFormRepo,  IMSRepository msRepository)
         {
             _repo = repo;
-            _host = host;
             _msRepository = msRepository;
             _nodeFormRepo = nodeFormRepo;
         }
@@ -129,35 +125,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 .FirstOrDefault()
                 ?? throw Oops.Oh("流程定义不存在");
 
-            // ============================================================
-            // 第一步：转换校验
-            // ============================================================
-            // Convert 内部会校验节点、边以及 WorkflowCore Step 类型。
-            // 这里只做转换，不修改 Mongo 数据。
-            WorkflowCore.Models.WorkflowDefinition wcDef;
-
-            try
-            {
-                wcDef = WorkflowDefinitionConverter.Convert(entity);
-            }
-            catch (Exception ex)
-            {
-                throw Oops.Oh($"流程定义校验失败，无法发布：{ex.Message}");
-            }
-
-            // ============================================================
-            // 第二步：注册成功
-            // ============================================================
-            // 注册失败时直接终止 Publish，此时 Mongo 仍然保持 draft。
-            try
-            {
-                _host.Registry.RegisterWorkflow(wcDef);
-            }
-            catch (Exception ex)
-            {
-                throw Oops.Oh($"WorkflowCore 注册失败，无法发布：{ex.Message}");
-            }
-
+           
             // ============================================================
             // 第三步：MongoDB 发布状态提交
             // ============================================================

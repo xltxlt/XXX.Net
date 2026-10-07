@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WorkflowCore" Version="3.20.0" />
-    <PackageReference Include="WorkflowCore.DSL" Version="3.20.0" />
-    <PackageReference Include="WorkflowCore.Persistence.MongoDB" Version="3.20.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\XXX.Net.Core\XXX.Net.Core.csproj" />
   </ItemGroup>
 

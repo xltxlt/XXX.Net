@@ -1,17 +1,18 @@
+using Furion.DynamicApiController;
+using Furion.JsonSerialization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TextTemplating;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Furion.DynamicApiController;
-using Microsoft.AspNetCore.Mvc;
-using WorkflowCore.Interface;
-using XXX.Net.Plugins.WorkFlow.Repository;
 using XXX.Net.Plugins.WorkFlow.Entity;
-using XXX.Net.Plugins.WorkFlow.Service.Dto;
 using XXX.Net.Plugins.WorkFlow.Models;
-using XXX.Net.Plugins.WorkFlow.Step;
+using XXX.Net.Plugins.WorkFlow.Repository;
+using XXX.Net.Plugins.WorkFlow.Service.Dto;
 
 namespace XXX.Net.Plugins.WorkFlow.Service
 {
@@ -23,57 +24,21 @@ namespace XXX.Net.Plugins.WorkFlow.Service
     {
         private readonly IWorkFlowRepository<WorkflowInstance> _instanceRepo;
         private readonly IWorkFlowRepository<WorkflowDefinition> _defRepo;
-        private readonly IWorkflowHost _host;
-
+        private readonly WorkflowEngine _engine;
+        private readonly IJsonSerializerProvider _jsonSerializer;
         public WorkflowInstanceService(
             IWorkFlowRepository<WorkflowInstance> instanceRepo,
             IWorkFlowRepository<WorkflowDefinition> defRepo,
-            IWorkflowHost host)
+            WorkflowEngine engine,
+            IJsonSerializerProvider jsonSerializer
+           )
         {
             _instanceRepo = instanceRepo;
             _defRepo = defRepo;
-            _host = host;
+            _engine = engine;
+            _jsonSerializer = jsonSerializer;
         }
 
-        /// <summary>
-        /// 启动流程实例，返回实例 Id。
-        /// 注意：Dictionary<string, object> 从 ASP.NET JSON 反序列化后，
-        /// 动态值通常是 JsonElement。WorkflowCore + MongoDB 不适合直接持久化 JsonElement，
-        /// 所以进入 WorkflowCore 前统一转换为 BSON 可处理的 CLR 基础类型。
-        /// </summary>
-        [HttpPost]
-        public async Task<string> Start(string workflowId, Dictionary<string, object>? data)
-        {
-            var def = (await _defRepo.GetListAsync(d => d.WorkflowId == workflowId && d.Status == "published"))
-                .OrderByDescending(d => d.Version).FirstOrDefault()
-                ?? throw new InvalidOperationException("流程定义不存在");
-
-            var variables = NormalizeDictionary(data);
-            var taskName = variables.TryGetValue("taskName", out var value) ? value?.ToString() : null;
-            if (string.IsNullOrWhiteSpace(taskName))
-                throw new ArgumentException("任务名称不能为空");
-
-            var flowData = new FlowData
-            {
-                WorkflowId = workflowId,
-                Variables = variables,
-            };
-
-            var instanceId = await _host.StartWorkflow(workflowId, def.Version, flowData);
-
-            await _instanceRepo.InsertAsync(new WorkflowInstance
-            {
-                TenantId = def.TenantId,
-                InstanceId = instanceId,
-                WorkflowId = workflowId,
-                TaskName = taskName,
-                Version = def.Version,
-                Status = "running",
-                DataJson = JsonSerializer.Serialize(variables),
-            });
-
-            return instanceId;
-        }
 
         /// <summary>
         /// 根据项目流程项启动工作流。
@@ -125,7 +90,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             // 关键：HTTP JSON 进入 Dictionary<string, object> 后，
             // 表单字段里的对象/数组会变成 JsonElement。
             // 这里递归转换，避免 JsonElement 进入 WorkflowCore 的 FlowData.Variables。
-            var startForm = NormalizeDictionary(startFormData);
+            var startForm = _jsonSerializer.Serialize(startFormData);
 
             var variables = new Dictionary<string, object>
             {
@@ -143,26 +108,8 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 [startNode.Id] = startForm,
             };
 
-            var flowData = new FlowData
-            {
-                WorkflowId = item.WorkflowId,
-                Variables = variables,
-            };
-
-            var instanceId = await _host.StartWorkflow(item.WorkflowId, def.Version, flowData);
-
-            await _instanceRepo.InsertAsync(new WorkflowInstance
-            {
-                TenantId = item.TenantId,
-                PmFlowItemId = item.Id,
-                InstanceId = instanceId,
-                WorkflowId = item.WorkflowId,
-                TaskName = variables["taskName"]?.ToString() ?? string.Empty,
-                Version = def.Version,
-                Status = "running",
-                CurrentNodeId = currentNode.Id,
-                DataJson = JsonSerializer.Serialize(variables),
-            });
+            var instanceId =await _engine.StartAsync(item.WorkflowId,def.Version,item.TenantId,variables["taskName"]?.ToString()?? $"项目流程-{item.Id}",variables);
+            
 
             return instanceId;
         }

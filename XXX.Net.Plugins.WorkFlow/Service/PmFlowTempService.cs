@@ -7,7 +7,6 @@ using XXX.Net.Core.CurrentUser;
 using XXX.Net.Core.Services.Base;
 using XXX.Net.Plugins.WorkFlow.Entity;
 using XXX.Net.Plugins.WorkFlow.Service.Dto;
-using XXX.Net.Plugins.WorkFlow.Step;
 
 namespace XXX.Net.Plugins.WorkFlow.Service
 {

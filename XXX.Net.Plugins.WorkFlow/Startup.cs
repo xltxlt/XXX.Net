@@ -1,13 +1,13 @@
 using Furion;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using WorkflowCore.Interface;
 using XXX.Net.Core.MongoDb;
+using XXX.Net.Plugins.WorkFlow.Entity;
 using XXX.Net.Plugins.WorkFlow.Notification;
 using XXX.Net.Plugins.WorkFlow.Repository;
 using XXX.Net.Plugins.WorkFlow.Service;
-using XXX.Net.Plugins.WorkFlow.Step;
 
 namespace XXX.Net.Plugins.WorkFlow
 {
@@ -29,27 +29,47 @@ namespace XXX.Net.Plugins.WorkFlow
             services.AddScoped(typeof(IWorkFlowRepository<>), typeof(WorkFlowRepository<>));
             services.AddScoped<WorkflowInstanceService>();
 
-            // ===== WorkflowCore =====
-            services.AddWorkflow(cfg => cfg.UseMongoDB(
-                mongoOptions.ConnectionString,
-                mongoOptions.DatabaseName,
-                serializerTypeFilter: type =>
-                    MongoDB.Bson.Serialization.Serializers.ObjectSerializer.DefaultAllowedTypes(type) ||
-                    (type.FullName?.StartsWith("XXX.Net.Plugins.WorkFlow.", StringComparison.Ordinal) ?? false)));
+            // 自研工作流引擎
+            services.AddScoped<WorkflowEngine>();
+            services.AddScoped<
+               WorkflowInstanceService>();
 
-            // StepBody 注册到 DI，支持构造函数注入
-            services.AddTransient<StartStep>();
-            services.AddTransient<EndStep>();
-            services.AddTransient<TaskStep>();
-            services.AddTransient<DelayStep>();
-            services.AddTransient<ConditionStep>();
-            services.AddTransient<NotificationStep>();
-            services.AddTransient<ServiceStep>();
+            services.AddScoped<
+                WorkflowTaskService>();
 
-            // 启动 WorkflowHost（后台运行流程）
-            services.AddHostedService(sp => sp.GetRequiredService<IWorkflowHost>());
-            services.AddHostedService<WorkflowDefinitionRegistry>();
-            services.AddHostedService<WorkflowTaskReminderService>();
+            // 保留消息发送
+            services.AddScoped<
+                WorkflowTaskReminderService>();
+            services.AddSingleton(sp =>
+            {
+                var mongoOptions = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
+
+                var mongoClient = new MongoClient(mongoOptions.ConnectionString);
+
+                return mongoClient.GetDatabase(mongoOptions.DatabaseName);
+            });
+
+        }
+    }
+    public static class WorkflowMongoIndex
+    {
+        public static async Task EnsureIndexesAsync(IMongoDatabase database)
+        {
+            var collection = database.GetCollection<WorkflowTask>("WorkflowTask");
+
+            var indexKeys = Builders<WorkflowTask>.IndexKeys
+                .Ascending(x => x.TaskKey);
+
+            var indexOptions = new CreateIndexOptions
+            {
+                Unique = true,
+                Name = "UX_WorkflowTask_TaskKey"
+            };
+
+            await collection.Indexes.CreateOneAsync(
+                new CreateIndexModel<WorkflowTask>(
+                    indexKeys,
+                    indexOptions));
         }
     }
 }
