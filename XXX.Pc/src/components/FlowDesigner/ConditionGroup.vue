@@ -7,8 +7,8 @@
       </el-select>
       <el-button link type="primary" size="small" @click="addCondition">+ 条件</el-button>
       <el-button link type="primary" size="small" @click="addCollection">+ 明细条件</el-button>
-      <el-button link type="primary" size="small" @click="addAggregate('sum')">+ SUM</el-button>
-      <el-button link type="primary" size="small" @click="addAggregate('count')">+ COUNT</el-button>
+      <el-button link type="primary" size="small" :disabled="!canAddSum" @click="addAggregate('sum')">+ SUM</el-button>
+      <el-button link type="primary" size="small" :disabled="!canAddCount" @click="addAggregate('count')">+ COUNT</el-button>
       <el-button link type="primary" size="small" @click="addGroup">+ 条件组</el-button>
       <el-button v-if="removable" link type="danger" size="small" @click="$emit('remove')">删除组</el-button>
     </div>
@@ -90,6 +90,7 @@
 import { computed } from 'vue'
 import type { ConditionField, ConditionGroup, ConditionItem, CollectionCondition } from './condition'
 import { emptyCondition, getOperators } from './condition'
+import { isNumericConditionField } from './conditionSchema'
 
 defineOptions({ name: 'ConditionGroup' })
 
@@ -125,17 +126,29 @@ function collectionChildren(item: CollectionCondition) {
 function aggregateChildren(item: ConditionItem) {
   const left = item.left as any
   const source = props.fields.find(f => f.nodeId === left.source.nodeId && f.fieldId === left.source.fieldId)
-  return source?.children ?? []
+  return (source?.children ?? []).filter(isNumericConditionField)
 }
+
+const canAddCount = computed(() => props.fields.some(field => field.collection))
+const canAddSum = computed(() =>
+  props.fields.some(field => field.collection && (field.children ?? []).some(isNumericConditionField))
+)
 function aggregateNodeChanged(item: ConditionItem) {
   const left = item.left as any
   const source = collectionFields(left.source.nodeId)[0]
   if (source) {
     left.source.fieldId = source.fieldId
     left.source.fieldLabel = source.label
-    const child = source.children?.[0]
-    left.childFieldId = left.function === 'sum' ? child?.fieldId : undefined
-    left.childFieldLabel = left.function === 'sum' ? child?.label : undefined
+    const child = left.function === 'sum'
+      ? source.children?.find(isNumericConditionField)
+      : undefined
+    left.childFieldId = child?.fieldId
+    left.childFieldLabel = child?.label
+  } else {
+    left.source.fieldId = ''
+    left.source.fieldLabel = ''
+    left.childFieldId = undefined
+    left.childFieldLabel = undefined
   }
   emitChange()
 }
@@ -143,9 +156,11 @@ function aggregateSourceChanged(item: ConditionItem) {
   const left = item.left as any
   const source = props.fields.find(f => f.nodeId === left.source.nodeId && f.fieldId === left.source.fieldId)
   left.source.fieldLabel = source?.label
-  const child = source?.children?.[0]
-  left.childFieldId = left.function === 'sum' ? child?.fieldId : undefined
-  left.childFieldLabel = left.function === 'sum' ? child?.label : undefined
+  const child = left.function === 'sum'
+    ? source?.children?.find(isNumericConditionField)
+    : undefined
+  left.childFieldId = child?.fieldId
+  left.childFieldLabel = child?.label
   emitChange()
 }
 function aggregateChildChanged(item: ConditionItem) {
@@ -180,7 +195,10 @@ function addCondition() {
 function addAggregate(functionName: 'sum' | 'count') {
   const collection = props.fields.find(f => f.collection)
   if (!collection) return
-  const child = collection.children?.find(f => f.type.includes('number') || f.type.includes('amount')) ?? collection.children?.[0]
+  const child = functionName === 'sum'
+    ? collection.children?.find(isNumericConditionField)
+    : undefined
+  if (functionName === 'sum' && !child) return
   const item: ConditionItem = {
     type: 'condition',
     left: {
