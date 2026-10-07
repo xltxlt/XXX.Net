@@ -770,9 +770,9 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         {
             instance.CurrentNodeId = node.Id;
 
-            //await _instanceRepo.UpdateAsync(
-            //    instance.Id,
-            //    instance);
+            await _instanceRepo.UpdateAsync(
+                instance.Id,
+                instance);
 
             var edges = GetOutgoingEdges(
                 definition,
