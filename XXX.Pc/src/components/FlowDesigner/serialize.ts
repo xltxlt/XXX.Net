@@ -42,17 +42,33 @@ export function toWorkflowDefinition(
   // }))
   const edgeDtos: WorkflowEdgeDto[] =
     edges.map((edge) => {
+      const sourceNode = nodes.find((node) => node.id === edge.source)
+      const sourceIsCondition = sourceNode?.type === 'condition'
 
-      const condition =
-        (edge.data as any)?.condition
+      // 条件节点：
+      // left = TRUE，保存条件；
+      // right = FALSE，不保存条件，由后端作为默认出口。
+      const condition = sourceIsCondition
+        ? (
+            edge.sourceHandle === 'left' || edge.sourceHandle === 'true'
+              ? (sourceNode?.data as any)?.condition
+              : undefined
+          )
+        : (edge.data as any)?.condition
+
+      const edgeForJson = {
+        ...edge,
+        data: {
+          ...(edge.data ?? {}),
+          condition: condition || undefined,
+        },
+      }
 
       return {
         Source: edge.source,
         Target: edge.target,
-        Condition:
-          condition || undefined,
-        EdgeJson:
-          JSON.stringify(edge),
+        Condition: condition || undefined,
+        EdgeJson: JSON.stringify(edgeForJson),
       }
     })
   return {
@@ -106,6 +122,8 @@ export function fromWorkflowDefinition(def: any): {
     }
   })
 
+  // 条件节点的条件来源于“左侧 TRUE 出口”的 Condition。
+  // 读取完成后回填到节点 data.condition，供条件节点直接编辑。
   const edges: Edge[] = rawEdges.map((e, i) => {
     const source = e.Source ?? e.source
     const target = e.Target ?? e.target
@@ -144,6 +162,20 @@ export function fromWorkflowDefinition(def: any): {
     }
 
     return edge as Edge
+  })
+
+  nodes.forEach((node) => {
+    if (node.type !== 'condition') return
+
+    const trueEdge = edges.find(
+      (edge) =>
+        edge.source === node.id &&
+        (edge.sourceHandle === 'left' || edge.sourceHandle === 'true')
+    )
+
+    const condition = (trueEdge?.data as any)?.condition
+    node.data = node.data ?? {}
+    node.data.condition = condition || undefined
   })
 
   return { nodes, edges }
