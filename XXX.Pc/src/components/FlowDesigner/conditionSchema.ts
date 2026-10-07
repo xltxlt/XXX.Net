@@ -2,6 +2,7 @@ import { PageFormGroup, PageFormType, type TempEditForm } from '@/components/Pag
 import type { ConditionField } from './condition'
 
 type ConditionValueType = 'string' | 'number' | 'boolean' | 'date' | 'select' | 'collection'
+type PageFormDesignerItem = TempEditForm & { optionText?: string }
 
 const NUMBER_TYPES = new Set<number>([
   PageFormType.Number,
@@ -62,22 +63,38 @@ function getLabel(item: TempEditForm, fieldId: string) {
   return String(item.title ?? item.label ?? fieldId)
 }
 
-function normalizeOptions(item: TempEditForm) {
-  if (!Array.isArray(item.option)) return []
+function normalizeOptions(item: PageFormDesignerItem) {
+  if (Array.isArray(item.option)) {
+    return item.option
+      .filter((option: any) => option && typeof option === 'object')
+      .map((option: any) => ({
+        label: String(option.label ?? option.title ?? option.name ?? option.value ?? ''),
+        value: option.value,
+      }))
+      .filter((option: any) => option.label !== '')
+  }
 
-  return item.option
-    .filter((option: any) => option && typeof option === 'object')
-    .map((option: any) => ({
-      label: String(option.label ?? option.title ?? option.name ?? option.value ?? ''),
-      value: option.value,
-    }))
-    .filter((option: any) => option.label !== '')
+  // PageFormDesigner 当前保存的真实设计结构使用 optionText。
+  // 不再从字段名、formType 等信息推测选项。
+  if (typeof item.optionText === 'string') {
+    return item.optionText
+      .split('\\n')
+      .map(line => line.trim())
+      .filter(Boolean)
+      .map(line => {
+        const [label, ...rest] = line.split(',')
+        const text = label.trim()
+        return { label: text, value: rest.join(',').trim() || text }
+      })
+  }
+
+  return []
 }
 
 function toField(
   nodeId: string,
   nodeName: string,
-  item: TempEditForm,
+  item: PageFormDesignerItem,
   collection = false,
   children: ConditionField[] = [],
 ): ConditionField | null {
@@ -104,7 +121,7 @@ function toField(
 function buildFields(
   nodeId: string,
   nodeName: string,
-  items: TempEditForm[],
+  items: PageFormDesignerItem[],
 ): ConditionField[] {
   const result: ConditionField[] = []
 
@@ -164,7 +181,7 @@ function buildCollectionChildren(
 export function buildConditionFields(
   nodeId: string,
   nodeName: string,
-  form: TempEditForm[],
+  form: PageFormDesignerItem[],
 ): ConditionField[] {
   return buildFields(nodeId, nodeName, form ?? [])
 }
