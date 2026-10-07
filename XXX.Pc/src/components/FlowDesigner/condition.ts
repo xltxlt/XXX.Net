@@ -1,4 +1,5 @@
 export type ConditionLogic = 'and' | 'or'
+export type ConditionValueType = 'string' | 'number' | 'boolean' | 'date' | 'select' | 'collection'
 export type ConditionOperator =
   | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte'
   | 'contains' | 'notContains' | 'startsWith' | 'endsWith'
@@ -9,7 +10,8 @@ export interface ConditionField {
   nodeName: string
   fieldId: string
   label: string
-  type: string
+  type: ConditionValueType
+  formType: number
   collection?: boolean
   children?: ConditionField[]
   options?: Array<{ label: string; value: any }>
@@ -82,6 +84,11 @@ export const operatorOptions: Record<string, Array<{ label: string; value: Condi
     { label: '晚于', value: 'gt' }, { label: '晚于等于', value: 'gte' },
     { label: '早于', value: 'lt' }, { label: '早于等于', value: 'lte' }
   ],
+  select: [
+    { label: '等于', value: 'eq' }, { label: '不等于', value: 'neq' },
+    { label: '包含', value: 'contains' }, { label: '不包含', value: 'notContains' },
+    { label: '为空', value: 'isEmpty' }, { label: '不为空', value: 'isNotEmpty' }
+  ],
   default: [
     { label: '等于', value: 'eq' }, { label: '不等于', value: 'neq' },
     { label: '大于', value: 'gt' }, { label: '大于等于', value: 'gte' },
@@ -91,10 +98,7 @@ export const operatorOptions: Record<string, Array<{ label: string; value: Condi
 
 export function getOperators(field?: ConditionField | null) {
   if (!field) return operatorOptions.default
-  if (field.type.includes('number') || field.type.includes('amount')) return operatorOptions.number
-  if (field.type.includes('date') || field.type.includes('time')) return operatorOptions.date
-  if (field.type.includes('switch') || field.type.includes('boolean')) return operatorOptions.boolean
-  return operatorOptions.string
+  return operatorOptions[field.type] ?? operatorOptions.default
 }
 
 export function emptyGroup(): ConditionGroup {
@@ -106,7 +110,7 @@ export function emptyGroup(): ConditionGroup {
 }
 
 export function emptyCondition(field?: ConditionField): ConditionItem {
-  const f = field ?? { nodeId: '', nodeName: '', fieldId: '', label: '', type: 'string' }
+  const f = field ?? { nodeId: '', nodeName: '', fieldId: '', label: '', type: 'string', formType: 100 }
   return {
     type: 'condition',
     left: {
