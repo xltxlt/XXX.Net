@@ -34,13 +34,27 @@ export function toWorkflowDefinition(
     }
   })
 
-  const edgeDtos: WorkflowEdgeDto[] = edges.map((edge) => ({
-    Source: edge.source,
-    Target: edge.target,
-    Condition: (edge.data as any)?.condition ?? edge.label ?? undefined,
-    EdgeJson: JSON.stringify(edge),
-  }))
+  // const edgeDtos: WorkflowEdgeDto[] = edges.map((edge) => ({
+  //   Source: edge.source,
+  //   Target: edge.target,
+  //   Condition: (edge.data as any)?.condition ?? edge.label ?? undefined,
+  //   EdgeJson: JSON.stringify(edge),
+  // }))
+  const edgeDtos: WorkflowEdgeDto[] =
+    edges.map((edge) => {
 
+      const condition =
+        (edge.data as any)?.condition
+
+      return {
+        Source: edge.source,
+        Target: edge.target,
+        Condition:
+          condition || undefined,
+        EdgeJson:
+          JSON.stringify(edge),
+      }
+    })
   return {
     WorkflowId: meta?.workflowId ?? '',
     Name: meta?.name ?? '',

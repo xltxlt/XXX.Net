@@ -20,8 +20,8 @@ const props = defineProps<{
     tempForm: TempEditPageData;
     tempFormData: any;
     cols?: number;
-    index?:number|string|undefined;
-    fieldName?:string;
+    index?: number | string | undefined;
+    fieldName?: string;
 }>()
 const predefineColors = ref([
     '#FA5151', '#FA9D3B', '#FFC300',
@@ -95,11 +95,11 @@ const locationSelectConfirm = (val: any, item: any) => {
     }
     props.tempFormData[item.fieldName + '_Data'] = location;
 }
-const getPropName=computed(()=>{
-    if(isEmptyVal(props.fieldName) )
+const getPropName = computed(() => {
+    if (isEmptyVal(props.fieldName))
         return props.item.fieldName;
     else
-        return  `${props.fieldName}.${props.index}.${props.item.fieldName}`;
+        return `${props.fieldName}.${props.index}.${props.item.fieldName}`;
 });
 </script>
 <template>
@@ -119,6 +119,19 @@ const getPropName=computed(()=>{
                 <el-input :type="'number'" v-model="tempFormData[item.fieldName]"
                     :placeholder="item?.placeholder ?? '请输入' + (item.label ?? item?.title ?? '')"
                     v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}" />
+            </el-form-item>
+        </el-col>
+    </template>
+    <template v-else-if="item.formType == PageFormType.Amount">
+        <el-col :span="cols">
+            <el-form-item :label="item.title ?? item.label" :prop="getPropName" v-on="item?.on ?? {}">
+                <!-- <el-input :type="'number'" v-model="tempFormData[item.fieldName]" -->
+                <el-input :type="'number'" v-model="tempFormData[item.fieldName]"
+                    :placeholder="item?.placeholder ?? '请输入' + (item.label ?? item?.title ?? '')"
+                    v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}"> <template #prefix>
+                        <span>￥</span>
+                    </template>
+                </el-input>
             </el-form-item>
         </el-col>
     </template>
@@ -286,20 +299,21 @@ const getPropName=computed(()=>{
     <template v-else-if="item.formType == PageFormType.TreeSelect">
         <el-col :span="cols">
             <el-form-item :label="item.title ?? item.label" :prop="getPropName">
-                <el-cascader v-model="tempFormData[item.fieldName]" :checkStrictly ='true'  :options="tempForm.options[item.fieldName]"
-                    style="flex:1" :placeholder="item?.placeholder ?? '请选择' + (item.label ?? item?.title ?? '')"
-                    :props="{
+                <el-cascader v-model="tempFormData[item.fieldName]" :checkStrictly='true'
+                    :options="tempForm.options[item.fieldName]" style="flex:1"
+                    :placeholder="item?.placeholder ?? '请选择' + (item.label ?? item?.title ?? '')" :props="{
                         checkStrictly: true,
-                    }"
-                    v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}" />
+                    }" v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}" />
             </el-form-item>
         </el-col>
     </template>
     <template v-else-if="item.formType == PageFormType.TreeSelectLast">
         <el-col :span="cols">
             <el-form-item :label="item.title ?? item.label" :prop="getPropName">
-                <el-tree-select v-model="tempFormData[item.fieldName]" :data="tempForm.options[item.fieldName]" :render-after-expand="false"  :placeholder="item?.placeholder ?? '请选择' + (item.label ?? item?.title ?? '')"
-                    v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}"  />
+                <el-tree-select v-model="tempFormData[item.fieldName]" :data="tempForm.options[item.fieldName]"
+                    :render-after-expand="false"
+                    :placeholder="item?.placeholder ?? '请选择' + (item.label ?? item?.title ?? '')"
+                    v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}" />
             </el-form-item>
         </el-col>
     </template>

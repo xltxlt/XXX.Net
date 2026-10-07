@@ -1,8 +1,11 @@
 <template>
   <div class="flow-design-page" style="height: 100%;">
-    <FlowDesigner ref="designerRef"  @save="onSave" @designer-form="onDesignForm" />
-    <el-dialog v-model="formDesignVisible" title="设计表单" width="100%" draggable align-center style="height: 100%;top:0" :close-on-click-modal="false">
-      <PageFormDesigner v-if="formDesignVisible" :designer-data="desingnFormData||{}" @release="saveForm" :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType" :node-name="designNodeName" :workflow-deginition-id="pars?.workflowDefinitionId" />
+    <FlowDesigner ref="designerRef" @save="onSave" @designer-form="onDesignForm" />
+    <el-dialog v-model="formDesignVisible" title="设计表单" width="100%" draggable align-center style="height: 100%;top:0"
+      :close-on-click-modal="false">
+      <PageFormDesigner v-if="formDesignVisible" :designer-data="desingnFormData || {}" @release="saveForm"
+        :workflow-id="workflowId" :node-id="designNodeId" :node-type="designNodeType" :node-name="designNodeName"
+        :workflow-deginition-id="pars?.workflowDefinitionId" />
     </el-dialog>
   </div>
 </template>
@@ -28,17 +31,17 @@ const designNodeType = ref('')
 const nodeForms = ref<Record<string, WorkflowNodeForm>>({})
 
 type NodeFormReleaseData = { form: any[]; attrData: Record<string, Record<string, any>> }
-const desingnFormData=computed<ReleaseData>(()=>{
-   var nodeForm= nodeForms.value[designNodeId.value] ;
-   if(isNullOrUnDef(nodeForm))return {
-    form:[],
-    attrData:{},
-    cols:2
-   } as ReleaseData;
+const desingnFormData = computed<ReleaseData>(() => {
+  var nodeForm = nodeForms.value[designNodeId.value];
+  if (isNullOrUnDef(nodeForm)) return {
+    form: [],
+    attrData: {},
+    cols: 2
+  } as ReleaseData;
   return {
-    cols:nodeForm.cols??2,
-    form:isEmptyVal(nodeForm.formJson)?[]: JSON.parse(nodeForm.formJson??''), 
-    attrData:isEmptyVal(nodeForm.attrDataJson)?[]: JSON.parse(nodeForm.attrDataJson??''), 
+    cols: nodeForm.cols ?? 2,
+    form: isEmptyVal(nodeForm.formJson) ? [] : JSON.parse(nodeForm.formJson ?? ''),
+    attrData: isEmptyVal(nodeForm.attrDataJson) ? [] : JSON.parse(nodeForm.attrDataJson ?? ''),
   } as ReleaseData
 })
 const getNodeId = (node: any): string => String(node?.Id ?? node?.id ?? '')
@@ -93,7 +96,7 @@ const saveForm = (formData: ReleaseData) => {
     nodeId: designNodeId.value,
     formJson: JSON.stringify(formData.form ?? []),
     attrDataJson: JSON.stringify(formData.attrData ?? {}),
-    cols:formData.cols,
+    cols: formData.cols,
   }
   formDesignVisible.value = false
 }
@@ -101,9 +104,47 @@ const saveForm = (formData: ReleaseData) => {
 const onSave = async (def: any) => {
   const rawNodes = def.Nodes ?? def.nodes ?? []
   const rawEdges = def.Edges ?? def.edges ?? []
-  const nodes = rawNodes.map((node: any) => ({ id: getNodeId(node), type: getNodeType(node), name: node.Name ?? node.name, config: typeof (node.Config ?? node.config) === 'string' ? (node.Config ?? node.config) : JSON.stringify(node.Config ?? node.config ?? {}), nodeJson: node.NodeJson ?? node.nodeJson ?? '' }))
-  const edges = rawEdges.map((edge: any) => ({ source: edge.Source ?? edge.source, target: edge.Target ?? edge.target, condition: edge.Condition ?? edge.condition ?? null, edgeJson: edge.EdgeJson ?? edge.edgeJson ?? '' }))
+  // condition节点条件同步到对应出口边
+  const conditionMap = new Map<string, string>()
+  rawNodes.forEach((node: any) => {
+    const id = getNodeId(node)
+    const type = getNodeType(node)
 
+    if (type === 'condition') {
+      var item = JSON.parse(node.NodeJson);
+      const data = item.data ?? item.Data ?? {}
+      console.log(data)
+      conditionMap.set(
+        id,
+        data.condition ?? ''
+      )
+    }
+  })
+
+  const nodes = rawNodes.map((node: any) => ({ id: getNodeId(node), type: getNodeType(node), name: node.Name ?? node.name, config: typeof (node.Config ?? node.config) === 'string' ? (node.Config ?? node.config) : JSON.stringify(node.Config ?? node.config ?? {}), nodeJson: node.NodeJson ?? node.nodeJson ?? '' }))
+
+  const edges = rawEdges.map((edge: any) => {
+
+    const sourceId = edge.Source ?? edge.source
+
+    // 如果连线起点是条件节点，则同步条件
+    const condition =
+      conditionMap.get(sourceId)
+      ??
+      edge.Condition
+      ??
+      edge.condition
+      ??
+      null
+
+
+    return {
+      source: sourceId,
+      target: edge.Target ?? edge.target,
+      condition,
+      edgeJson: edge.EdgeJson ?? edge.edgeJson ?? ''
+    }
+  })
   const validNodeIds = new Set(nodes.map((node: any) => node.id))
   Object.keys(nodeForms.value).forEach(nodeId => { if (!validNodeIds.has(nodeId)) delete nodeForms.value[nodeId] })
 

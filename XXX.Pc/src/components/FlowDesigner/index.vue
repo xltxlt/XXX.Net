@@ -109,8 +109,10 @@
               <!-- 条件节点额外属性 -->
               <template v-if="selectedNode.type === 'condition'">
                 <el-form-item label="条件表达式">
-                  <el-input v-model="selectedNode.data.condition" type="textarea" placeholder="如: amount > 1000"
-                    @input="emitChange" />
+                  <el-input v-model="selectedNode.data.condition" @change="" type="textarea"
+                    placeholder="如: amount > 1000" @input="
+                      emitChange
+                    " />
                 </el-form-item>
               </template>
 
@@ -282,10 +284,10 @@ import type { YzDialogPars } from '../common/YzPopup/index.ts'
 
 const { onDragStart, onDrop } = useDragAndDrop()
 const selectUserShow = ref<boolean>(false)
-const selectUserItems = computed(()=>{
-    var node = nodes.value.find((n) => n.id === selectedNodeId.value) ?? null;
-    return node?.data[thisNodeAttr.value+'Ids']||[];
-   
+const selectUserItems = computed(() => {
+  var node = nodes.value.find((n) => n.id === selectedNodeId.value) ?? null;
+  return node?.data[thisNodeAttr.value + 'Ids'] || [];
+
 });
 const props = withDefaults(defineProps<FlowDesignerProps>(), {
   title: '流程设计器',
@@ -322,18 +324,18 @@ const nodeTypes = {
   end: markRaw(EndNode),
 } as unknown as NodeTypesObject
 
-const thisNodeAttr=ref<string>();
+const thisNodeAttr = ref<string>();
 const pageFun: Record<string, Function> = {
-  openSelectUser: (name:string) => {
-    thisNodeAttr.value=name;
+  openSelectUser: (name: string) => {
+    thisNodeAttr.value = name;
     selectUserShow.value = true;
   },
   setResponsibleUserIds: (items: any[]) => {
     selectUserShow.value = false;
     var node = nodes.value.find((n) => n.id === selectedNodeId.value) ?? null;
     if (node) {
-      node.data[thisNodeAttr.value+'Ids'] = items.map(m => m.id);
-      node.data[thisNodeAttr.value+''] = items.map(m => m.name);
+      node.data[thisNodeAttr.value + 'Ids'] = items.map(m => m.id);
+      node.data[thisNodeAttr.value + ''] = items.map(m => m.name);
     }
   }
 };
@@ -373,6 +375,8 @@ const restoreHistory = (index: number) => {
   selectedEdgeId.value = null
   nextTick(() => { applyingHistory = false; emitChange() })
 }
+
+
 const undo = () => restoreHistory(historyIndex.value - 1)
 const redo = () => restoreHistory(historyIndex.value + 1)
 onMounted(() => recordHistory())

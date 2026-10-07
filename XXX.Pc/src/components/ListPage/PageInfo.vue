@@ -26,181 +26,185 @@
             </div>
         </div>
         <div class="page-info-tree-content-right">
-            <xlt-collapse ref="topSearchRef" :label="'综合查询'" :show="true" v-if='pageConfig.hideSearch != true'>
+            <Card :title="'综合查询'" v-if='pageConfig.hideSearch != true'>
+                <el-form>
+                    <el-row class="top-search-content">
+                        <el-col class="top-search-item" :style="{
+                            flex: '0 0 ' + 100 / (24 / rowMaxSearch) + '%'
+                        }" v-for="(m, i) in searchItems" :key="i">
+                            <template v-if="m.searchType == PagedSearchType.Input">
+                                <el-form-item :label="m.label">
+                                    <el-input clearable v-model="m.value" :placeholder="'请输入' + m.label" />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.NumberRange">
+                                <el-form-item :label="m.label">
+                                    <el-input-number v-model="m.value" :min="1" :max="10" />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.OneSelect">
+                                <el-form-item :label="m.label">
+                                    <el-select placeholder="请选择" suffix-icon="CaretBottom" v-model="m.value" clearable>
+                                        <el-option v-for="item in m.option" :key="item.value" :label="item.label"
+                                            :value="item.value ?? ''" />
+                                    </el-select>
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.OneSelectSearch">
+                                <el-form-item :label="m.label">
+                                    <el-select filterable suffix-icon="CaretBottom" placeholder="请选择" v-model="m.value"
+                                        collapse-tags collapse-tags-tooltip clearable>
+                                        <el-option v-for="item in m.option" :key="item.value" :label="item.label"
+                                            :value="item.value" />
+                                    </el-select>
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.MultSelect">
+                                <el-form-item :label="m.label">
+                                    <el-select filterable suffix-icon="CaretBottom" placeholder="请选择" v-model="m.value"
+                                        collapse-tags collapse-tags-tooltip clearable>
+                                        <el-option v-for="item in m.option" :key="item.value" :label="item.label"
+                                            :value="item.value" />
+                                    </el-select>
+                                </el-form-item>
+                            </template>
+
+                            <template
+                                v-else-if="m.fieldName != props.pageConfig.showLeftSearch && (m.searchType == PagedSearchType.TreeSelect || m.searchType == PagedSearchType.SelfTreeSelect)">
+                                <el-form-item :label="m.label">
+                                    <el-cascader suffix-icon="CaretBottom" filterable v-model="m.value"
+                                        placeholder="请选择" :options="m.option" />
+                                </el-form-item>
+                            </template>
+                            <template
+                                v-else-if="m.searchType == PagedSearchType.MultTreeSelect || m.searchType == PagedSearchType.MultSelfTreeSelect">
+                                <el-form-item :label="m.label">
+                                    <el-cascader suffix-icon="CaretBottom" collapse-tags collapse-tags-tooltip clearable
+                                        v-model="m.value" placeholder="请选择" :options="m.option" />
+                                </el-form-item>
+                            </template>
+
+
+
+                            <template v-else-if="m.searchType == PagedSearchType.DateSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="date" suffix-icon="CaretBottom" date-format="yyyy-MM-dd "
+                                        :shortcuts="shortcuts" v-model="m.value" placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.MultDateSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="dates" suffix-icon="CaretBottom" :shortcuts="shortcuts"
+                                        v-model="m.value" placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.DateTimeSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker v-model="m.value" suffix-icon="CaretBottom" type="datetimerange"
+                                        start-placeholder="开始时间" end-placeholder="结束时间"
+                                        date-format="yyyy-MM-dd HH:mm:ss" />
+                                </el-form-item>
+                            </template>
+
+                            <template v-else-if="m.searchType == PagedSearchType.DateRangeSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="daterange" range-separator="至" start-placeholder="开始日期"
+                                        end-placeholder="结束日期" suffix-icon="CaretBottom"
+                                        date-format="yyyy-MM-dd HH:mm:ss" v-model="m.value" placeholder="请选择"
+                                        clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.TimeSelect">
+                                <el-form-item :label="m.label">
+                                    <el-time-select v-model="m.value" start="00:00" step="00:5" end="23:59"
+                                        placeholder="请选择" />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.YaerSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="year" suffix-icon="CaretBottom" v-model="m.value"
+                                        placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.MultYaerSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="years" v-model="m.value" placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.YaerRangeSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="yearrange" range-separator="至" start-placeholder="开始年份"
+                                        end-placeholder="结束年份" suffix-icon="CaretBottom" v-model="m.value"
+                                        placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.MonthSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker t type="month" suffix-icon="CaretBottom" v-model="m.value"
+                                        placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.MultMonthSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="months" suffix-icon="CaretBottom" v-model="m.value"
+                                        placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.MonthRangeSelect">
+                                <el-form-item :label="m.label">
+                                    <el-date-picker type="monthrange" range-separator="至" start-placeholder="开始年月"
+                                        end-placeholder="结束年月" suffix-icon="CaretBottom" v-model="m.value"
+                                        placeholder="请选择" clearable />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.ProvinceSelect">
+                                <el-form-item :label="m.label">
+                                    <el-select placeholder="请选择" suffix-icon="CaretBottom" v-model="m.value" clearable>
+                                        <el-option v-for="item in m.option" :key="item.value" :label="item.label"
+                                            :value="item.value ?? ''" />
+                                    </el-select>
+                                </el-form-item>
+                            </template>
+                            <!-- TODO 将CitySelect 和 CitySelect option改为默认数据 -->
+                            <template v-else-if="m.searchType == PagedSearchType.CitySelect">
+                                <el-form-item :label="m.label">
+                                    <el-cascader suffix-icon="CaretBottom" filterable v-model="m.value"
+                                        placeholder="请选择" :options="m.option" />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.searchType == PagedSearchType.AreaSelect">
+                                <el-form-item :label="m.label">
+                                    <el-cascader suffix-icon="CaretBottom" filterable v-model="m.value"
+                                        placeholder="请选择" :options="m.option" />
+                                </el-form-item>
+                            </template>
+                            <template v-else-if="m.fieldName != props.pageConfig.showLeftSearch">
+                                <el-form-item :label="m.label">
+                                    <el-input clearable :value="m.value" />
+                                </el-form-item>
+                            </template>
+                        </el-col>
+                    </el-row>
+                </el-form>
+                <template #right>
+                    <el-button type="primary" @click.stop="pageFun.searchBtnClick" :icon="Search">搜索</el-button>
+                    <el-button type="primary" @click="pageFun.resetBtnClick" :icon="RefreshRight"
+                        style="color:#000000;background-color: #ffffff;border-color: #dfdfdf;">
+                        重置</el-button>
+                </template>
+            </Card>
+            <!-- <xlt-collapse ref="topSearchRef" :label="'综合查询'" :show="true">
                 <template #content>
-                    <el-form>
-                        <el-row class="top-search-content">
-                            <el-col class="top-search-item" :style="{
-                                flex: '0 0 ' + 100 / (24 / rowMaxSearch) + '%'
-                            }" v-for="(m, i) in searchItems" :key="i">
-                                <template v-if="m.searchType == PagedSearchType.Input">
-                                    <el-form-item :label="m.label">
-                                        <el-input clearable v-model="m.value" />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.NumberRange">
-                                    <el-form-item :label="m.label">
-                                        <el-input-number v-model="m.value" :min="1" :max="10" />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.OneSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-select placeholder="请选择" suffix-icon="CaretBottom" v-model="m.value"
-                                            clearable>
-                                            <el-option v-for="item in m.option" :key="item.value" :label="item.label"
-                                                :value="item.value ?? ''" />
-                                        </el-select>
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.OneSelectSearch">
-                                    <el-form-item :label="m.label">
-                                        <el-select filterable suffix-icon="CaretBottom" placeholder="请选择"
-                                            v-model="m.value" collapse-tags collapse-tags-tooltip clearable>
-                                            <el-option v-for="item in m.option" :key="item.value" :label="item.label"
-                                                :value="item.value" />
-                                        </el-select>
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.MultSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-select filterable suffix-icon="CaretBottom" placeholder="请选择"
-                                            v-model="m.value" collapse-tags collapse-tags-tooltip clearable>
-                                            <el-option v-for="item in m.option" :key="item.value" :label="item.label"
-                                                :value="item.value" />
-                                        </el-select>
-                                    </el-form-item>
-                                </template>
 
-                                <template
-                                    v-else-if="m.fieldName != props.pageConfig.showLeftSearch && (m.searchType == PagedSearchType.TreeSelect || m.searchType == PagedSearchType.SelfTreeSelect)">
-                                    <el-form-item :label="m.label">
-                                        <el-cascader suffix-icon="CaretBottom" filterable v-model="m.value"
-                                            placeholder="请选择" :options="m.option" />
-                                    </el-form-item>
-                                </template>
-                                <template
-                                    v-else-if="m.searchType == PagedSearchType.MultTreeSelect || m.searchType == PagedSearchType.MultSelfTreeSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-cascader suffix-icon="CaretBottom" collapse-tags collapse-tags-tooltip
-                                            clearable v-model="m.value" placeholder="请选择" :options="m.option" />
-                                    </el-form-item>
-                                </template>
-
-
-
-                                <template v-else-if="m.searchType == PagedSearchType.DateSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="date" suffix-icon="CaretBottom" date-format="yyyy-MM-dd "
-                                            :shortcuts="shortcuts" v-model="m.value" placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.MultDateSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="dates" suffix-icon="CaretBottom" :shortcuts="shortcuts"
-                                            v-model="m.value" placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.DateTimeSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker v-model="m.value" suffix-icon="CaretBottom" type="datetimerange"
-                                            start-placeholder="开始时间" end-placeholder="结束时间"
-                                            date-format="yyyy-MM-dd HH:mm:ss" />
-                                    </el-form-item>
-                                </template>
-
-                                <template v-else-if="m.searchType == PagedSearchType.DateRangeSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="daterange" range-separator="至" start-placeholder="开始日期"
-                                            end-placeholder="结束日期" suffix-icon="CaretBottom"
-                                            date-format="yyyy-MM-dd HH:mm:ss" v-model="m.value" placeholder="请选择"
-                                            clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.TimeSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-time-select v-model="m.value" start="00:00" step="00:5" end="23:59"
-                                            placeholder="请选择" />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.YaerSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="year" suffix-icon="CaretBottom" v-model="m.value"
-                                            placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.MultYaerSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="years" v-model="m.value" placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.YaerRangeSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="yearrange" range-separator="至" start-placeholder="开始年份"
-                                            end-placeholder="结束年份" suffix-icon="CaretBottom" v-model="m.value"
-                                            placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.MonthSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker t type="month" suffix-icon="CaretBottom" v-model="m.value"
-                                            placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.MultMonthSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="months" suffix-icon="CaretBottom" v-model="m.value"
-                                            placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.MonthRangeSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-date-picker type="monthrange" range-separator="至" start-placeholder="开始年月"
-                                            end-placeholder="结束年月" suffix-icon="CaretBottom" v-model="m.value"
-                                            placeholder="请选择" clearable />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.ProvinceSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-select placeholder="请选择" suffix-icon="CaretBottom" v-model="m.value"
-                                            clearable>
-                                            <el-option v-for="item in m.option" :key="item.value" :label="item.label"
-                                                :value="item.value ?? ''" />
-                                        </el-select>
-                                    </el-form-item>
-                                </template>
-                                <!-- TODO 将CitySelect 和 CitySelect option改为默认数据 -->
-                                <template v-else-if="m.searchType == PagedSearchType.CitySelect">
-                                    <el-form-item :label="m.label">
-                                        <el-cascader suffix-icon="CaretBottom" filterable v-model="m.value"
-                                            placeholder="请选择" :options="m.option" />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.searchType == PagedSearchType.AreaSelect">
-                                    <el-form-item :label="m.label">
-                                        <el-cascader suffix-icon="CaretBottom" filterable v-model="m.value"
-                                            placeholder="请选择" :options="m.option" />
-                                    </el-form-item>
-                                </template>
-                                <template v-else-if="m.fieldName != props.pageConfig.showLeftSearch">
-                                    <el-form-item :label="m.label">
-                                        <el-input clearable :value="m.value" />
-                                    </el-form-item>
-                                </template>
-                            </el-col>
-                        </el-row>
-                    </el-form>
                 </template>
 
                 <template #tools>
 
-                    <el-button type="primary" @click.stop="pageFun.searchBtnClick" color='#28a745'
-                        size="small">搜索</el-button>
-                    <el-button type="primary" @click="pageFun.resetBtnClick" color="#cf851a" style="color:#ffffff"
-                        size="small">重置</el-button>
+
                 </template>
-            </xlt-collapse>
-            <xlt-collapse :label="'数据列表'" :show="true" class="data-list-content">
-                <template #content>
+            </xlt-collapse> -->
+            <Card :title="'数据列表'" :show="true" class="data-list-content">
+                <template #default>
                     <div class="data-list-div">
                         <!-- :style="{ flex: 1 }"  -->
                         <DataList ref="dataListRef" :data="dataListRes.list" :pagePars="{
@@ -222,13 +226,12 @@
                         </div>
                     </div>
                 </template>
-                <template #tools>
+                <template #right>
                     <el-button type="primary" v-for="item in pagePars.btns" :key="item.eventName" style="color:#ffffff"
-                        :color="item.bgColor ?? '#1485EE'" @click="pageFun.handleBtnClick('' + item.eventName)"
-                        size="small">{{
+                        :color="item.bgColor ?? '#1485EE'" @click="pageFun.handleBtnClick('' + item.eventName)">{{
                             item.label }}</el-button>
                 </template>
-            </xlt-collapse>
+            </Card>
         </div>
 
         <!-- FullScreen -->
@@ -274,14 +277,16 @@ import { ref, shallowRef, onMounted, markRaw, watch, computed, onBeforeUnmount, 
 import dayjs from 'dayjs'
 import DataList from '@/components/ListPage/DataList.vue'
 import XltCollapse from '@/components/Custom/XltCollapse.vue'
+import Card from '../common/Card/Card.vue'
 import type { TempListPageConfig, TableField, SearchItem } from './index'
 import { menuService } from '@/api'
 import { getPageListByUrl, getPageOptionByUrl, getPageRenderByUrl } from '@/api-services'
 import type { PagedOptions, PagedSearchWhere, SysMenuTableButtonDto } from '@/api-services/generated'
 import { FieldType, PagedSearchType } from './index'
 import { getQueryByName } from '@/utils/pcRouter'
-import { Search } from '@element-plus/icons-vue'
+import { Search, RefreshRight } from '@element-plus/icons-vue'
 import { isArray, isFunction, isNullOrUnDef, isNumber, isString } from '@/utils/is'
+import { ElIcon } from 'element-plus'
 const shortcuts = [
     {
         text: 'jin',
@@ -322,10 +327,10 @@ const rowMaxSearch = computed(() => {
             return 12;
         }
         else {
-            return 6;
+            return 4;
         }
     }
-    return 6;
+    return 4;
 });
 
 const leftTreeItem = computed<SearchItem>(() => {
@@ -881,9 +886,18 @@ defineExpose({
 
     .xlt-collapse-content {
         .el-form-item__label {
+            color: #091E48 !important;
+            font-size: 500;
             /* width: 90px;- */
             /* justify-content: left; */
         }
+    }
+
+    .el-form-item__label {
+        color: #091E48 !important;
+        font-weight: 500;
+        /* width: 90px;- */
+        /* justify-content: left; */
     }
 
 
@@ -943,14 +957,15 @@ defineExpose({
     flex: 1;
     border-top: 0;
     overflow: hidden;
+    margin-top: 15px;
 
     .data-list-div {
         height: calc(100% - 12px);
         margin: 5px;
+        margin-top: 15px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        border: 1px solid #e6e6e6;
 
         .data-list-table {
             flex: 1;
@@ -1010,7 +1025,7 @@ defineExpose({
 
     .page-info-tree-content-right {
 
-        border: #e6e6e6 1px solid;
+        // border: #e6e6e6 1px solid;
         padding: 5px;
         flex: 1;
     }
@@ -1019,7 +1034,7 @@ defineExpose({
 .tree-node {}
 
 .page-info-tree-content-right {
-    border: #e6e6e6 1px solid;
+    // border: #e6e6e6 1px solid;
     padding: 5px;
     flex: 1;
     display: flex;

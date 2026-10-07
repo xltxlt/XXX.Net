@@ -135,17 +135,17 @@
 
                         <div ref="btnWrap"
                             style="display: flex; flex-wrap: wrap; gap: 4px;justify-content: space-around;">
-                            <el-button
+                            <el-button plain
                                 v-for="(item, idx) in setRowTableBtns(pagePars.tableBtns, scope).slice(0, props.maxBtn)"
-                                :key="item.type" type="primary" style="color:#ffffff;margin-left: 0px;"
-                                :color="item.bgColor || '#28a745'" size="small"
+                                :key="item.type" type="primary" style="margin-left: 0px;"
+                                :color="item.bgColor || '#28a745'"
                                 @click="handleTableBtnClick(item.eventName, row, scope)">
                                 {{ item.label }}
                             </el-button>
                             <el-dropdown v-if="setRowTableBtns(pagePars.tableBtns, scope).length > props.maxBtn"
                                 trigger="click">
-                                <el-button type="primary" size="small"
-                                    style="color:#fff;background:#666;border:none;margin-left: 0px;">更多</el-button>
+                                <el-button type="primary" plain
+                                    style="background:#666;border:none;margin-left: 0px;">更多</el-button>
                                 <template #dropdown>
                                     <el-dropdown-menu>
                                         <el-dropdown-item
@@ -423,7 +423,7 @@ const exposeFuns = {
             if (item.checked == 1) {
                 handleFun(item, true);
             }
-            else{
+            else {
                 handleFun(item, false);
             }
             if (item.children && item.children.length > 0) {
@@ -481,11 +481,12 @@ defineExpose({
 
 .page-table {
     height: 100%;
-    --el-table-header-bg-color: #f2f2f2;
+    --el-table-header-bg-color: #F3F6FC;
 
     .el-table__cell {
-        padding: 5px 0;
-        font-weight: 400;
+        padding: 7px 0;
+        color: #182C56;
+        font-weight: 500;
 
     }
 

@@ -276,7 +276,19 @@ const getColumnWidth = (item: TempEditForm) => {
                             '')
                         " v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}" />
 
-
+                    <el-input v-else-if="
+                        item.formType ===
+                        PageFormType.Amount
+                    " v-model="row[item.fieldName]" type="number" :placeholder="item?.placeholder ??
+                        '请输入' +
+                        (item.label ??
+                            item?.title ??
+                            '')
+                        " v-bind="item?.comProps ?? {}" v-on="item?.comOn ?? {}">
+                        <template #prefix>
+                            <span>￥</span>
+                        </template>
+                    </el-input>
                     <!-- ================= Decimal ================= -->
 
                     <el-input v-else-if="
@@ -639,14 +651,14 @@ optItem,
                                     'Address'
                                 ]
                                     " v-model:model-city="row[
-                                    item.fieldName +
-                                    'City'
-                                ]
-                                    " v-model:model-value="row[
-                                    item.fieldName +
-                                    'Data'
-                                ]
-                                    " />
+                                        item.fieldName +
+                                        'City'
+                                    ]
+                                        " v-model:model-value="row[
+                                            item.fieldName +
+                                            'Data'
+                                        ]
+                                            " />
 
                     </template>
 
@@ -687,15 +699,15 @@ optItem,
 
         <!-- ==================== 操作列 ==================== -->
 
-        <el-table-column label="操作" width="200" fixed="right"  align="center">
+        <el-table-column label="操作" width="200" fixed="right" align="center">
 
             <template #default="{ $index }">
 
-                <el-button type="danger"  @click="delItem($index)">
+                <el-button type="danger" @click="delItem($index)">
                     删除
                 </el-button>
 
-                <el-button  @click="copyItem($index)">
+                <el-button @click="copyItem($index)">
                     复制
                 </el-button>
             </template>

@@ -126,10 +126,10 @@ const navigate = (path: string) => {
 const openTodo = (item?: TodoItem) => {
   if (item?.id) {
     // 统一进入现有待办中心，具体处理页仍由 WorkflowTodo 负责。
-    navigate('/workflow/todo')
+    navigate('/pm/setup?workflowDefinitionId=' + item.workflowDefinitionId +'&taskId='+item.id+ '&workflowId=' + item.workflowId + '&instanceId=' + item.instanceId + '&nodeId=' + item.nodeId)
     return
   }
-  navigate('/workflow/todo')
+  navigate('/pm/setup')
 }
 
 const openNotices = () => {
@@ -709,7 +709,7 @@ button {
   padding: 4px 8px;
   border-radius: 5px;
   text-align: center;
-  font-size: 11px;
+  font-size: 0.8rem;
 }
 
 .todo-tag.workflow {
@@ -727,7 +727,7 @@ button {
   white-space: nowrap;
   text-overflow: ellipsis;
   color: #354b60;
-  font-size: 13px;
+  font-size: 0.9rem;
 }
 
 .todo-instance {
@@ -735,7 +735,7 @@ button {
   white-space: nowrap;
   text-overflow: ellipsis;
   color: #9aaaba;
-  font-size: 12px;
+  font-size: 0.8rem;
 }
 
 .todo-time {
@@ -743,7 +743,7 @@ button {
   align-items: center;
   gap: 4px;
   color: #92a3b2;
-  font-size: 11px;
+  font-size: 0.8rem;
   white-space: nowrap;
 }
 
@@ -757,11 +757,11 @@ button {
   align-items: center;
   gap: 2px;
   color: #248be8;
-  font-size: 12px;
+  font-size: 0.9rem;
 }
 
 .todo-action svg {
-  width: 13px;
+  width: 0.9rem;
 }
 
 .empty-state {

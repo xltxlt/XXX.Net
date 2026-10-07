@@ -44,6 +44,7 @@ export interface FlowDesignerProps {
   showPropsPanel?: boolean
   nodePanelItems?: NodePanelItem[]
   defaultEdgeOptions?: Record<string, any>
+  conditionFields?: WorkflowConditionFieldOption[]
 }
 
 /**
@@ -160,4 +161,60 @@ export interface WorkflowDefinitionDto {
   Version: number
   Nodes: WorkflowNodeDto[]
   Edges: WorkflowEdgeDto[]
+}
+
+export type ConditionOperator =
+  | 'eq'
+  | 'ne'
+  | 'gt'
+  | 'gte'
+  | 'lt'
+  | 'lte'
+  | 'contains'
+  | 'startsWith'
+  | 'endsWith'
+  | 'isEmpty'
+  | 'isNotEmpty'
+
+export interface WorkflowConditionField {
+  nodeId: string
+  path: string
+}
+
+export interface WorkflowCondition {
+  type: 'group' | 'field' | 'aggregate' | 'any'
+
+  operator?: string
+
+  children?: WorkflowCondition[]
+
+  field?: WorkflowConditionField
+
+  value?: any
+
+  aggregate?: {
+    nodeId: string
+    path: string
+    field: string
+    function: 'count' | 'sum' | 'avg' | 'min' | 'max'
+  }
+
+  any?: {
+    nodeId: string
+    path: string
+    where: WorkflowCondition
+  }
+}
+export interface WorkflowConditionFieldOption {
+  nodeId: string
+  nodeName: string
+
+  field: string
+  label: string
+
+  type: 'string' | 'number' | 'boolean' | 'date' | 'table'
+
+  isTable?: boolean
+
+  children?: WorkflowConditionFieldOption[]
 }
