@@ -44,10 +44,10 @@ const pageConfig: TempListPageConfig = {
         ElMessage({ type: 'info', message: '请选择要删除的记录' });
         return;
       }
-      if (ids.length !== 1) {
-        ElMessage({ type: 'info', message: '批量删除仅支持单条记录' });
-        return;
-      }
+      // if (ids.length !== 1) {
+      //   ElMessage({ type: 'info', message: '批量删除仅支持单条记录' });
+      //   return;
+      // }
       const res = await pmFlowItemService.apiPmFlowItemBatchlogicdeletePost(ids);
       handleSumbitResBox(res, '删除成功', () => {
         pageInfoRef.value?.onRefresh();

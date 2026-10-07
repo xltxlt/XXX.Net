@@ -5,7 +5,7 @@
       <span class="node-icon">{{ data.icon || '●' }}</span>
       <span class="node-label">{{ data.label }}</span>
     </div>
-    <div class="node-body">
+    <div class="node-body text-overflow">
       <slot />
     </div>
 
