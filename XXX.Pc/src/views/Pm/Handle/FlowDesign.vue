@@ -167,22 +167,9 @@ const saveForm = (formData: ReleaseData) => {
 const onSave = async (def: any) => {
   const rawNodes = def.Nodes ?? def.nodes ?? []
   const rawEdges = def.Edges ?? def.edges ?? []
-  // condition节点条件同步到对应出口边
-  const conditionMap = new Map<string, string>()
-  rawNodes.forEach((node: any) => {
-    const id = getNodeId(node)
-    const type = getNodeType(node)
+  // 条件表达式只保存在“条件节点 -> 出口边”上。
+  // 不再从条件节点 data.condition 读取，否则会覆盖可视化条件设计器生成的 DSL。
 
-    if (type === 'condition') {
-      var item = JSON.parse(node.NodeJson);
-      const data = item.data ?? item.Data ?? {}
-      console.log(data)
-      conditionMap.set(
-        id,
-        data.condition ?? ''
-      )
-    }
-  })
 
   const nodes = rawNodes.map((node: any) => ({ id: getNodeId(node), type: getNodeType(node), name: node.Name ?? node.name, config: typeof (node.Config ?? node.config) === 'string' ? (node.Config ?? node.config) : JSON.stringify(node.Config ?? node.config ?? {}), nodeJson: node.NodeJson ?? node.nodeJson ?? '' }))
 
@@ -190,16 +177,9 @@ const onSave = async (def: any) => {
 
     const sourceId = edge.Source ?? edge.source
 
-    // 如果连线起点是条件节点，则同步条件
-    const condition =
-      conditionMap.get(sourceId)
-      ??
-      edge.Condition
-      ??
-      edge.condition
-      ??
-      null
-
+    // 条件只取连线自身的 condition。
+    // ConditionDesigner 保存的是 JSON DSL 字符串，必须原样传给后端。
+    const condition = edge.Condition ?? edge.condition ?? edge.data?.condition ?? null
 
     return {
       source: sourceId,
