@@ -70,7 +70,7 @@ body {
   min-height: 100vh;
 }
 
-.ldyz-text {
+.ldyz-text,.text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

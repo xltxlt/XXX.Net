@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # generate code
 Template/Vue/Generate
+uploads/
