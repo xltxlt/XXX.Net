@@ -106,14 +106,17 @@
                 </el-form-item>
               </template>
 
-              <!-- 条件节点额外属性 -->
+              <!-- 条件节点：条件属于出口连线，由连线上的可视化条件设计器配置 -->
               <template v-if="selectedNode.type === 'condition'">
-                <el-form-item label="条件表达式">
-                  <el-input v-model="selectedNode.data.condition" @change="" type="textarea"
-                    placeholder="如: amount > 1000" @input="
-                      emitChange
-                    " />
-                </el-form-item>
+                <el-alert
+                  title="请选中条件节点的出口连线设置流转条件"
+                  type="info"
+                  :closable="false"
+                  show-icon
+                />
+                <div style="margin-top: 8px; color: #909399; font-size: 12px; line-height: 1.6;">
+                  支持 AND / OR、跨节点字段、明细 ANY / ALL / NONE、SUM、COUNT 等条件。
+                </div>
               </template>
 
               <!-- 任务节点额外属性 -->
