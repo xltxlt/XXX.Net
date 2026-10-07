@@ -107,14 +107,43 @@ export function fromWorkflowDefinition(def: any): {
   })
 
   const edges: Edge[] = rawEdges.map((e, i) => {
-    const rawEdge = e.EdgeJson ?? e.edgeJson
-    if (rawEdge) {
-      try { return typeof rawEdge === 'string' ? JSON.parse(rawEdge) : rawEdge } catch { /* fall back to DTO fields */ }
-    }
     const source = e.Source ?? e.source
     const target = e.Target ?? e.target
     const condition = e.Condition ?? e.condition ?? undefined
-    return { id: e.Id ?? e.id ?? `e_${source}_${target}_${i}`, source, target, type: 'smoothstep', animated: true, style: { stroke: '#409eff', strokeWidth: 2 }, label: condition, data: condition ? { condition } : {} }
+
+    let edge: any = null
+    const rawEdge = e.EdgeJson ?? e.edgeJson
+    if (rawEdge) {
+      try {
+        edge = typeof rawEdge === 'string' ? JSON.parse(rawEdge) : { ...rawEdge }
+      } catch {
+        edge = null
+      }
+    }
+
+    edge = edge ?? {
+      id: e.Id ?? e.id ?? `e_${source}_${target}_${i}`,
+      source,
+      target,
+      type: 'smoothstep',
+      animated: true,
+      style: { stroke: '#409eff', strokeWidth: 2 },
+    }
+
+    // DTO.Condition 是最终权威值；即使历史 EdgeJson 存在，也不能让旧的 data.condition 覆盖新的 DSL。
+    edge.source = source
+    edge.target = target
+    edge.id = edge.id ?? e.Id ?? e.id ?? `e_${source}_${target}_${i}`
+    edge.data = edge.data ?? {}
+    if (condition) {
+      edge.data.condition = condition
+      edge.label = '已设置条件'
+    } else if (edge.data.condition) {
+      // 兼容只存在 EdgeJson 的历史数据。
+      edge.label = '已设置条件'
+    }
+
+    return edge as Edge
   })
 
   return { nodes, edges }
