@@ -189,22 +189,29 @@ const getPropName = computed(() => {
     <template v-else-if="item.formType == PageFormType.UploadOneImg">
         <el-col :span="24">
             <el-form-item :label="item.title ?? item.label" :prop="getPropName">
-                <yz-upload :upload-type="1" v-on="item.comOn ?? {}" v-bind="item.comProps ?? {}"
-                    :files="tempFormData[item.fieldName]"></yz-upload>
+                <yz-upload
+                    v-model="tempFormData[item.fieldName]"
+                    :multiple="false"
+                    :limit="1"
+                    v-bind="item.comProps ?? {}"
+                    v-on="item.comOn ?? {}"
+                />
             </el-form-item>
         </el-col>
-
     </template>
-    <template v-else-if="item.formType == PageFormType.UploadMultImg">
 
+    <template v-else-if="item.formType == PageFormType.UploadMultImg">
         <el-col :span="24">
             <el-form-item :label="item.title ?? item.label" :prop="getPropName">
-
-                <yz-upload :upload-type="1" :limit="1" v-on="item.comOn ?? {}" v-bind="item.comProps ?? {}"
-                    :files="(tempFormData[item.fieldName]) ? ([].concat(tempFormData[item.fieldName]) ?? []) : []"></yz-upload>
+                <yz-upload
+                    v-model="tempFormData[item.fieldName]"
+                    :multiple="true"
+                    :limit="item.comProps?.limit"
+                    v-bind="item.comProps ?? {}"
+                    v-on="item.comOn ?? {}"
+                />
             </el-form-item>
         </el-col>
-
     </template>
 
 
