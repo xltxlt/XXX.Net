@@ -1,20 +1,31 @@
 <template>
-    <div>
-        <el-upload ref="elUploadRef" :accept="props.accept ?? imageAccept.join(',')" v-model:file-list="uploadList"
-            :limit="limit" :http-request="customUpload" :on-success="handleUploadSuccess" :on-error="handleUploadError"
-            :on-exceed="handleUploadExceed" :on-remove="handleRemove" list-type="picture-card">
-            <el-icon>
-                <Plus />
-            </el-icon>
+    <div class="yz-upload">
+        <el-upload
+            ref="elUploadRef"
+            v-model:file-list="uploadList"
+            :accept="props.accept ?? imageAccept.join(',')"
+            :limit="props.limit"
+            :multiple="props.multiple"
+            :list-type="'picture-card'"
+            :http-request="customUpload"
+            :on-exceed="handleUploadExceed"
+            :on-remove="handleRemove"
+            :on-preview="handlePictureCardPreview"
+            v-bind="props.uploadProps"
+        >
+            <el-icon><Plus /></el-icon>
         </el-upload>
 
-        <!-- 图片预览 -->
-        <el-image-viewer v-if="dialogVisible" :url-list="[dialogImageUrl]" @close="dialogVisible = false" />
+        <el-image-viewer
+            v-if="dialogVisible"
+            :url-list="[dialogImageUrl]"
+            @close="dialogVisible = false"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { ref, watch } from 'vue'
 import { fielService } from '@/api'
 import type {
     UploadFile,
@@ -26,118 +37,136 @@ import type {
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 
-// ========== 常量 ==========
+type UploadValue = {
+    url: string
+    id?: string | number
+    name?: string
+}
+
 const imageAccept = [
     '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg', '.webp',
     '.JPG', '.JPEG', '.PNG', '.GIF', '.BMP', '.SVG', '.WEBP',
 ]
-const fileAccept = [
-    '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
-]
 
-// ========== Props / Emits ==========
-const props = defineProps<{
-    files?: Array<{ url: string; id?: string | number; name?: string }>
+const props = withDefaults(defineProps<{
+    modelValue?: UploadValue | UploadValue[] | null
+    files?: UploadValue[]
     limit?: number
+    multiple?: boolean
     accept?: string
-}>()
+    uploadProps?: Record<string, any>
+}>(), {
+    modelValue: undefined,
+    files: undefined,
+    limit: 1,
+    multiple: false,
+    accept: undefined,
+    uploadProps: undefined,
+})
 
 const emits = defineEmits<{
-    (e: 'update:listData', value: any[]): void
-    (e: 'update:listUrl', value: string[]): void
-    (e: 'update:lastUrl', value: string): void
+    (e: 'update:modelValue', value: UploadValue | UploadValue[] | null): void
 }>()
 
-// ========== 响应式数据 ==========
 const uploadList = ref<UploadUserFile[]>([])
 const dialogVisible = ref(false)
 const dialogImageUrl = ref('')
-const elUploadRef = ref()
 
-// ========== 初始化回显 ==========
-onMounted(async () => {
-    if (props.files && props.files.length > 0) {
-        const data: UploadUserFile[] = props.files.map((v) => ({
+const normalizeValues = (value: UploadValue | UploadValue[] | null | undefined): UploadValue[] => {
+    if (!value) return []
+    return Array.isArray(value) ? value : [value]
+}
+
+const toUploadFiles = (value: UploadValue | UploadValue[] | null | undefined): UploadUserFile[] => {
+    return normalizeValues(value)
+        .filter(v => !!v?.url)
+        .map(v => ({
             url: v.url,
-            uid: v.id ?? v.url,   // uid 必须唯一，没有 id 就用 url 兜底
+            uid: v.id ?? v.url,
             name: v.name ?? v.url.split('/').pop() ?? 'image',
-            status: 'success',     // ✅ 关键：标记为成功，否则不会渲染为已上传图片
+            status: 'success',
         }))
-        uploadList.value = data
-    }
-})
+}
 
-// ========== 自定义上传 ==========
+const getValue = (): UploadValue[] => {
+    return uploadList.value
+        .filter(file => file.status === 'success' && !!file.url)
+        .map(file => ({
+            url: file.url as string,
+            id: file.uid,
+            name: file.name,
+        }))
+}
+
+const emitValue = () => {
+    const values = getValue()
+    if (props.multiple) {
+        emits('update:modelValue', values)
+    } else {
+        emits('update:modelValue', values[0] ?? null)
+    }
+}
+
+watch(
+    () => props.modelValue,
+    value => {
+        uploadList.value = toUploadFiles(value)
+    },
+    { immediate: true, deep: true }
+)
+
+watch(
+    () => props.files,
+    value => {
+        if (props.modelValue === undefined) {
+            uploadList.value = toUploadFiles(value)
+        }
+    },
+    { immediate: true, deep: true }
+)
+
 const customUpload = async (options: UploadRequestOptions) => {
     try {
         const res = await fielService.apiSysFileUploadSinglePost(options.file)
-        // ✅ [NonUnify] 返回的是扁平 SysFileOutput，不是 { data: {...} }
         const url = res.data?.url
+
         if (!url) {
-            ElMessage.error('上传成功但未返回文件地址')
-            return
+            throw new Error('上传成功但未返回文件地址')
         }
 
-        // ✅ 直接操作 fileList（通过 ref）
-        const file = elUploadRef.value?.uploadFiles?.find(
-            (f: any) => f.uid === options.file.uid
-        )
+        const file = uploadList.value.find(f => f.uid === options.file.uid)
         if (file) {
             file.url = url
             file.status = 'success'
+            file.response = res
         }
 
-        // ✅ 通知父组件
-        const urls = elUploadRef.value?.uploadFiles
-            ?.filter((f: any) => f.status === 'success' && f.url)
-            ?.map((f: any) => f.url) ?? []
-
-        emits('update:listUrl', urls)
-        emits('update:lastUrl', url)
-
-        ElMessage.success('上传成功')
-
-        // ✅ 标记成功（组件不会再触发 on-success）
         options.onSuccess(res)
-    } catch (err) {
-        options.onError(err as any)
+        emitValue()
+        ElMessage.success('上传成功')
+    } catch (error) {
+        options.onError(error as any)
+        ElMessage.error(error instanceof Error ? error.message : '上传失败，请重试')
     }
 }
 
-// ========== 上传成功 ==========
-const handleUploadSuccess = (res: any, file: UploadFile, fileList: UploadFiles) => {
-    // console.log('handleUploadSuccess:', res)
-
+const handleRemove: UploadProps['onRemove'] = (_file, _fileList) => {
+    emitValue()
 }
 
-// ========== 删除文件 ==========
-const handleRemove: UploadProps['onRemove'] = (file, fileList) => {
-    const urls = fileList
-        .filter((f) => f.status === 'success' && f.url)
-        .map((f) => f.url as string)
-    emits('update:listUrl', urls)
-    emits('update:listData', fileList)
-}
-
-// ========== 超出限制 ==========
-const handleUploadExceed = (files: File[], uploadFiles: UploadUserFile[]) => {
+const handleUploadExceed = () => {
     ElMessage.warning(`最多只能上传 ${props.limit} 个文件`)
 }
 
-// ========== 上传失败 ==========
-const handleUploadError = (error: any) => {
-    console.error('上传失败:', error)
-    ElMessage.error('上传失败，请重试')
-}
-
-// ========== 预览 ==========
 const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
-    console.log('handlePictureCardPreview:', uploadFile)
-    dialogImageUrl.value = uploadFile.url || ''
+    if (!uploadFile.url) return
+    dialogImageUrl.value = uploadFile.url
     dialogVisible.value = true
 }
 </script>
 
 <style lang="less" scoped>
-/* 按需添加样式 */
+.yz-upload {
+    width: 100%;
+}
 </style>
