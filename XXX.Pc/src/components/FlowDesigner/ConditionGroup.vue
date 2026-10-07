@@ -325,14 +325,14 @@ function defaultRightValue(field?: ConditionField) {
 }
 
 function collectionNodeChanged(item: CollectionCondition) {
-  const field = collectionFields(item.source.nodeId)[0]
-  if (field) {
-    item.source.fieldId = field.fieldId
-    item.source.fieldLabel = field.label
-    item.childFieldId = field.children?.[0]?.fieldId
-    item.childFieldLabel = field.children?.[0]?.label
-    item.operator = getOperators(field.children?.[0])[0]?.value ?? 'eq'
-  }
+  // 明细节点改变后，后续依赖旧节点的数据全部失效，必须清空，
+  // 避免继续携带旧节点的明细表、明细字段、运算符和值。
+  item.source.fieldId = ''
+  item.source.fieldLabel = ''
+  item.childFieldId = undefined
+  item.childFieldLabel = undefined
+  item.operator = ''
+  item.value = { type: 'value', value: '' }
   emitChange()
 }
 

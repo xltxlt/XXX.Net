@@ -132,6 +132,15 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             if (startNode == null)
                 throw new InvalidOperationException("流程定义缺少开始节点");
 
+            instance.ActiveNodeIds = new List<string> { startNode.Id };
+            instance.CompletedNodeIds = new List<string>();
+            instance.CurrentNodeId = startNode.Id;
+            instance.CurrentNodeStatus = "running";
+
+            await _instanceRepo.UpdateAsync(
+                instance.Id,
+                instance);
+
             await ExecuteFromNodeAsync(
                 instance,
                 definition,
@@ -395,7 +404,17 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
                     var oldNodeId = instance.CurrentNodeId;
 
+                    instance.ActiveNodeIds ??= new List<string>();
+                    instance.CompletedNodeIds ??= new List<string>();
+
+                    instance.ActiveNodeIds.Clear();
+                    instance.ActiveNodeIds.Add(targetNodeId);
+
+                    // 回退后的路径重新执行；旧路径的完成标记不能参与新的 Join。
+                    instance.CompletedNodeIds.Clear();
+
                     instance.CurrentNodeId = targetNodeId;
+                    instance.CurrentNodeStatus = "running";
 
                     await _instanceRepo.UpdateAsync(
                         instance.Id,
@@ -533,6 +552,22 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         {
             if (instance.Status != "running")
                 return;
+
+            instance.ActiveNodeIds ??= new List<string>();
+            instance.CompletedNodeIds ??= new List<string>();
+
+            if (!instance.ActiveNodeIds.Contains(
+                    node.Id,
+                    StringComparer.Ordinal) &&
+                !instance.CompletedNodeIds.Contains(
+                    node.Id,
+                    StringComparer.Ordinal))
+            {
+                instance.ActiveNodeIds.Add(node.Id);
+            }
+
+            instance.CurrentNodeId = node.Id;
+            instance.CurrentNodeStatus = "running";
 
             switch ((node.Type ?? string.Empty).ToLowerInvariant())
             {
@@ -979,7 +1014,14 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                     ? $"条件为真，命中左侧“真”出口：{matchedEdge.Target}"
                     : $"条件为假，命中右侧“假”出口：{matchedEdge.Target}");
 
-            await ExecuteFromNodeCoreAsync(
+            // 条件节点本身已经完成，只把命中的分支继续向下推进。
+            // 不能直接 ExecuteFromNodeCoreAsync，否则目标节点的多入口
+            // Join 逻辑会被绕过。
+            await MarkNodeCompletedAsync(
+                instance,
+                node.Id);
+
+            await TryEnterTargetNodeAsync(
                 instance,
                 definition,
                 nextNode.Id);
@@ -1032,11 +1074,11 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             VfWorkflowNode node)
         {
             instance.CurrentNodeId = node.Id;
-            instance.Status = "completed";
+            instance.CurrentNodeStatus = "completed";
 
-            await _instanceRepo.UpdateAsync(
-                instance.Id,
-                instance);
+            await MarkNodeCompletedAsync(
+                instance,
+                node.Id);
 
             await AddHistoryAsync(
                 instance.InstanceId,
@@ -1062,6 +1104,10 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                     task,
                     x => x.Status == "pending");
             }
+
+            // 只有所有并行分支都结束后，流程实例才进入 completed。
+            await TryCompleteInstanceAsync(
+                instance);
         }
 
         #endregion
@@ -1076,6 +1122,12 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             WorkflowDefinition definition,
             string currentNodeId)
         {
+            // 当前节点完成后，先记录完成状态。
+            // 这一步是“多入口汇聚”的判断依据。
+            await MarkNodeCompletedAsync(
+                instance,
+                currentNodeId);
+
             var edges = GetOutgoingEdges(
                 definition,
                 currentNodeId);
@@ -1095,40 +1147,214 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                         $"节点「{currentNode.Name}」没有后续节点");
                 }
 
+                await TryCompleteInstanceAsync(
+                    instance);
+
                 return;
             }
 
-            // 当前版本：
-            //
-            // 普通 task / approval：
-            //     只能有一个默认出口。
-            //
-            // condition：
-            //     在 EnterConditionNodeAsync 中处理。
-            //
-            // 如果普通节点配置多个出口，
-            // 默认取第一条。
-            var nextEdge = edges.FirstOrDefault();
+            var validEdges = edges
+                .Where(x => !string.IsNullOrWhiteSpace(x.Target))
+                .ToList();
 
-            if (nextEdge == null ||
-                string.IsNullOrWhiteSpace(nextEdge.Target))
+            if (validEdges.Count == 0)
             {
                 throw new InvalidOperationException(
                     $"节点没有有效的后续边：{currentNodeId}");
             }
 
-            var nextNode = definition.Nodes
-                .FirstOrDefault(x =>
-                    x.Id == nextEdge.Target);
+            /*
+             * 普通节点支持一对多：
+             *
+             *       A
+             *      / \
+             *     B   C
+             *
+             * B、C 都会被激活。
+             *
+             * condition 节点不经过这里，它自己只选择一条边，
+             * 因此不会把 TRUE/FALSE 两条分支同时执行。
+             */
+            foreach (var edge in validEdges)
+            {
+                await TryEnterTargetNodeAsync(
+                    instance,
+                    definition,
+                    edge.Target);
+            }
+        }
 
-            if (nextNode == null)
+        /// <summary>
+        /// 尝试进入目标节点。
+        ///
+        /// 一个节点存在多个前置节点时，默认采用 AND Join：
+        /// 所有前置节点都完成后才能进入。
+        ///
+        /// 如果业务需要 OR Join，可在目标节点 Config 中配置：
+        ///
+        /// { "joinMode": "any" }
+        ///
+        /// any：任意一个前置节点完成即可进入。
+        /// all：所有前置节点完成后进入（默认）。
+        /// </summary>
+        private async Task TryEnterTargetNodeAsync(
+            WorkflowInstance instance,
+            WorkflowDefinition definition,
+            string targetNodeId)
+        {
+            if (string.IsNullOrWhiteSpace(targetNodeId))
+                return;
+
+            var targetNode = definition.Nodes
+                .FirstOrDefault(x => x.Id == targetNodeId);
+
+            if (targetNode == null)
                 throw new InvalidOperationException(
-                    $"后续节点不存在：{nextEdge.Target}");
+                    $"后续节点不存在：{targetNodeId}");
+
+            if (instance.CompletedNodeIds.Contains(
+                    targetNodeId,
+                    StringComparer.Ordinal))
+            {
+                return;
+            }
+
+            var incomingEdges = GetIncomingEdges(
+                definition,
+                targetNodeId);
+
+            var incomingNodeIds = incomingEdges
+                .Select(x => x.Source)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
+
+            var joinMode = ReadJoinMode(targetNode);
+
+            var ready = incomingNodeIds.Count <= 1
+                ? incomingNodeIds.Count == 0 ||
+                  incomingNodeIds.Any(
+                      x => string.Equals(
+                          x,
+                          targetNodeId,
+                          StringComparison.Ordinal) ||
+                          instance.CompletedNodeIds.Contains(
+                              x,
+                              StringComparer.Ordinal))
+                : string.Equals(
+                      joinMode,
+                      "any",
+                      StringComparison.OrdinalIgnoreCase)
+                    ? incomingNodeIds.Any(
+                        x => instance.CompletedNodeIds.Contains(
+                            x,
+                            StringComparer.Ordinal))
+                    : incomingNodeIds.All(
+                        x => instance.CompletedNodeIds.Contains(
+                            x,
+                            StringComparer.Ordinal));
+
+            if (!ready)
+            {
+                await AddHistoryAsync(
+                    instance.InstanceId,
+                    targetNode.Id,
+                    targetNode.Name,
+                    0,
+                    string.Empty,
+                    "wait",
+                    string.Equals(
+                        joinMode,
+                        "any",
+                        StringComparison.OrdinalIgnoreCase)
+                        ? "等待任意前置节点完成"
+                        : $"等待所有前置节点完成：{string.Join(", ", incomingNodeIds)}");
+
+                return;
+            }
+
+            if (!instance.ActiveNodeIds.Contains(
+                    targetNodeId,
+                    StringComparer.Ordinal))
+            {
+                instance.ActiveNodeIds.Add(targetNodeId);
+            }
+
+            instance.CurrentNodeId = targetNodeId;
+            instance.CurrentNodeStatus = "running";
+
+            await _instanceRepo.UpdateAsync(
+                instance.Id,
+                instance);
 
             await ExecuteFromNodeCoreAsync(
                 instance,
                 definition,
-                nextNode.Id);
+                targetNodeId);
+        }
+
+        /// <summary>
+        /// 节点完成后从活动节点集合移除，并加入完成集合。
+        /// </summary>
+        private async Task MarkNodeCompletedAsync(
+            WorkflowInstance instance,
+            string nodeId)
+        {
+            if (string.IsNullOrWhiteSpace(nodeId))
+                return;
+
+            instance.ActiveNodeIds ??= new List<string>();
+            instance.CompletedNodeIds ??= new List<string>();
+
+            instance.ActiveNodeIds.RemoveAll(
+                x => string.Equals(
+                    x,
+                    nodeId,
+                    StringComparison.Ordinal));
+
+            if (!instance.CompletedNodeIds.Contains(
+                    nodeId,
+                    StringComparer.Ordinal))
+            {
+                instance.CompletedNodeIds.Add(nodeId);
+            }
+
+            instance.CurrentNodeId = nodeId;
+            instance.CurrentNodeStatus = "completed";
+            instance.LastOperateTime = DateTime.Now;
+
+            await _instanceRepo.UpdateAsync(
+                instance.Id,
+                instance);
+        }
+
+        /// <summary>
+        /// 没有任何活动节点且没有待办任务时，流程才真正完成。
+        /// </summary>
+        private async Task TryCompleteInstanceAsync(
+            WorkflowInstance instance)
+        {
+            if (instance.Status != "running")
+                return;
+
+            var pendingTasks = await _taskRepo.GetListAsync(
+                x =>
+                    x.InstanceId == instance.InstanceId &&
+                    x.Status == "pending");
+
+            if ((instance.ActiveNodeIds?.Count ?? 0) > 0 ||
+                pendingTasks.Count > 0)
+            {
+                return;
+            }
+
+            instance.Status = "completed";
+            instance.CurrentNodeStatus = "completed";
+            instance.LastOperateTime = DateTime.Now;
+
+            await _instanceRepo.UpdateAsync(
+                instance.Id,
+                instance);
         }
 
         #endregion
@@ -1219,8 +1445,58 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 .ToList();
         }
 
+        private static List<VfWorkflowEdge> GetIncomingEdges(
+            WorkflowDefinition definition,
+            string nodeId)
+        {
+            return (definition.Edges ?? new List<VfWorkflowEdge>())
+                .Where(x => x.Target == nodeId)
+                .ToList();
+        }
+
         /// <summary>
-        /// 读取条件节点自身保存的 DSL。
+        /// 读取节点的 Join 模式。
+        ///
+        /// all（默认）：所有前置节点完成。
+        /// any：任意一个前置节点完成。
+        /// </summary>
+        private static string ReadJoinMode(
+            VfWorkflowNode node)
+        {
+            if (string.IsNullOrWhiteSpace(node.Config))
+                return "all";
+
+            try
+            {
+                using var doc = JsonDocument.Parse(node.Config);
+
+                if (doc.RootElement.ValueKind != JsonValueKind.Object)
+                    return "all";
+
+                if (doc.RootElement.TryGetProperty(
+                        "joinMode",
+                        out var value))
+                {
+                    return value.GetString() ?? "all";
+                }
+
+                if (doc.RootElement.TryGetProperty(
+                        "JoinMode",
+                        out value))
+                {
+                    return value.GetString() ?? "all";
+                }
+            }
+            catch (JsonException)
+            {
+                // 节点配置的其他部分由具体节点解析。
+            }
+
+            return "all";
+        }
+
+        /// <summary>
+        /// 读取条件节点自身保存的 DSL.
         /// 前端 FlowDesigner 会把 condition 保存在节点 Config 中。
         /// </summary>
         private static string ReadNodeCondition(
