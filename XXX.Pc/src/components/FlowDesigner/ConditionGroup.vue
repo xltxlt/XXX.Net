@@ -35,10 +35,32 @@
         <el-select v-model="item.operator" style="width:125px" @change="emitChange">
           <el-option v-for="op in getOperators(currentField(item))" :key="op.value" :label="op.label" :value="op.value" />
         </el-select>
-        <el-select v-if="isEnumField(currentField(item))" v-model="(item.right as any).value" placeholder="值" @change="emitChange">
+        <el-select v-if="isSelectField(currentField(item))" v-model="(item.right as any).value" placeholder="请选择" @change="emitChange">
           <el-option v-for="op in currentField(item)?.options || []" :key="String(op.value)" :label="op.label" :value="op.value" />
         </el-select>
-        <el-input v-else v-model="(item.right as any).value" placeholder="值" @input="emitChange" />
+        <el-input-number
+          v-else-if="isNumberField(currentField(item))"
+          v-model="(item.right as any).value"
+          :controls="false"
+          placeholder="请输入数值"
+          @change="emitChange"
+        />
+        <el-switch
+          v-else-if="isBooleanField(currentField(item))"
+          v-model="(item.right as any).value"
+          active-text="是"
+          inactive-text="否"
+          @change="emitChange"
+        />
+        <el-date-picker
+          v-else-if="isDateField(currentField(item))"
+          v-model="(item.right as any).value"
+          type="datetime"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          placeholder="请选择日期时间"
+          @change="emitChange"
+        />
+        <el-input v-else v-model="(item.right as any).value" placeholder="请输入值" @input="emitChange" />
         <el-button link type="danger" @click="remove(index)">删除</el-button>
       </div>
 
@@ -56,7 +78,7 @@
         <el-select v-model="item.operator" style="width:125px" @change="emitChange">
           <el-option v-for="op in getOperators({ type: 'number' } as any)" :key="op.value" :label="op.label" :value="op.value" />
         </el-select>
-        <el-input-number v-model="(item.right as any).value" :controls="false" placeholder="数值" @change="emitChange" />
+        <el-input-number v-model="(item.right as any).value" :controls="false" :min="0" placeholder="请输入数值" @change="emitChange" />
         <el-button link type="danger" @click="remove(index)">删除</el-button>
       </div>
 
@@ -79,7 +101,32 @@
         <el-select v-model="item.operator" style="width:125px" @change="emitChange">
           <el-option v-for="op in getOperators(collectionChild(item))" :key="op.value" :label="op.label" :value="op.value" />
         </el-select>
-        <el-input v-model="(item.value as any).value" placeholder="值" @input="emitChange" />
+        <el-select v-if="isSelectField(collectionChild(item))" v-model="(item.value as any).value" placeholder="请选择" @change="emitChange">
+          <el-option v-for="op in collectionChild(item)?.options || []" :key="String(op.value)" :label="op.label" :value="op.value" />
+        </el-select>
+        <el-input-number
+          v-else-if="isNumberField(collectionChild(item))"
+          v-model="(item.value as any).value"
+          :controls="false"
+          placeholder="请输入数值"
+          @change="emitChange"
+        />
+        <el-switch
+          v-else-if="isBooleanField(collectionChild(item))"
+          v-model="(item.value as any).value"
+          active-text="是"
+          inactive-text="否"
+          @change="emitChange"
+        />
+        <el-date-picker
+          v-else-if="isDateField(collectionChild(item))"
+          v-model="(item.value as any).value"
+          type="datetime"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          placeholder="请选择日期时间"
+          @change="emitChange"
+        />
+        <el-input v-else v-model="(item.value as any).value" placeholder="请输入值" @input="emitChange" />
         <el-button link type="danger" @click="remove(index)">删除</el-button>
       </div>
     </template>
@@ -177,8 +224,17 @@ function currentField(item: ConditionItem) {
   const left = item.left as any
   return props.fields.find(f => f.nodeId === left.nodeId && f.fieldId === left.fieldId)
 }
-function isEnumField(field?: ConditionField) {
-  return !!field?.options?.length
+function isSelectField(field?: ConditionField) {
+  return field?.type === 'select' && !!field?.options?.length
+}
+function isNumberField(field?: ConditionField) {
+  return field?.type === 'number'
+}
+function isBooleanField(field?: ConditionField) {
+  return field?.type === 'boolean'
+}
+function isDateField(field?: ConditionField) {
+  return field?.type === 'date'
 }
 
 function emitChange() {
@@ -248,7 +304,7 @@ function leftNodeChanged(item: ConditionItem) {
     left.fieldId = field.fieldId
     left.fieldLabel = field.label
     item.operator = getOperators(field)[0]?.value ?? 'eq'
-    if (item.right?.type === 'value') item.right.value = ''
+    if (item.right?.type === 'value') item.right.value = defaultRightValue(field)
   }
   emitChange()
 }
@@ -258,8 +314,14 @@ function leftFieldChanged(item: ConditionItem) {
   const left = item.left as any
   left.fieldLabel = field?.label
   item.operator = getOperators(field)[0]?.value ?? 'eq'
-  if (item.right?.type === 'value') item.right.value = ''
+  if (item.right?.type === 'value') item.right.value = defaultRightValue(field)
   emitChange()
+}
+
+function defaultRightValue(field?: ConditionField) {
+  if (field?.type === 'boolean') return false
+  if (field?.type === 'number') return 0
+  return ''
 }
 
 function collectionNodeChanged(item: CollectionCondition) {
