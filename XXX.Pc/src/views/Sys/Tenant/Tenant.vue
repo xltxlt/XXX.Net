@@ -1,6 +1,3 @@
-
-
-
 <template>
   <PageInfo :pageConfig="pageConfig" ref="pageInfoRef" />
 </template>
@@ -11,6 +8,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import PageInfo from "@/components/ListPage/PageInfo.vue";
 import { tenantService } from "@/api/index.ts";
 import tenantEdit from "./tenantEdit.vue";
+import DingTalkTenantAppEdit from "./DingTalkTenantAppEdit.vue";
 import { PagedSearchType, type TempListPageConfig } from "@/components/ListPage";
 import { handleSumbitResBox } from "@/utils/common"; // 假设工具函数在此
 
@@ -35,6 +33,16 @@ const pageConfig: TempListPageConfig = {
         height: "70%",
         pars: {
           id: data?.id, // 使用行数据的 id
+        },
+      };
+    },
+    dingTalkAppEdit: (data: any) => {
+      return {
+        title: "钉钉配置",
+        comp: DingTalkTenantAppEdit,
+        height: "70%",
+        pars: {
+          tenantId: data?.id, // 使用行数据的 id
         },
       };
     },

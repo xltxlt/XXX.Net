@@ -14,6 +14,7 @@ public class SingleFilePublish : ISingleFilePublish
     {
         return new[]
         {
+            "XXX.Net.Plugins.DingTalk",
             "XXX.Net.Plugins.Inventory",
             "XXX.Net.Plugins.WorkFlow",
             "XXX.Net.Application",

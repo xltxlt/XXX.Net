@@ -70,7 +70,7 @@ public class DingTalkTenantService : IScoped
             }
             entity.ParentId = remote.parent_id;
             entity.Name = remote.name;
-            entity.UpdateTime = DateTime.Now;
+            entity.UpdatedTime = DateTime.Now;
             await _repository.Master<DingTalkDept>().UpdateNowAsync(entity);
             var parent = await _repository.Master<SysDepartment>().AsQueryable()
                 .FirstOrDefaultAsync(x => x.TenantId == tenantId && x.DingTalkDeptId == remote.parent_id && !x.Deleted);

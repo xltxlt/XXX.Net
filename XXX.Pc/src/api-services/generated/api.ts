@@ -14,6 +14,8 @@
 
 
 
+export * from './api/ding-talk-api';
+export * from './api/ding-talk-tenant-api';
 export * from './api/document-api';
 export * from './api/generate-api';
 export * from './api/inventory-attribute-definition-api';
