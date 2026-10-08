@@ -13,6 +13,8 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         /// <summary>流程所属租户。</summary>
         public long TenantId { get; set; }
         public string InstanceId { get; set; } = string.Empty;
+        public long PmFlowItemId { get; set; }
+
 
         public string WorkflowId { get; set; } = string.Empty;
 
@@ -22,6 +24,15 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         public string NodeId { get; set; } = string.Empty;
 
         public string NodeName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 实例名称(发起时填写的名称)
+        /// </summary>
+        public string InstanceName { get; set; } = string.Empty;
+        /// <summary>
+        /// 模板名称
+        /// </summary>
+        public string TempName { get; set; } = string.Empty;
 
         public string TaskKey { get; set; } = string.Empty;
         public bool MessageSent { get; set; }

@@ -10,8 +10,12 @@ interface TodoItem {
   workflowId?: string
   workflowDefinitionId?: string
   instanceId?: string
+  pmFlowItemId?:string
+  nodeId?:string,
   dueTime?: string
   status?: string
+  instanceName?:string,
+  tempName?:string
 }
 
 interface NoticeItem {
@@ -126,7 +130,7 @@ const navigate = (path: string) => {
 const openTodo = (item?: TodoItem) => {
   if (item?.id) {
     // 统一进入现有待办中心，具体处理页仍由 WorkflowTodo 负责。
-    navigate('/pm/setup?workflowDefinitionId=' + item.workflowDefinitionId +'&taskId='+item.id+ '&workflowId=' + item.workflowId + '&instanceId=' + item.instanceId + '&nodeId=' + item.nodeId)
+    navigate('/pm/setup?nodeId=' + item.nodeId+'&instanceId='+item.instanceId+'&workflowDefinitionId='+item.workflowDefinitionId+'&nodeName=' + item.nodeName + '&taskId=' + item.id +'&pmFlowItemId=' + item.pmFlowItemId)
     return
   }
   navigate('/pm/setup')
@@ -151,7 +155,9 @@ onMounted(loadTodos)
 
       <div class="welcome-main">
         <div class="welcome-icon">
-          <DocumentChecked />
+          <el-icon :size="33">
+            <DocumentChecked />
+          </el-icon>
         </div>
         <div>
           <div class="welcome-title">您好，欢迎回来！</div>
@@ -167,49 +173,54 @@ onMounted(loadTodos)
 
     <section class="summary-grid">
       <button class="summary-card summary-blue" @click="activeTodoTab = 'workflow'">
+
         <div class="summary-icon">
-          <Files />
+          <el-icon :size="22">
+            <Files />
+          </el-icon>
         </div>
         <div class="summary-copy">
           <span>待办工作流</span>
           <strong>{{ workflowCount }}</strong>
-          <small>项待处理</small>
         </div>
         <ArrowRight class="summary-arrow" />
       </button>
 
       <button class="summary-card summary-green" @click="activeTodoTab = 'approval'">
         <div class="summary-icon">
-          <Check />
+          <el-icon :size="22">
+            <Check />
+          </el-icon>
         </div>
         <div class="summary-copy">
           <span>待办审批流</span>
           <strong>{{ approvalCount }}</strong>
-          <small>项待审批</small>
         </div>
         <ArrowRight class="summary-arrow" />
       </button>
 
       <button class="summary-card summary-orange" @click="openNotices">
         <div class="summary-icon">
-          <Bell />
+          <el-icon :size="25">
+            <Bell />
+          </el-icon>
         </div>
         <div class="summary-copy">
           <span>工作通知</span>
           <strong>{{ noticeCount }}</strong>
-          <small>条未读消息</small>
         </div>
         <ArrowRight class="summary-arrow" />
       </button>
 
       <div class="summary-card summary-indigo">
         <div class="summary-icon">
-          <TrendCharts />
+          <el-icon :size="26">
+            <TrendCharts />
+          </el-icon>
         </div>
         <div class="summary-copy">
           <span>今日已办</span>
           <strong>12</strong>
-          <small>项已完成</small>
         </div>
         <ArrowRight class="summary-arrow" />
       </div>
@@ -220,7 +231,9 @@ onMounted(loadTodos)
         <div class="panel-header">
           <div class="panel-title">
             <span class="title-icon title-icon-blue">
-              <Files />
+              <el-icon :size="25">
+                <Files />
+              </el-icon>
             </span>
             <div>
               <h2>待办事项</h2>
@@ -247,19 +260,21 @@ onMounted(loadTodos)
         <div class="todo-list" v-loading="loading">
           <div v-if="!loading && filteredTodos.length === 0" class="empty-state">
             <div class="empty-icon">
-              <Check />
+              <el-icon :size="26">
+                <Check />
+              </el-icon>
             </div>
             <strong>暂无待办事项</strong>
             <span>当前没有需要处理的流程</span>
           </div>
-
           <button v-for="item in filteredTodos.slice(0, 6)" :key="item.id || item.instanceId" class="todo-row"
             @click="openTodo(item)">
             <span class="todo-tag" :class="todoType(item) === '审批流' ? 'approval' : 'workflow'">
               {{ todoType(item) }}
             </span>
             <span class="todo-name" :title="todoTitle(item)">{{ todoTitle(item) }}</span>
-            <span class="todo-instance">{{ item.instanceId || '—' }}</span>
+            <span class="todo-name" :title="todoTitle(item)">{{ item.instanceName }}</span>
+            <span class="todo-name" :title="todoTitle(item)">{{ item.tempName }}</span>
             <span class="todo-time">
               <Clock />
               {{ formatTime(item.dueTime) }}
@@ -275,7 +290,9 @@ onMounted(loadTodos)
         <div class="panel-header">
           <div class="panel-title">
             <span class="title-icon title-icon-orange">
-              <Bell />
+              <el-icon :size="25">
+                <Bell />
+              </el-icon>
             </span>
             <div>
               <h2>工作通知</h2>
@@ -300,40 +317,6 @@ onMounted(loadTodos)
             </span>
           </button>
         </div>
-      </div>
-    </section>
-
-    <section class="quick-panel">
-      <div class="quick-title">
-        <span class="title-icon title-icon-purple">
-          <TrendCharts />
-        </span>
-        <div>
-          <h2>快捷入口</h2>
-          <p>快速进入常用工作模块</p>
-        </div>
-      </div>
-      <div class="quick-links">
-        <button @click="navigate('/workflow/todo')">
-          <Files />
-          <span>待办中心</span>
-          <small>查看并处理待办</small>
-        </button>
-        <button @click="navigate('/workflow/todo')">
-          <DocumentChecked />
-          <span>流程管理</span>
-          <small>查看流程与实例</small>
-        </button>
-        <button @click="navigate('/sys/menu')">
-          <TrendCharts />
-          <span>系统设置</span>
-          <small>管理系统基础配置</small>
-        </button>
-        <button @click="openNotices">
-          <Bell />
-          <span>通知中心</span>
-          <small>查看工作通知</small>
-        </button>
       </div>
     </section>
   </div>
@@ -488,13 +471,13 @@ button {
 }
 
 .summary-icon {
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
   display: grid;
   place-items: center;
   border-radius: 13px;
-  font-size: 23px;
+  font-weight: 500;
 }
 
 .summary-blue .summary-icon {
@@ -525,7 +508,7 @@ button {
 }
 
 .summary-copy span {
-  color: #60788e;
+  color: #333333;
   font-size: 14px;
 }
 
@@ -540,7 +523,7 @@ button {
 .summary-copy small {
   margin-top: 5px;
   color: #a2b0bc;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .summary-arrow {
@@ -598,7 +581,7 @@ button {
   display: grid;
   place-items: center;
   border-radius: 9px;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .title-icon-blue {
@@ -628,8 +611,8 @@ button {
 .panel-title p,
 .quick-title p {
   margin: 4px 0 0;
-  color: #9aaaba;
-  font-size: 11px;
+  color: #999999;
+  font-size: 12px;
 }
 
 .more-button {
@@ -637,7 +620,7 @@ button {
   align-items: center;
   gap: 3px;
   color: #2389e6;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -658,8 +641,8 @@ button {
 .todo-tabs button {
   height: 38px;
   padding: 0 17px;
-  color: #778a9d;
-  font-size: 13px;
+  color: #333333;
+  font-size: 15px;
   border-radius: 7px 7px 0 0;
   cursor: pointer;
 }
@@ -688,7 +671,7 @@ button {
   width: 100%;
   height: 58px;
   display: grid;
-  grid-template-columns: 72px minmax(180px, 1.35fr) minmax(110px, .75fr) 128px 58px;
+  grid-template-columns: 72px minmax(100px, 1.35fr) minmax(100px, .75fr) 100px 128px 58px;
   align-items: center;
   gap: 10px;
   padding: 0 20px;
@@ -734,7 +717,7 @@ button {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: #9aaaba;
+  color: #999999;
   font-size: 0.8rem;
 }
 
@@ -770,7 +753,7 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #9aaaba;
+  color: #999999;
 }
 
 .empty-icon {
@@ -793,7 +776,7 @@ button {
 
 .empty-state span {
   margin-top: 5px;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .notice-list {
@@ -841,7 +824,7 @@ button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #31485d;
+  color: #333333;
   font-size: 0.9rem;
   font-weight: 550;
 }
@@ -851,7 +834,7 @@ button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #9aaaba;
+  color: #999999;
   font-size: 0.8rem;
 }
 

@@ -8,6 +8,8 @@ Name | Type | Description | Notes
 **id** | **string** |  | [optional] [default to undefined]
 **name** | **string** | 名称 | [optional] [default to undefined]
 **pmFlowTempId** | **string** |  | [optional] [default to undefined]
+**flowStatus** | **string** |  | [optional] [default to undefined]
+**urgencyLevel** | **string** |  | [optional] [default to undefined]
 **startTime** | **string** |  | [optional] [default to undefined]
 **endTime** | **string** |  | [optional] [default to undefined]
 **planStartTime** | **string** |  | [optional] [default to undefined]
@@ -25,6 +27,8 @@ const instance: PmFlowItemDto = {
     id,
     name,
     pmFlowTempId,
+    flowStatus,
+    urgencyLevel,
     startTime,
     endTime,
     planStartTime,

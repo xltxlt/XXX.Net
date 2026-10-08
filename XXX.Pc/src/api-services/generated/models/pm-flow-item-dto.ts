@@ -21,6 +21,8 @@ export interface PmFlowItemDto {
      */
     'name'?: string | null;
     'pmFlowTempId'?: string;
+    'flowStatus'?: string;
+    'urgencyLevel'?: string;
     'startTime'?: string | null;
     'endTime'?: string | null;
     'planStartTime'?: string;

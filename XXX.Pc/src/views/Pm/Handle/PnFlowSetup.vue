@@ -1,50 +1,51 @@
 <template>
     <div class="sub-page">
         <div class="sub-page-header sub-page-card">
-            <div class="sub-page-header-title">
-                <el-button text type="primary" @click="router.back()">
-                    <el-icon style="padding-right: 5px;">
-                        <Back />
-                    </el-icon>
-                    返回
-                </el-button>
-                项目立项审批流程
-            </div>
-            <div class="sub-page-header-info">
-                <el-tag type="success"><el-icon>
-                        <Clock />
-                    </el-icon>进行中</el-tag>
-                <span>流程编码：WF2610000001</span>
-                <span>发起时间：2026-10-01 10:00:00 </span>
-                <div class="sub-page-header-tools">
-                    <el-button type="primary" :icon="Bell">催办</el-button>
-                    <el-button :icon="Switch">转办</el-button>
-                    <el-button type="danger" :icon="Delete">撤回</el-button>
-                    <el-button :icon="Delete">延期</el-button>
-                    <el-button :icon="Delete">回退</el-button>
-                    <el-button type="danger" :icon="Delete">终止</el-button>
-                    <el-button :icon="Operation">更多</el-button>
+            <div>
+                <div class="sub-page-header-title">
+                    <el-button text type="primary" @click="router.back()">
+                        <el-icon style="padding-right: 5px;">
+                            <Back />
+                        </el-icon>
+                        返回
+                    </el-button>
+                    {{ flowItemDetail.name }}
                 </div>
+                <div class="sub-page-header-info">
+                    <el-tag type="success"><el-icon>
+                            <Clock />
+                        </el-icon>进行中</el-tag>
+                    <span>流程编码：{{ flowItemDetail.code }}</span>
+                    <span>发起时间：{{ flowItemDetail.createdTime }}</span>
+
+                </div>
+            </div>
+
+            <div class="sub-page-header-tools">
+                <el-button type="primary" :icon="Bell">催办</el-button>
+                <el-button :icon="Switch">转办</el-button>
+                <el-button :icon="Clock">延期</el-button>
+                <el-button :icon="RefreshLeft">回退</el-button>
+                <el-button type="danger" :icon="Delete">终止</el-button>
             </div>
         </div>
         <div class="sub-page-content">
             <div>
                 <Card :title="'流程基本信息'" style="margin-top: 10px;">
                     <div class="info-content">
-                        <span><label>流程名称：</label>XXX项目</span>
-                        <span><label>流程编号：</label>XXX20231001</span>
-                        <span><label>流程类型：</label>研发项目</span>
-                        <span><label>发起人：</label>张三</span>
-                        <span><label>发起时间：</label>2023-10-01 10:00</span>
-                        <span><label>当前步骤：</label>部门经理审批</span>
-                        <span><label>所属部门：</label>研发部</span>
+                        <span><label>流程名称：</label>{{ flowItemDetail.name }}</span>
+                        <span><label>流程编号：</label>{{ flowItemDetail.code }}</span>
+                        <span><label>流程类型：</label>{{ flowItemDetail.flowName }}</span>
+                        <span><label>发起人：</label>{{ flowItemDetail.createdByName }}</span>
+                        <span><label>发起时间：</label>{{ flowItemDetail.createdTime }}</span>
+                        <span><label>当前步骤：</label>{{ nodeName }}(剩余3天)</span>
                         <span><label>流程状态：</label>
-                            <el-tag type="success">进行中</el-tag>
+                            <el-tag type="success">{{ flowItemDetail.flowStatus }}</el-tag>
                         </span>
                         <span><label>紧急程度：</label>
                             <el-tag type="info">一般</el-tag>
                         </span>
-                        <span><label>预计完成时间：</label>2023-10-15 10:00</span>
+                        <span><label>预计完成时间：</label>{{ flowItemDetail.planEndTime }}</span>
                     </div>
                 </Card>
                 <div class="sub-page-card" style="padding:0 20px 15px 20px;">
@@ -68,7 +69,7 @@
                                         采购审批流程 <el-tag type="primary" style="margin-left: 10px;">当前步骤</el-tag>
                                     </p>
                                     <p>
-                                        审批人：李四（研发部）
+                                        审批用户：李四（研发部）
                                     </p>
                                     <p>
                                         处理时限：2026-10-01 10:00（剩余2天）
@@ -77,12 +78,20 @@
                                         审批意见：
                                         <el-input type="textarea" placeholder="请输入审批意见" v-model="approvalOpinion"
                                             :rows="4" maxlength="500"></el-input>
+
+                                    </p>
+                                    <p>
+                                        常用语句：
+                                        <el-button size="small">同意</el-button>
+                                        <el-button size="small">没问题</el-button>
+                                        <el-button size="small">原则上同意</el-button>
+                                        <el-button size="small">不同意</el-button>
+                                        <el-button size="small">有问题</el-button>
+
                                     </p>
                                     <div class="wf-apply-tools">
                                         <el-button type="primary">同意</el-button>
                                         <el-button type="danger">驳回</el-button>
-                                        <el-button>回退</el-button>
-                                        <el-button>转交</el-button>
                                     </div>
                                 </div>
                             </div>
@@ -93,77 +102,32 @@
                             <div>
                                 <table width="100%" class="setup-handle-record">
                                     <tbody>
-                                        <tr>
+                                        <tr v-for="item, index in historyList" :key="index">
                                             <td width="80px">
-                                                <span>1</span>
+                                                <span>{{ index + 1 }}</span>
                                             </td>
                                             <td>
-                                                原辅料确认
+                                                <el-button @click="pageFun.switchNode(item.nodeId ?? '')" text
+                                                    type="primary">{{ item.nodeName }}</el-button>
                                             </td>
-                                            <td width="160px">
-                                                张三（项目部）
+                                            <td width="300px">
+                                                {{ item.operatorName }}（项目部）
                                             </td>
-                                            <td width="160px">
-                                                2026-10-01 10:00
+                                            <td width="260px">
+                                                {{ item.operatedTime }}
                                             </td>
-                                            <td width="160px">
-                                                <el-button type="success" plain round>已完成</el-button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="80px">
-                                                <span>2</span>
-                                            </td>
-                                            <td>
-                                                原辅料确认
-                                            </td>
-                                            <td width="160px">
-                                                张三（项目部）
-                                            </td>
-                                            <td width="160px">
-                                                2026-10-01 10:00
-                                            </td>
-                                            <td width="160px">
-                                                <el-button type="success" plain round>已完成</el-button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="80px">
-                                                <span>3</span>
-                                            </td>
-                                            <td>
-                                                原辅料确认
-                                            </td>
-                                            <td width="160px">
-                                                张三（项目部）
-                                            </td>
-                                            <td width="160px">
-                                                2026-10-01 10:00
-                                            </td>
-                                            <td width="160px">
-                                                <el-button type="success" plain round>已完成</el-button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="80px">
-                                                <span>4</span>
-                                            </td>
-                                            <td>
-                                                原辅料确认
-                                            </td>
-                                            <td width="160px">
-                                                张三（项目部）
-                                            </td>
-                                            <td width="160px">
-                                                2026-10-01 10:00
-                                            </td>
-                                            <td width="160px">
-                                                <el-button type="success" plain round>已完成</el-button>
+                                            <td width="100px">
+                                                <el-button type="success" plain round>{{ item.action }}</el-button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <ElDialog  v-model="dialogTableVisible" :draggable="true" :title="'采购单明细'" width="60%" height="70%">
+                                <PageFormEnhanced :hide-btn="true" :cols="2" :form="checkedFormData.form"
+                                    :attr-data="checkedFormData.attrData" :formData="checkedFromDataValue">
+                                </PageFormEnhanced>
+                            </ElDialog>
                         </el-tab-pane>
                         <el-tab-pane label="相关附件">
                         </el-tab-pane>
@@ -232,14 +196,18 @@ import Card from '@/components/common/Card/Card.vue';
 import Commnets from '@/components/common/Comments/Commnets.vue';
 import type { ReleaseData } from '@/components/PageForm/enhancedIndex';
 import router from '@/router';
-import { Back, Bell, Clock, Delete, Loading, More, Operation, Position, Right, Switch } from '@element-plus/icons-vue';
+import { Back, Bell, Clock, Delete, Loading, More, Operation, Position, RefreshLeft, Right, Switch } from '@element-plus/icons-vue';
 import { MoreFilled } from '@element-plus/icons-vue'
-import type { TimelineItemProps } from 'element-plus'
-import { workflowNodeFormService, workflowTaskService } from '@/api/pm';
+import type { ElDialog, TimelineItemProps } from 'element-plus'
+import { pmFlowItemService, workflowNodeFormService, workflowTaskService } from '@/api/pm';
 import { onMounted, ref } from 'vue';
 import { getQueryByName } from '@/utils/pcRouter';
 import PageFormEnhanced from '@/components/PageForm/PageFormEnhanced.vue';
-import { ElMessage } from 'element-plus';
+import { ElLoading, ElMessage } from 'element-plus';
+import type { PmFlowItem, WorkflowHistory, WorkflowTask } from '@/api-services/generated';
+import YzPopup from '@/components/common/YzPopup/YzPopup.vue';
+import { ca } from 'element-plus/es/locale/index.mjs';
+import type { title } from 'process';
 interface ActivityType extends Partial<TimelineItemProps> {
     content: string
 }
@@ -272,13 +240,23 @@ const activities: ActivityType[] = [
         timestamp: '2018-04-03 20:46',
     },
 ]
+const dialogTableVisible = ref<boolean>(false)
 const nodeId = getQueryByName('nodeId');
+const nodeName = ref(getQueryByName('nodeName'));
 const taskId = getQueryByName('taskId');
+const pmFlowItemId = getQueryByName('pmFlowItemId');
+const instanceId = getQueryByName('instanceId');
+const workflowDefinitionId = getQueryByName('workflowDefinitionId');
 
 
 const approvalOpinion = ref('');
 const startFormRef = ref()
 const startFormData = ref<ReleaseData>({ form: [], attrData: {} });
+const checkedFormData = ref<ReleaseData>({ form: [], attrData: {} });
+const checkedFromDataValue = ref({})
+
+
+
 const getStartFormValues = () => {
     const data = startFormRef.value?.getData() ?? startFormData.value;
     return data;
@@ -299,12 +277,47 @@ const pageFun = {
             action: 'complete',
             comment: ''
         });
-         ElMessage({ message: '操作成功', type: 'success', plain: true });
+        router.back();
+        ElMessage({ message: '操作成功', type: 'success', plain: true });
+    },
+    switchNode: async (nodeId: string) => {
+        const loading = ElLoading.service({
+            lock: true,
+            text: 'Loading',
+            background: 'rgba(0, 0, 0, 0.7)',
+        })
+        dialogTableVisible.value = true;
+        try {
+            const formRes = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(
+                String(workflowDefinitionId),
+                nodeId
+            );
+            var taskRes = await workflowTaskService.apiWorkflowTaskDetailNodeidGet(nodeId);
+
+            const nodeForm = formRes.data?.data;
+            if (!nodeForm) {
+                return;
+            }
+            checkedFormData.value = {
+                form: parseJson(nodeForm.formJson, []),
+                attrData: parseJson(nodeForm.attrDataJson, {}),
+            };
+            let formDataJson = taskRes.data.data?.formDataJson;
+            checkedFromDataValue.value = formDataJson ? JSON.parse(formDataJson) : {}
+
+        }
+        finally {
+            loading.close()
+
+        }
+
     }
 }
+const flowItemDetail = ref<PmFlowItem>({})
+const historyList = ref<WorkflowHistory[]>([])
 onMounted(async () => {
     const formRes = await workflowNodeFormService.apiWorkflowNodeFormWorkflowdeginitionidNodeidGet(
-        String(getQueryByName('workflowDefinitionId')),
+        String(workflowDefinitionId),
         nodeId
     );
     const nodeForm = formRes.data?.data;
@@ -317,6 +330,12 @@ onMounted(async () => {
         form: parseJson(nodeForm.formJson, []),
         attrData: parseJson(nodeForm.attrDataJson, {}),
     };
+
+    const detail = await pmFlowItemService.apiPmFlowItemDetailIdGet(pmFlowItemId);
+    flowItemDetail.value = detail.data.data ?? {}
+
+    const historyRes = await workflowTaskService.apiWorkflowTaskWfHistorydListInstanceidGet(instanceId)
+    historyList.value = historyRes.data.data ?? []
 })
 const parseJson = (value: any, fallback: any) => {
     if (!value) return fallback;
@@ -578,6 +597,41 @@ const parseJson = (value: any, fallback: any) => {
             .wf-apply-tools {
                 margin-top: 30px;
                 text-align: center;
+            }
+        }
+    }
+
+    .sub-page-header.sub-page-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    @media (max-width: 1200px) {
+        .sub-page-content {
+            flex-direction: column;
+
+            >div:first-child {
+                width: unset;
+                margin-right: unset;
+
+            }
+        }
+
+        .sub-page-header.sub-page-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .sub-page-header-tools {
+                padding: 20px 0;
+                text-align: right;
+                width: 100%;
+
+                button {
+                    margin-bottom: 10px;
+                }
             }
         }
     }

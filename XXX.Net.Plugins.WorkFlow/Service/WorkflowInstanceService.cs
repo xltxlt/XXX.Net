@@ -108,7 +108,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 [startNode.Id] = startForm,
             };
 
-            var instanceId =await _engine.StartAsync(item.WorkflowId,def.Version,item.TenantId,variables["taskName"]?.ToString()?? $"项目流程-{item.Id}",variables);
+            var instanceId =await _engine.StartAsync(item.Id,item.WorkflowId,def.Version,item.TenantId,variables["taskName"]?.ToString()?? $"项目流程-{item.Id}",variables);
             
 
             return instanceId;

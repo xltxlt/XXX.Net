@@ -128,42 +128,6 @@ export const WorkflowInstanceApiAxiosParamCreator = function (configuration?: Co
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {string} workflowid 
-         * @param {{ [key: string]: object; }} [requestBody] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiWorkflowInstanceStartWorkflowidPost: async (workflowid: string, requestBody?: { [key: string]: object; }, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'workflowid' is not null or undefined
-            assertParamExists('apiWorkflowInstanceStartWorkflowidPost', 'workflowid', workflowid)
-            const localVarPath = `/api/workflow-instance/start/{workflowid}`
-                .replace('{workflowid}', encodeURIComponent(String(workflowid)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -208,19 +172,6 @@ export const WorkflowInstanceApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['WorkflowInstanceApi.apiWorkflowInstanceStartByPmFlowItemPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
-        /**
-         * 
-         * @param {string} workflowid 
-         * @param {{ [key: string]: object; }} [requestBody] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiWorkflowInstanceStartWorkflowidPost(workflowid: string, requestBody?: { [key: string]: object; }, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultString>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiWorkflowInstanceStartWorkflowidPost(workflowid, requestBody, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WorkflowInstanceApi.apiWorkflowInstanceStartWorkflowidPost']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
     }
 };
 
@@ -256,16 +207,6 @@ export const WorkflowInstanceApiFactory = function (configuration?: Configuratio
         apiWorkflowInstanceStartByPmFlowItemPost(pmFlowItem?: PmFlowItem, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultString> {
             return localVarFp.apiWorkflowInstanceStartByPmFlowItemPost(pmFlowItem, options).then((request) => request(axios, basePath));
         },
-        /**
-         * 
-         * @param {string} workflowid 
-         * @param {{ [key: string]: object; }} [requestBody] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiWorkflowInstanceStartWorkflowidPost(workflowid: string, requestBody?: { [key: string]: object; }, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultString> {
-            return localVarFp.apiWorkflowInstanceStartWorkflowidPost(workflowid, requestBody, options).then((request) => request(axios, basePath));
-        },
     };
 };
 
@@ -300,17 +241,6 @@ export class WorkflowInstanceApi extends BaseAPI {
      */
     public apiWorkflowInstanceStartByPmFlowItemPost(pmFlowItem?: PmFlowItem, options?: RawAxiosRequestConfig) {
         return WorkflowInstanceApiFp(this.configuration).apiWorkflowInstanceStartByPmFlowItemPost(pmFlowItem, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {string} workflowid 
-     * @param {{ [key: string]: object; }} [requestBody] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public apiWorkflowInstanceStartWorkflowidPost(workflowid: string, requestBody?: { [key: string]: object; }, options?: RawAxiosRequestConfig) {
-        return WorkflowInstanceApiFp(this.configuration).apiWorkflowInstanceStartWorkflowidPost(workflowid, requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -22,7 +22,11 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
+import type { RESTfulResultListWorkflowHistory } from '../models';
+// @ts-ignore
 import type { RESTfulResultListWorkflowTask } from '../models';
+// @ts-ignore
+import type { RESTfulResultWorkflowTask } from '../models';
 // @ts-ignore
 import type { TaskSubmitDto } from '../models';
 /**
@@ -30,6 +34,39 @@ import type { TaskSubmitDto } from '../models';
  */
 export const WorkflowTaskApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @param {string} nodeid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiWorkflowTaskDetailNodeidGet: async (nodeid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'nodeid' is not null or undefined
+            assertParamExists('apiWorkflowTaskDetailNodeidGet', 'nodeid', nodeid)
+            const localVarPath = `/api/workflow-task/detail/{nodeid}`
+                .replace('{nodeid}', encodeURIComponent(String(nodeid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @param {TaskSubmitDto} [taskSubmitDto] 
@@ -90,6 +127,39 @@ export const WorkflowTaskApiAxiosParamCreator = function (configuration?: Config
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} instanceid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiWorkflowTaskWfHistorydListInstanceidGet: async (instanceid: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'instanceid' is not null or undefined
+            assertParamExists('apiWorkflowTaskWfHistorydListInstanceidGet', 'instanceid', instanceid)
+            const localVarPath = `/api/workflow-task/wf-historyd-list/{instanceid}`
+                .replace('{instanceid}', encodeURIComponent(String(instanceid)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'text/plain,application/json,text/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -99,6 +169,18 @@ export const WorkflowTaskApiAxiosParamCreator = function (configuration?: Config
 export const WorkflowTaskApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = WorkflowTaskApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @param {string} nodeid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiWorkflowTaskDetailNodeidGet(nodeid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultWorkflowTask>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiWorkflowTaskDetailNodeidGet(nodeid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkflowTaskApi.apiWorkflowTaskDetailNodeidGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
         /**
          * 
          * @param {TaskSubmitDto} [taskSubmitDto] 
@@ -122,6 +204,18 @@ export const WorkflowTaskApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['WorkflowTaskApi.apiWorkflowTaskTodoListGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} instanceid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiWorkflowTaskWfHistorydListInstanceidGet(instanceid: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RESTfulResultListWorkflowHistory>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiWorkflowTaskWfHistorydListInstanceidGet(instanceid, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkflowTaskApi.apiWorkflowTaskWfHistorydListInstanceidGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -131,6 +225,15 @@ export const WorkflowTaskApiFp = function(configuration?: Configuration) {
 export const WorkflowTaskApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = WorkflowTaskApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {string} nodeid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiWorkflowTaskDetailNodeidGet(nodeid: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultWorkflowTask> {
+            return localVarFp.apiWorkflowTaskDetailNodeidGet(nodeid, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {TaskSubmitDto} [taskSubmitDto] 
@@ -148,6 +251,15 @@ export const WorkflowTaskApiFactory = function (configuration?: Configuration, b
         apiWorkflowTaskTodoListGet(options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListWorkflowTask> {
             return localVarFp.apiWorkflowTaskTodoListGet(options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} instanceid 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiWorkflowTaskWfHistorydListInstanceidGet(instanceid: string, options?: RawAxiosRequestConfig): AxiosPromise<RESTfulResultListWorkflowHistory> {
+            return localVarFp.apiWorkflowTaskWfHistorydListInstanceidGet(instanceid, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -155,6 +267,16 @@ export const WorkflowTaskApiFactory = function (configuration?: Configuration, b
  * WorkflowTaskApi - object-oriented interface
  */
 export class WorkflowTaskApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} nodeid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiWorkflowTaskDetailNodeidGet(nodeid: string, options?: RawAxiosRequestConfig) {
+        return WorkflowTaskApiFp(this.configuration).apiWorkflowTaskDetailNodeidGet(nodeid, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {TaskSubmitDto} [taskSubmitDto] 
@@ -172,6 +294,16 @@ export class WorkflowTaskApi extends BaseAPI {
      */
     public apiWorkflowTaskTodoListGet(options?: RawAxiosRequestConfig) {
         return WorkflowTaskApiFp(this.configuration).apiWorkflowTaskTodoListGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} instanceid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public apiWorkflowTaskWfHistorydListInstanceidGet(instanceid: string, options?: RawAxiosRequestConfig) {
+        return WorkflowTaskApiFp(this.configuration).apiWorkflowTaskWfHistorydListInstanceidGet(instanceid, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

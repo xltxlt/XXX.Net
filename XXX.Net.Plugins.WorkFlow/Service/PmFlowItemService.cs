@@ -1,5 +1,6 @@
 ﻿using Furion.DatabaseAccessor;
 using Furion.DynamicApiController;
+using Furion.FriendlyException;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,10 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text.Json;
 using System.Threading.Tasks;
+using XXX.Net.Core.BaseEntitys.Admin;
 using XXX.Net.Core.CurrentUser;
+using XXX.Net.Core.Entity.Sys;
 using XXX.Net.Core.EventBus;
+using XXX.Net.Core.Extensions;
 using XXX.Net.Core.Services.Base;
 using XXX.Net.Plugins.WorkFlow.Entity;
 using XXX.Net.Plugins.WorkFlow.Event;
@@ -71,6 +76,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             entity.Version = flowTemp.LastVersion;
             return entity;
         }
+
 
         /// <summary>
         /// 新增项目流程项并发起流程。
@@ -234,5 +240,6 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             return false;
         }
         #endregion
+
     }
 }

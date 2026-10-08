@@ -13,6 +13,13 @@ namespace XXX.Net.Plugins.WorkFlow.Service.Dto
         [OptionEntity(typeof(PmFlowTemp))]
         public long PmFlowTempId { get; set; }
 
+        /// <summary>
+        /// 流程状态
+        /// </summary>
+        [OptionDict("FlowStatus")]
+        public long FlowStatus { get; set; }
+        [OptionDict("UrgencyLevel")]
+        public long UrgencyLevel { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 

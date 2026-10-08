@@ -1,6 +1,3 @@
-
-
-
 <template>
   <PageInfo :pageConfig="pageConfig" ref="pageInfoRef" />
 </template>
@@ -44,10 +41,11 @@ const pageConfig: TempListPageConfig = {
         ElMessage({ type: 'info', message: '请选择要删除的记录' });
         return;
       }
-      // if (ids.length !== 1) {
-      //   ElMessage({ type: 'info', message: '批量删除仅支持单条记录' });
-      //   return;
-      // }
+      await ElMessageBox.confirm('此操作将永久删除记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      });
       const res = await pmFlowItemService.apiPmFlowItemBatchlogicdeletePost(ids);
       handleSumbitResBox(res, '删除成功', () => {
         pageInfoRef.value?.onRefresh();

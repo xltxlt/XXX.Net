@@ -15,19 +15,20 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         public long TenantId { get; set; }
 
         public long PmFlowItemId { get; set; }
-        public string TaskName { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string TempName { get; set; } = string.Empty;
 
-        public string WorkflowId { get; set; }
+        public string WorkflowId { get; set; } = string.Empty;
 
         public int Version { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } = string.Empty;
 
         /// <summary>
         /// 当前节点。
         /// 单分支流程时等价于当前节点；存在并行分支时保留最后进入/处理的节点。
         /// </summary>
-        public string CurrentNodeId { get; set; }
+        public string CurrentNodeId { get; set; } = string.Empty;
 
         /// <summary>
         /// 当前活动节点集合。
@@ -44,12 +45,12 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
         /// <summary>
         /// 当前节点状态
         /// </summary>
-        public string CurrentNodeStatus { get; set; }
+        public string CurrentNodeStatus { get; set; } = string.Empty;
 
         /// <summary>
         /// 流程数据
         /// </summary>
-        public string DataJson { get; set; }
+        public string DataJson { get; set; } = string.Empty;
 
         /// <summary>
         /// 当前节点进入时间

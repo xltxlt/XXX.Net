@@ -17,6 +17,10 @@ Name | Type | Description | Notes
 **tenantId** | **string** |  | [optional] [default to undefined]
 **tenant** | [**SysTenant**](SysTenant.md) |  | [optional] [default to undefined]
 **pmFlowTempId** | **string** |  | [optional] [default to undefined]
+**flowName** | **string** |  | [optional] [default to undefined]
+**flowStatus** | **string** |  | [optional] [default to undefined]
+**urgencyLevel** | **string** |  | [optional] [default to undefined]
+**code** | **string** |  | [optional] [default to undefined]
 **startTime** | **string** |  | [optional] [default to undefined]
 **endTime** | **string** |  | [optional] [default to undefined]
 **planStartTime** | **string** |  | [optional] [default to undefined]
@@ -45,6 +49,10 @@ const instance: PmFlowItem = {
     tenantId,
     tenant,
     pmFlowTempId,
+    flowName,
+    flowStatus,
+    urgencyLevel,
+    code,
     startTime,
     endTime,
     planStartTime,

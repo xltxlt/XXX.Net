@@ -15,26 +15,47 @@ namespace XXX.Net.Plugins.WorkFlow.Service
     public class WorkflowTaskService : IDynamicApiController
     {
         private readonly IWorkFlowRepository<WorkflowTask> _taskRepo;
+        private readonly IWorkFlowRepository<WorkflowHistory> _wfHistoryRepo;
         private readonly WorkflowEngine _engine;
         private readonly ICurrentUser _currentUser;
 
         public WorkflowTaskService(
             IWorkFlowRepository<WorkflowTask> taskRepo,
-            WorkflowEngine engine,
+            IWorkFlowRepository<WorkflowHistory> wfHistoryRepo,
+        WorkflowEngine engine,
             ICurrentUser currentUser)
         {
+            _wfHistoryRepo = wfHistoryRepo;
             _taskRepo = taskRepo;
             _engine = engine;
             _currentUser = currentUser;
         }
-
+        [HttpGet]
+        public async Task<WorkflowTask> Detail(string nodeId)
+        {
+            var data = await _taskRepo.GetOneAsync(
+                x =>
+                    x.NodeId == nodeId);
+            return data??new WorkflowTask();
+        }
         [HttpGet]
         public async Task<List<WorkflowTask>> TodoList()
         {
-            return await _taskRepo.GetListAsync(
+            var data= await _taskRepo.GetListAsync(
                 x =>
                     x.AssigneeId == _currentUser.UserId &&
                     x.Status == "pending");
+            return data;
+        }
+
+        [HttpGet]
+        public async Task<List<WorkflowHistory>> WfHistorydList(string instanceId)
+        {
+            var data = await _wfHistoryRepo.GetListAsync(
+                x =>
+                x.InstanceId == instanceId 
+                  );
+            return data;
         }
 
         [HttpPost]

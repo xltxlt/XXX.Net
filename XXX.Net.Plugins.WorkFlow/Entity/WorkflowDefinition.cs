@@ -25,6 +25,8 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
 
         public string Name { get; set; } = string.Empty;
 
+
+
         public int Version { get; set; } = 1;
 
         /// <summary>

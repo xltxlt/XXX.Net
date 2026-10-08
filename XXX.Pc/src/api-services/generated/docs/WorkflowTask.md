@@ -9,10 +9,15 @@ Name | Type | Description | Notes
 **createdTime** | **string** |  | [optional] [default to undefined]
 **tenantId** | **string** |  | [optional] [default to undefined]
 **instanceId** | **string** |  | [optional] [default to undefined]
+**pmFlowItemId** | **string** |  | [optional] [default to undefined]
 **workflowId** | **string** |  | [optional] [default to undefined]
 **workflowDefinitionId** | **string** |  | [optional] [default to undefined]
 **nodeId** | **string** |  | [optional] [default to undefined]
 **nodeName** | **string** |  | [optional] [default to undefined]
+**instanceName** | **string** |  | [optional] [default to undefined]
+**tempName** | **string** |  | [optional] [default to undefined]
+**taskKey** | **string** |  | [optional] [default to undefined]
+**messageSent** | **boolean** |  | [optional] [default to undefined]
 **assigneeId** | **string** |  | [optional] [default to undefined]
 **responsibleUserIds** | **Array&lt;string&gt;** |  | [optional] [default to undefined]
 **responsibleDepartmentIds** | **Array&lt;string&gt;** |  | [optional] [default to undefined]
@@ -36,10 +41,15 @@ const instance: WorkflowTask = {
     createdTime,
     tenantId,
     instanceId,
+    pmFlowItemId,
     workflowId,
     workflowDefinitionId,
     nodeId,
     nodeName,
+    instanceName,
+    tempName,
+    taskKey,
+    messageSent,
     assigneeId,
     responsibleUserIds,
     responsibleDepartmentIds,

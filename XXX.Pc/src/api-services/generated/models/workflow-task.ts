@@ -19,10 +19,15 @@ export interface WorkflowTask {
     'createdTime'?: string;
     'tenantId'?: string;
     'instanceId'?: string | null;
+    'pmFlowItemId'?: string;
     'workflowId'?: string | null;
     'workflowDefinitionId'?: string | null;
     'nodeId'?: string | null;
     'nodeName'?: string | null;
+    'instanceName'?: string | null;
+    'tempName'?: string | null;
+    'taskKey'?: string | null;
+    'messageSent'?: boolean;
     'assigneeId'?: string;
     'responsibleUserIds'?: Array<string> | null;
     'responsibleDepartmentIds'?: Array<string> | null;

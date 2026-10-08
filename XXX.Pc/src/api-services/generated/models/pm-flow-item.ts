@@ -30,6 +30,10 @@ export interface PmFlowItem {
     'tenantId'?: string;
     'tenant'?: SysTenant;
     'pmFlowTempId'?: string;
+    'flowName'?: string | null;
+    'flowStatus'?: string;
+    'urgencyLevel'?: string;
+    'code'?: string | null;
     'startTime'?: string | null;
     'endTime'?: string | null;
     'planStartTime'?: string;

@@ -7,7 +7,6 @@ All URIs are relative to *http://localhost*
 |[**apiWorkflowInstanceDetailInstanceidGet**](#apiworkflowinstancedetailinstanceidget) | **GET** /api/workflow-instance/detail/{instanceid} | |
 |[**apiWorkflowInstanceListGet**](#apiworkflowinstancelistget) | **GET** /api/workflow-instance/list | |
 |[**apiWorkflowInstanceStartByPmFlowItemPost**](#apiworkflowinstancestartbypmflowitempost) | **POST** /api/workflow-instance/start-by-pm-flow-item | |
-|[**apiWorkflowInstanceStartWorkflowidPost**](#apiworkflowinstancestartworkflowidpost) | **POST** /api/workflow-instance/start/{workflowid} | |
 
 # **apiWorkflowInstanceDetailInstanceidGet**
 > RESTfulResultWorkflowInstance apiWorkflowInstanceDetailInstanceidGet()
@@ -130,59 +129,6 @@ const { status, data } = await apiInstance.apiWorkflowInstanceStartByPmFlowItemP
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **pmFlowItem** | **PmFlowItem**|  | |
-
-
-### Return type
-
-**RESTfulResultString**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json, text/json, application/*+json, text/plain
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | OK |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **apiWorkflowInstanceStartWorkflowidPost**
-> RESTfulResultString apiWorkflowInstanceStartWorkflowidPost()
-
-
-### Example
-
-```typescript
-import {
-    WorkflowInstanceApi,
-    Configuration
-} from './api';
-
-const configuration = new Configuration();
-const apiInstance = new WorkflowInstanceApi(configuration);
-
-let workflowid: string; // (default to undefined)
-let requestBody: { [key: string]: object; }; // (optional)
-
-const { status, data } = await apiInstance.apiWorkflowInstanceStartWorkflowidPost(
-    workflowid,
-    requestBody
-);
-```
-
-### Parameters
-
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **requestBody** | **{ [key: string]: object; }**|  | |
-| **workflowid** | [**string**] |  | defaults to undefined|
 
 
 ### Return type

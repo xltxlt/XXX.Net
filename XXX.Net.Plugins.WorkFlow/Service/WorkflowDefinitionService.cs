@@ -66,7 +66,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 PmFlowTempId = workflowDefinitionDto.PmFlowTempId,
                 TenantId = mPmFlowTemp.TenantId,
                 WorkflowId = dto.WorkflowId,
-                Name = dto.Name ?? mPmFlowTemp.Name,
+                Name = mPmFlowTemp.Name,
                 Nodes = dto.Nodes ?? new List<VueFlowModel.VfWorkflowNode>(),
                 Edges = dto.Edges ?? new List<VueFlowModel.VfWorkflowEdge>(),
                 Status = "draft",

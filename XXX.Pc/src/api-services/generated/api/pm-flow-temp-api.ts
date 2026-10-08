@@ -149,7 +149,7 @@ export const PmFlowTempApiAxiosParamCreator = function (configuration?: Configur
         },
         /**
          * 
-         * @summary 删除
+         * @summary 批量删除
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -662,7 +662,7 @@ export const PmFlowTempApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 删除
+         * @summary 批量删除
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -883,7 +883,7 @@ export const PmFlowTempApiFactory = function (configuration?: Configuration, bas
         },
         /**
          * 
-         * @summary 删除
+         * @summary 批量删除
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1063,7 +1063,7 @@ export class PmFlowTempApi extends BaseAPI {
 
     /**
      * 
-     * @summary 删除
+     * @summary 批量删除
      * @param {Array<string>} [requestBody] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

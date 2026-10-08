@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Furion.JsonSerialization;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -82,6 +83,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
         /// 启动普通流程。
         /// </summary>
         public async Task<string> StartAsync(
+            long pmFlowItemId,
             string workflowId,
             int version,
             long tenantId,
@@ -107,7 +109,9 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 TenantId = tenantId > 0 ? tenantId : definition.TenantId,
                 InstanceId = instanceId,
                 WorkflowId = definition.WorkflowId,
-                TaskName = taskName,
+                PmFlowItemId= pmFlowItemId,
+                Name = taskName,
+                TempName=definition.Name,
                 Version = definition.Version,
                 Status = "running",
                 CurrentNodeId = string.Empty,
@@ -243,7 +247,8 @@ namespace XXX.Net.Plugins.WorkFlow.Service
 
             var form = NormalizeDictionary(formData);
 
-            task.FormDataJson = JsonSerializer.Serialize(form);
+            task.FormDataJson = JSON.Serialize(form);
+                //JsonSerializer.Serialize(form);
             task.Comment = comment ?? string.Empty;
             task.Status = action == "complete"
                 ? "completed"
@@ -322,7 +327,7 @@ namespace XXX.Net.Plugins.WorkFlow.Service
             if (task.Status != "pending")
                 throw new InvalidOperationException("待办已经处理");
 
-            task.FormDataJson = JsonSerializer.Serialize(
+            task.FormDataJson = JSON.Serialize(
                 NormalizeDictionary(formData));
 
             task.Comment = comment ?? string.Empty;
@@ -732,11 +737,13 @@ namespace XXX.Net.Plugins.WorkFlow.Service
                 TenantId = definition.TenantId,
                 WorkflowId = definition.WorkflowId,
                 WorkflowDefinitionId = definition.Id,
+                PmFlowItemId=instance.PmFlowItemId,
                 NodeId = node.Id,
                 NodeName = string.IsNullOrWhiteSpace(node.Name)
                     ? node.Id
                     : node.Name,
-
+                TempName=definition.Name,
+                InstanceName=instance.Name,
                 AssigneeId = assigneeIds[0],
                 TaskKey= key,
                 ResponsibleUserIds = assigneeIds,

@@ -23,6 +23,7 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
             Expression<Func<T, bool>> condition);
 
         Task<bool> DeleteAsync(string id);
+        Task<bool> DeleteAsync(Expression<Func<T, bool>> filter);
         /// <summary>
         /// 幂等插入：
         ///
@@ -138,6 +139,11 @@ namespace XXX.Net.Plugins.WorkFlow.Repository
 
             var result = await _collection.DeleteOneAsync(filter);
 
+            return result.IsAcknowledged && result.DeletedCount > 0;
+        }
+        public async Task<bool> DeleteAsync(Expression<Func<T, bool>> filter)
+        {
+            var result = await _collection.DeleteOneAsync(filter);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
         /// <summary>

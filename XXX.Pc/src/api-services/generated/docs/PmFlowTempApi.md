@@ -7,7 +7,7 @@ All URIs are relative to *http://localhost*
 |[**apiPmFlowTempAddPost**](#apipmflowtempaddpost) | **POST** /api/pm-flow-temp/add | 新增|
 |[**apiPmFlowTempAddorupdatePost**](#apipmflowtempaddorupdatepost) | **POST** /api/pm-flow-temp/addorupdate | 新增|
 |[**apiPmFlowTempBatchaddPost**](#apipmflowtempbatchaddpost) | **POST** /api/pm-flow-temp/batchadd | 新增|
-|[**apiPmFlowTempBatchdeletePost**](#apipmflowtempbatchdeletepost) | **POST** /api/pm-flow-temp/batchdelete | 删除|
+|[**apiPmFlowTempBatchdeletePost**](#apipmflowtempbatchdeletepost) | **POST** /api/pm-flow-temp/batchdelete | 批量删除|
 |[**apiPmFlowTempBatchlogicdeletePost**](#apipmflowtempbatchlogicdeletepost) | **POST** /api/pm-flow-temp/batchlogicdelete | 逻辑删除|
 |[**apiPmFlowTempBatchupdatePost**](#apipmflowtempbatchupdatepost) | **POST** /api/pm-flow-temp/batchupdate | 新增|
 |[**apiPmFlowTempDeleteIdPost**](#apipmflowtempdeleteidpost) | **POST** /api/pm-flow-temp/delete/{id} | 删除|

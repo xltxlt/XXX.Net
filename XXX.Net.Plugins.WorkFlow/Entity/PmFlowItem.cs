@@ -16,6 +16,19 @@ namespace XXX.Net.Plugins.WorkFlow.Entity
 
         public long PmFlowTempId { get; set; }
 
+        public string FlowName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 流程状态
+        /// </summary>
+        public long FlowStatus { get; set; }
+        public long UrgencyLevel { get; set; }
+
+        /// <summary>
+        /// 编码
+        /// </summary>
+        public string Code { get; set; } = string.Empty;
+
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 

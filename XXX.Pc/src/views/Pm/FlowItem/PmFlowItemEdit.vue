@@ -33,6 +33,7 @@ let loadedStartTemplateId = '';
 const tempForm = ref<TempEditPageData>({
     loading: false,
     hideBtn: true,
+    cols:2,
     form: [
         {
             formType: PageFormType.Input,
@@ -64,9 +65,14 @@ const tempForm = ref<TempEditPageData>({
             label: "结束时间",
             fieldName: "endTime"
         },
+         {
+            formType: PageFormType.OneSelectSearch,
+            label: "紧急程度",
+            fieldName: "urgencyLevel"
+        },
         {
             formType: PageFormType.Radio,
-            label: "状态",
+            label: "启用状态",
             fieldName: "enabled"
         },
         {
@@ -81,9 +87,12 @@ const tempForm = ref<TempEditPageData>({
         pmFlowTempId: [{ required: true, message: '请选择流程模板', trigger: 'blur' }],
         planStartTime: [{ required: true, message: '请选择计划开始时间', trigger: 'blur' }],
         planEndTime: [{ required: true, message: '请选择计划结束时间', trigger: 'blur' }],
+        urgencyLevel:[{ required: true, message: '请选择紧急程度', trigger: 'blur' }],
     },
     formData: {
         id: pars?.id ?? null,
+        urgencyLevel:'3',
+        enabled:1
     },
     options: {},
 });
@@ -285,9 +294,9 @@ const sumbit = async () => {
 
 <style lang='less' scoped>
 .edit-page {
-    height: 100%;
     overflow-y: auto;
-    padding-bottom: 40px;
+    margin-bottom: 50px;
+    position: relative;
 }
 
 .step-header {
@@ -301,7 +310,8 @@ const sumbit = async () => {
 }
 
 .step-footer {
-    position: sticky;
+    position: absolute;
+    right: 20px;
     bottom: 0;
     z-index: 10;
     display: flex;

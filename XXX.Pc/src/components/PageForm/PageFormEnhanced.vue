@@ -32,6 +32,9 @@ const props = defineProps({
     attrData: {
         type: Object as PropType<Record<string, componentAttrData[]>>,
         required: true
+    },
+    formData: {
+        type: Object
     }
 })
 const tempForm = ref<TempEditPageData>({
@@ -42,14 +45,13 @@ const tempForm = ref<TempEditPageData>({
     ],
     rules: {
     },
-    formData: {
-    },
+    formData:  {},
     options: {
     },
 });
 
 const pageFun = {
-    initTempForm: async (data: ReleaseData) => {
+    initTempForm: async (data: ReleaseData, formData: any) => {
         if (isNullOrUnDef(data)) {
             return;
         }
@@ -58,7 +60,12 @@ const pageFun = {
         tempForm.value.form = await pageFun.setForm(forms, attrData);
         tempForm.value.rules = await pageFun.setRules(forms, attrData);
         tempForm.value.options = await pageFun.setOptions(forms, attrData) || {};
-        tempForm.value.formData = await pageFun.setFormData(forms, attrData);
+        if (formData) {
+            tempForm.value.formData = props.formData ?? {};
+        }
+        else {
+            tempForm.value.formData = await pageFun.setFormData(forms, attrData);
+        }
     },
     setForm: async (forms: componentForm[], attrData: Record<string, componentAttrData[]>) => {
         return forms;
@@ -68,7 +75,6 @@ const pageFun = {
         for (const key in attrData) {
             const attrs = attrData[key];
             const defaultValue = pageFun.getAttrValue(attrs, 'defaultValue');
-            console.log(defaultValue)
             const item = pageFun.getFormItem(forms, key);
             if (item?.fieldName && defaultValue && !isNullOrUnDef(defaultValue)) {
                 formData[item?.fieldName ?? ''] = defaultValue;
@@ -607,7 +613,7 @@ const pageFun = {
 
 const formData = computed<ReleaseData>(() => {
     var data = { form: props.form, attrData: props.attrData } as ReleaseData;
-    pageFun.initTempForm(data);
+    pageFun.initTempForm(data, props.formData ?? {});
     return data;
 });
 
@@ -617,7 +623,7 @@ const initForm = async () => {
         attrData: props.attrData
     };
 
-    await pageFun.initTempForm(data);
+    await pageFun.initTempForm(data,props.formData??{});
 };
 
 watch(

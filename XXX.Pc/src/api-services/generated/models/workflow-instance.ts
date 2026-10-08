@@ -17,14 +17,21 @@
 export interface WorkflowInstance {
     'id'?: string | null;
     'createdTime'?: string;
-    'tenantId'?: string;
     'instanceId'?: string | null;
+    'tenantId'?: string;
     'pmFlowItemId'?: string;
+    'name'?: string | null;
+    'tempName'?: string | null;
     'workflowId'?: string | null;
-    'taskName'?: string | null;
     'version'?: number;
     'status'?: string | null;
-    'dataJson'?: string | null;
     'currentNodeId'?: string | null;
+    'activeNodeIds'?: Array<string> | null;
+    'completedNodeIds'?: Array<string> | null;
+    'currentNodeStatus'?: string | null;
+    'dataJson'?: string | null;
+    'currentNodeStartedTime'?: string | null;
+    'lastOperateTime'?: string | null;
+    'rowVersion'?: string;
 }
 
